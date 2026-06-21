@@ -226,7 +226,10 @@
           </label>
           <label class="field">
             <span>Mot de passe</span>
-            <input id="authPassword" type="password" placeholder="6 caractères minimum" autocomplete="current-password" required minlength="6" />
+            <div class="pw-wrap">
+              <input id="authPassword" type="password" placeholder="6 caractères minimum" autocomplete="current-password" required minlength="6" />
+              <button type="button" id="pwToggle" class="pw-eye" aria-label="Afficher le mot de passe" aria-pressed="false">👁</button>
+            </div>
           </label>
           <button type="submit" class="btn btn-accent btn-block" id="loginBtn">Se connecter</button>
         </form>

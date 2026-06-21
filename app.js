@@ -133,6 +133,7 @@
     loginBtn: document.getElementById("loginBtn"),
     signupBtn: document.getElementById("signupBtn"),
     forgotBtn: document.getElementById("forgotBtn"),
+    pwToggle: document.getElementById("pwToggle"),
     googleBtn: document.getElementById("googleBtn"),
     authMsg: document.getElementById("authMsg"),
     authLoggedIn: document.getElementById("authLoggedIn"),
@@ -1021,6 +1022,13 @@
     el.authForm.addEventListener("submit", signInPassword);
     el.signupBtn.addEventListener("click", signUpPassword);
     el.forgotBtn.addEventListener("click", forgotPassword);
+    el.pwToggle.addEventListener("click", () => {
+      const show = el.authPassword.type === "password";
+      el.authPassword.type = show ? "text" : "password";
+      el.pwToggle.classList.toggle("on", show);
+      el.pwToggle.setAttribute("aria-pressed", String(show));
+      el.pwToggle.setAttribute("aria-label", show ? "Masquer le mot de passe" : "Afficher le mot de passe");
+    });
     el.googleBtn.addEventListener("click", signInGoogle);
     el.authLogout.addEventListener("click", logout);
 

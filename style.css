@@ -271,6 +271,20 @@ html, body {
 }
 .field input:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
 
+/* Champ mot de passe avec œil */
+.pw-wrap { position: relative; display: flex; }
+.pw-wrap input { flex: 1; padding-right: 2.6rem; }
+.pw-eye {
+  position: absolute;
+  right: 0.3rem; top: 50%; transform: translateY(-50%);
+  border: none; background: transparent;
+  cursor: pointer; font-size: 1rem; line-height: 1;
+  padding: 0.4rem 0.5rem; border-radius: 8px;
+  opacity: 0.45;
+}
+.pw-eye:hover { opacity: 0.8; background: rgba(28, 43, 51, 0.05); }
+.pw-eye.on { opacity: 0.95; }
+
 .auth-forgot { text-align: center; margin: 0.75rem 0 0; }
 .auth-forgot button {
   border: none; background: none;
