@@ -271,10 +271,18 @@ html, body {
 }
 .field input:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
 
+.auth-forgot { text-align: center; margin: 0.75rem 0 0; }
+.auth-forgot button {
+  border: none; background: none;
+  color: var(--muted); font: inherit; font-size: 0.8rem;
+  cursor: pointer; text-decoration: underline; padding: 0;
+}
+.auth-forgot button:hover { color: var(--ink); }
+
 .auth-switch {
   text-align: center;
   font-size: 0.82rem; color: var(--muted);
-  margin: 1rem 0 0;
+  margin: 0.6rem 0 0;
 }
 .auth-switch button {
   border: none; background: none;

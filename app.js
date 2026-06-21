@@ -132,6 +132,7 @@
     authPassword: document.getElementById("authPassword"),
     loginBtn: document.getElementById("loginBtn"),
     signupBtn: document.getElementById("signupBtn"),
+    forgotBtn: document.getElementById("forgotBtn"),
     googleBtn: document.getElementById("googleBtn"),
     authMsg: document.getElementById("authMsg"),
     authLoggedIn: document.getElementById("authLoggedIn"),
@@ -1019,6 +1020,7 @@
 
     el.authForm.addEventListener("submit", signInPassword);
     el.signupBtn.addEventListener("click", signUpPassword);
+    el.forgotBtn.addEventListener("click", forgotPassword);
     el.googleBtn.addEventListener("click", signInGoogle);
     el.authLogout.addEventListener("click", logout);
 
@@ -1032,7 +1034,38 @@
 
     // Session existante + réaction aux connexions/déconnexions.
     sb.auth.getSession().then(({ data }) => onAuth(data.session));
-    sb.auth.onAuthStateChange((_evt, session) => onAuth(session));
+    sb.auth.onAuthStateChange((evt, session) => onAuth(session, evt));
+  }
+
+  // Envoi d'un email de réinitialisation du mot de passe.
+  async function forgotPassword() {
+    const email = el.authEmail.value.trim();
+    if (!email) { el.authMsg.textContent = "Entre ton email ci-dessus, puis reclique."; return; }
+    el.forgotBtn.disabled = true;
+    el.authMsg.textContent = "Envoi…";
+    try {
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectTo() });
+      if (error) throw error;
+      el.authMsg.textContent = "Email de réinitialisation envoyé ! Vérifie ta boîte mail.";
+    } catch (e) {
+      el.authMsg.textContent = "Erreur : " + frError(e);
+    } finally {
+      el.forgotBtn.disabled = false;
+    }
+  }
+
+  // Retour via le lien de récupération : on demande un nouveau mot de passe.
+  async function promptNewPassword() {
+    const pw = prompt("Nouveau mot de passe (6 caractères minimum) :");
+    if (pw === null) return;
+    if (pw.length < 6) { alert("Mot de passe trop court (6 caractères minimum)."); return; }
+    try {
+      const { error } = await sb.auth.updateUser({ password: pw });
+      if (error) throw error;
+      alert("Mot de passe mis à jour. Tu es connecté.");
+    } catch (e) {
+      alert("Erreur : " + frError(e));
+    }
   }
 
   function openAuthModal() {
@@ -1046,11 +1079,12 @@
     el.accountBtn.focus();
   }
 
-  function onAuth(session) {
+  function onAuth(session, evt) {
     const newUser = session ? session.user : null;
     const changed = (newUser && newUser.id) !== (user && user.id);
     user = newUser;
     refreshAccountUI();
+    if (evt === "PASSWORD_RECOVERY") { promptNewPassword(); return; }
     if (user && changed) {
       if (!el.authModal.hidden) closeAuthModal();  // connexion réussie → on ferme
       pullOrPush();
