@@ -120,6 +120,26 @@
     </section>
   </main>
 
+  <!-- Modale de bienvenue (premier lancement) -->
+  <div class="modal" id="welcomeModal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+      <div class="auth-head">
+        <span class="auth-mark" aria-hidden="true">ٱ</span>
+        <h2 id="welcomeTitle">Bienvenue&nbsp;!</h2>
+        <p class="auth-sub">Apprends le vocabulaire arabe en flashcards.</p>
+      </div>
+      <p class="welcome-text">
+        Veux-tu charger la <strong>liste de base</strong> : le vocabulaire arabe des
+        <strong>objets de la maison</strong> (chambre, salle de bain, cuisine) ?
+      </p>
+      <div class="welcome-actions">
+        <button class="btn btn-accent btn-block" id="loadStarterBtn">Charger la liste de base</button>
+        <button class="btn btn-ghost btn-block" id="startEmptyBtn">Commencer à vide</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modale de connexion / compte -->
   <div class="modal" id="authModal" hidden>
     <div class="modal-backdrop" data-close></div>

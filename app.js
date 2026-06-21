@@ -84,6 +84,10 @@
     resetBtn: document.getElementById("resetBtn"),
     wordList: document.getElementById("wordList"),
     countInfo: document.getElementById("countInfo"),
+    // Bienvenue (premier lancement)
+    welcomeModal: document.getElementById("welcomeModal"),
+    loadStarterBtn: document.getElementById("loadStarterBtn"),
+    startEmptyBtn: document.getElementById("startEmptyBtn"),
     // Compte / synchro
     accountBtn: document.getElementById("accountBtn"),
     authModal: document.getElementById("authModal"),
@@ -749,6 +753,8 @@
     el.newListName.addEventListener("keydown", (e) => {
       if (e.code === "Enter") { e.preventDefault(); createList(); }
     });
+    el.loadStarterBtn.addEventListener("click", loadStarter);
+    el.startEmptyBtn.addEventListener("click", startEmpty);
 
     // Flèches clavier pour naviguer
     document.addEventListener("keydown", (e) => {
@@ -928,6 +934,7 @@
 
       const remote = data && data.data ? fromStored(data.data) : null;
       if (remote && remote.cards.length) {
+        el.welcomeModal.hidden = true; // utilisateur existant : pas d'écran de bienvenue
         cards = normalizeCards(remote.cards);
         lists = remote.lists || [];
         migrate();
@@ -1000,19 +1007,42 @@
     });
   }
 
+  // Premier lancement : on propose de charger la liste de base ou de partir à vide.
+  function openWelcome() { el.welcomeModal.hidden = false; }
+  function loadStarter() {
+    cards = seedFromDefaults();
+    lists = [];
+    ensureLists();
+    finishWelcome();
+  }
+  function startEmpty() {
+    cards = [];
+    lists = [];
+    finishWelcome();
+  }
+  function finishWelcome() {
+    el.welcomeModal.hidden = true;
+    cat = "all";
+    save();           // crée l'entrée localStorage → la bienvenue ne réapparaît plus
+    rebuildOrder();
+    render();
+  }
+
   // --- Démarrage ---
   function init() {
+    const firstRun = localStorage.getItem(STORAGE_KEY) === null;
     const st = load();
-    cards = st.cards;
-    lists = st.lists || [];
+    cards = firstRun ? [] : st.cards;
+    lists = firstRun ? [] : (st.lists || []);
     migrate();
     ensureLists();
-    save(); // fige le paquet de départ au premier lancement
+    if (!firstRun) save(); // au premier lancement, on attend le choix de l'utilisateur
     updateDirectionLabel();
     rebuildOrder();
     bind();
     render();
     initAccount();
+    if (firstRun) openWelcome();
   }
 
   init();

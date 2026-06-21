@@ -232,6 +232,16 @@ html, body {
 
 .btn-block { width: 100%; }
 
+/* Modale de bienvenue */
+.welcome-text {
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin: 0 0 1.3rem;
+  line-height: 1.55;
+}
+.welcome-actions { display: flex; flex-direction: column; gap: 0.6rem; }
+
 /* ---------- Catégories ---------- */
 .cats {
   display: flex;
