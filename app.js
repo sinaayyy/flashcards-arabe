@@ -699,30 +699,26 @@
     el.authLoggedIn.hidden = !inLog;
     if (inLog) el.authUser.textContent = user.email || "connecté";
 
-    // Bouton de l'en-tête : « Se connecter » ou un pastille email synchronisé.
+    // Bouton de l'en-tête : « Se connecter » ou pastille verte + email complet.
     el.accountBtn.classList.toggle("is-connected", inLog);
     if (inLog) {
-      el.accountBtn.innerHTML = '<span class="account-dot" id="accDot"></span>';
-      el.accountBtn.append(shortEmail(user.email));
-      el.accountBtn.title = "Compte : " + (user.email || "");
+      el.accountBtn.innerHTML =
+        '<span class="account-dot sync-ok" id="accDot"></span><span class="account-email"></span>';
+      el.accountBtn.querySelector(".account-email").textContent = user.email || "Compte";
+      el.accountBtn.title = "Connecté : " + (user.email || "");
     } else {
       el.accountBtn.textContent = "Se connecter";
       el.accountBtn.title = "Se connecter pour synchroniser";
     }
   }
 
-  function shortEmail(email) {
-    if (!email) return "Compte";
-    return email.length > 18 ? email.slice(0, 16) + "…" : email;
-  }
-
   function setSync(state, text) {
     // state : "ok" | "pending" | "error"
+    // Dans la modale : 3 couleurs (détail). Dans l'en-tête : vert sauf erreur (rouge).
     el.syncDot.className = "acc-dot sync-" + state;
     el.syncState.textContent = text || "";
-    // Reflète l'état sur la pastille de l'en-tête aussi.
     const accDot = document.getElementById("accDot");
-    if (accDot) accDot.className = "account-dot sync-" + state;
+    if (accDot) accDot.className = "account-dot sync-" + (state === "error" ? "error" : "ok");
   }
 
   function redirectTo() { return window.location.origin + window.location.pathname; }
