@@ -76,6 +76,7 @@
     passBtn: document.getElementById("passBtn"),
     failBtn: document.getElementById("failBtn"),
     mastery: document.getElementById("mastery"),
+    brand: document.getElementById("brand"),
     brandSub: document.getElementById("brandSub"),
     statsBody: document.getElementById("statsBody"),
     resetProgressBtn: document.getElementById("resetProgressBtn"),
@@ -1006,6 +1007,7 @@
       pickWelcomeLang(el.welcomeLangName.value, el.welcomeRtl.checked, el.welcomeNonLatin.checked);
     });
     if (el.homeSignin) el.homeSignin.addEventListener("click", () => openAuthModal());
+    if (el.brand) el.brand.addEventListener("click", openWelcome); // logo → accueil
 
     // Langues : pastille ouvre la modale (changer / ajouter / supprimer).
     el.langBtn.addEventListener("click", openLangModal);
@@ -1365,22 +1367,38 @@
     });
   }
 
-  // Choix de la 1re langue : remplace la langue par défaut.
+  function showStep2() { el.welcomeStep1.hidden = true; el.welcomeStep2.hidden = false; }
+
+  // Choix d'une langue depuis l'accueil. Non destructif :
+  // bascule si la langue existe déjà, sinon l'ajoute.
   function pickWelcomeLang(name, rtl, nonLatin, presetId) {
     name = (name || "").trim();
     if (!name) return;
+
+    const existing = languages.find((l) =>
+      (presetId && l.id === presetId) || l.name.toLowerCase() === name.toLowerCase());
+    if (existing) {
+      activeLang = existing.id;
+      loadActiveIntoWorking();
+      migrate(); ensureLists();
+      cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "af"; curId = null;
+      el.reviewBtn.classList.remove("active");
+      updateDirectionLabel();
+      if (existing.id === "ar" && !existing.cards.length) { showStep2(); save(); return; }
+      finishWelcome(false); // langue existante : on bascule, sans guidage
+      return;
+    }
+
     const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-    languages = [{ id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] }];
+    const lang = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
+    // Si la seule langue est l'arabe placeholder vide (1er lancement), on la remplace.
+    const onlyEmptyAr = languages.length === 1 && languages[0].id === "ar" && !languages[0].cards.length;
+    languages = onlyEmptyAr ? [lang] : languages.concat([lang]);
     activeLang = id;
     loadActiveIntoWorking();
     updateDirectionLabel();
-    if (presetId === "ar") {
-      // Étape 2 : proposer la liste de base.
-      el.welcomeStep1.hidden = true;
-      el.welcomeStep2.hidden = false;
-    } else {
-      finishWelcome(true); // langue latine/autre : démarre à vide puis guide
-    }
+    if (presetId === "ar") showStep2();
+    else finishWelcome(true); // nouvelle langue vide → guidage vers le 1er mot
   }
 
   function loadStarter() {

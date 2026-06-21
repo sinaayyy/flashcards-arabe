@@ -39,7 +39,15 @@ html, body {
   justify-content: space-between;
   margin-bottom: 2rem;
 }
-.brand { display: flex; align-items: center; gap: 0.85rem; }
+.brand {
+  display: flex; align-items: center; gap: 0.85rem;
+  appearance: none; border: none; background: none; padding: 0;
+  font-family: inherit; text-align: left; color: inherit; cursor: pointer;
+  border-radius: 14px;
+}
+.brand:hover .brand-mark { border-color: var(--saffron); }
+.brand:hover h1 { text-decoration: underline; text-decoration-color: var(--saffron); text-underline-offset: 3px; }
+.brand:focus-visible { outline: 2px solid var(--saffron); outline-offset: 3px; }
 .brand-mark {
   font-family: "Amiri", serif;
   font-size: 2.4rem;
@@ -630,15 +638,20 @@ html, body {
 }
 .card.just-mastered .card-face { animation: mastered-glow 0.7s ease; }
 
-/* ---------- Réponse (action principale) ---------- */
+/* ---------- Réponse (action principale, compacte) ---------- */
 .answer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
   margin-top: 1.1rem;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.6rem;
 }
-.answer .btn { padding: 0.95rem 1rem; font-size: 1rem; font-weight: 500; border-radius: 14px; }
+.answer .btn {
+  padding: 0.45rem 1.3rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border-radius: 999px;
+}
 
 /* ---------- Navigation (secondaire) ---------- */
 .nav {
@@ -686,19 +699,20 @@ html, body {
 }
 .btn-accent:hover { background: var(--ink-soft); border-color: var(--ink-soft); }
 
-/* Réponse : À revoir (contour) + Réussi (vert) — après .btn pour la priorité */
+/* Réponse (palette du site) : À revoir (contour sobre) + Réussi (encre + ✓ safran) */
 .btn-fail {
   background: transparent;
-  border-color: #d8b3a6;
-  color: #9c3a23;
+  border-color: var(--line);
+  color: var(--muted);
 }
-.btn-fail:hover { background: #f1e2dc; border-color: #c98a76; }
+.btn-fail:hover { background: var(--paper-2); border-color: var(--saffron); color: var(--ink); }
 .btn-pass {
-  background: #4f7a55;
-  border-color: #4f7a55;
-  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--ivory);
 }
-.btn-pass:hover { background: #436a48; border-color: #436a48; }
+.btn-pass:hover { background: var(--ink-soft); border-color: var(--ink-soft); }
+.btn-pass .pass-check { color: var(--saffron); font-weight: 700; }
 
 .btn-ghost {
   background: transparent;
@@ -963,7 +977,7 @@ html, body {
   .card-main.tgt:not(.non-latin) { font-size: 2rem; }
 
   .btn { padding: 0.75rem 0.6rem; font-size: 0.9rem; }
-  .answer .btn { padding: 0.9rem 0.6rem; font-size: 0.95rem; }
+  .answer .btn { padding: 0.5rem 1.1rem; font-size: 0.86rem; }
   .mastery { gap: 0.5rem; padding: 0.5rem 0.7rem; }
   .m-dirs { gap: 0.6rem; }
 

@@ -12,13 +12,13 @@
 <body>
   <main class="app">
     <header class="header">
-      <div class="brand">
+      <button class="brand" id="brand" type="button" aria-label="Accueil">
         <span class="brand-mark" aria-hidden="true">ٱ</span>
         <div class="brand-text">
           <h1>Mufradāt</h1>
           <p class="brand-sub" id="brandSub">Vocabulaire · flashcards</p>
         </div>
-      </div>
+      </button>
       <div class="header-actions">
         <button id="langBtn" class="lang-btn" aria-label="Changer de langue">
           <span class="lang-glyph" aria-hidden="true">🌐</span><span id="langBtnName">Arabe</span>
@@ -60,7 +60,7 @@
     <!-- Réponse (action principale) -->
     <section class="answer">
       <button id="failBtn" class="btn btn-fail">À revoir</button>
-      <button id="passBtn" class="btn btn-pass">Réussi&nbsp;✓</button>
+      <button id="passBtn" class="btn btn-pass">Réussi&nbsp;<span class="pass-check">✓</span></button>
     </section>
 
     <!-- Navigation (secondaire) -->
