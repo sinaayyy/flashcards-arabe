@@ -1,0 +1,14 @@
+# Captures temporaires
+_shot*.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+
+# Dépendances / build (aucune pour ce site statique, mais au cas où)
+node_modules/
+.vercel

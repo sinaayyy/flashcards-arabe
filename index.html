@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcards — Vocabulaire arabe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">ٱ</span>
+        <div class="brand-text">
+          <h1>Mufradāt</h1>
+          <p class="brand-sub">Vocabulaire arabe · flashcards</p>
+        </div>
+      </div>
+      <p class="progress" id="progress">— / —</p>
+    </header>
+
+    <!-- Catégories / thèmes -->
+    <nav class="cats" id="cats" aria-label="Thèmes"></nav>
+
+    <!-- Carte -->
+    <section class="card-area" id="cardArea">
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Retourner la carte">
+        <div class="card-face card-front">
+          <span class="card-corner" aria-hidden="true"></span>
+          <p class="card-hint" id="frontHint"></p>
+          <p class="card-main" id="frontMain"></p>
+          <div class="phonetic" id="frontPhon" hidden>
+            <button class="hint-toggle" id="frontHintBtn" type="button">indice : phonétique</button>
+            <p class="card-sub" id="frontSub"></p>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <span class="card-corner" aria-hidden="true"></span>
+          <p class="card-hint" id="backHint"></p>
+          <p class="card-main" id="backMain"></p>
+          <div class="phonetic" id="backPhon" hidden>
+            <button class="hint-toggle" id="backHintBtn" type="button">indice : phonétique</button>
+            <p class="card-sub" id="backSub"></p>
+          </div>
+        </div>
+      </div>
+      <div class="mastery" id="mastery" aria-live="polite"></div>
+      <p class="flip-tip">Clique la carte ou <kbd>Espace</kbd> pour retourner · <kbd>←</kbd> <kbd>→</kbd> pour naviguer</p>
+    </section>
+
+    <!-- Navigation + réponse -->
+    <section class="nav">
+      <button id="prevBtn" class="btn btn-nav" aria-label="Précédent">‹</button>
+      <button id="failBtn" class="btn btn-fail">À revoir</button>
+      <button id="passBtn" class="btn btn-accent">Réussi ✓</button>
+      <button id="nextBtn" class="btn btn-nav" aria-label="Suivant">›</button>
+    </section>
+
+    <!-- Options d'étude -->
+    <section class="options">
+      <button id="shuffleBtn" class="chip">Mélanger</button>
+      <button id="directionBtn" class="chip">Sens · <span id="directionLabel">AR → FR</span></button>
+      <button id="reviewBtn" class="chip" aria-pressed="false">À revoir seulement</button>
+    </section>
+
+    <!-- Progression par thème -->
+    <section class="stats">
+      <div class="stats-head">
+        <h2>Progression</h2>
+        <button id="resetProgressBtn" class="btn btn-ghost btn-sm">Réinitialiser la progression</button>
+      </div>
+      <div id="statsBody" class="stats-body"></div>
+    </section>
+
+    <!-- Gestion des mots -->
+    <section class="manage">
+      <details>
+        <summary>Gérer les mots</summary>
+
+        <form id="addForm" class="add-form" autocomplete="off">
+          <input id="inAr" dir="rtl" placeholder="Arabe (ex. مَاءٌ)" required />
+          <input id="inTranslit" placeholder="Phonétique (ex. māʾun)" />
+          <input id="inFr" placeholder="Français (ex. eau)" required />
+          <input id="inCat" list="catList" placeholder="Thème (ex. Cuisine)" />
+          <datalist id="catList"></datalist>
+          <div class="form-buttons">
+            <button id="cancelEditBtn" type="button" class="btn btn-ghost" hidden>Annuler</button>
+            <button id="submitBtn" type="submit" class="btn btn-accent">Ajouter</button>
+          </div>
+        </form>
+
+        <div class="manage-actions">
+          <span id="countInfo" class="count-info"></span>
+          <div class="manage-buttons">
+            <button id="exportBtn" class="btn btn-ghost btn-sm">Exporter</button>
+            <button id="importBtn" class="btn btn-ghost btn-sm">Importer</button>
+            <input id="importFile" type="file" accept="application/json,.json" hidden />
+            <button id="resetBtn" class="btn btn-ghost btn-sm">Paquet de départ</button>
+          </div>
+        </div>
+
+        <ul id="wordList" class="word-list"></ul>
+      </details>
+    </section>
+  </main>
+
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
