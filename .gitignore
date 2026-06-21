@@ -9,6 +9,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Secrets (jamais commités)
+.env
+.env.*
+
 # Dépendances / build (aucune pour ce site statique, mais au cas où)
 node_modules/
 .vercel
