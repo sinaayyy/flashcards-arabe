@@ -942,8 +942,24 @@
         await cloudSyncNow(); // premier envoi du paquet local
       }
     } catch (e) {
-      setSync("error", "Hors-ligne");
+      syncError(e);
     }
+  }
+
+  // Affiche un message d'erreur de synchro utile (et logue le détail en console).
+  function syncError(e) {
+    console.error("[Sync] erreur :", e);
+    const m = (e && (e.message || e.error_description || e.hint)) || "";
+    let hint = "Hors-ligne";
+    if (/relation .*decks.* does not exist|Could not find the table|schema cache/i.test(m))
+      hint = "Table « decks » absente — lance le script SQL";
+    else if (/row-level security|RLS|permission denied|not authorized/i.test(m))
+      hint = "Accès refusé (règles RLS manquantes)";
+    else if (/JWT|token|Invalid API key/i.test(m))
+      hint = "Clé/API invalide";
+    else if (m)
+      hint = "Erreur : " + m.slice(0, 60);
+    setSync("error", hint);
   }
 
   function scheduleCloudSync() {
@@ -964,7 +980,7 @@
       if (error) throw error;
       setSync("ok", "Synchronisé");
     } catch (e) {
-      setSync("error", "Hors-ligne");
+      syncError(e);
     }
   }
 
