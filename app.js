@@ -81,7 +81,9 @@
     wordList: document.getElementById("wordList"),
     countInfo: document.getElementById("countInfo"),
     // Compte / synchro
-    account: document.getElementById("account"),
+    accountBtn: document.getElementById("accountBtn"),
+    authModal: document.getElementById("authModal"),
+    authClose: document.getElementById("authClose"),
     authLoggedOut: document.getElementById("authLoggedOut"),
     authForm: document.getElementById("authForm"),
     authEmail: document.getElementById("authEmail"),
@@ -649,16 +651,35 @@
     if (!cfg.url || !cfg.anonKey || !window.supabase) return;
 
     sb = window.supabase.createClient(cfg.url, cfg.anonKey);
-    el.account.hidden = false;
+    el.accountBtn.hidden = false;
 
     el.authForm.addEventListener("submit", signInPassword);
     el.signupBtn.addEventListener("click", signUpPassword);
     el.googleBtn.addEventListener("click", signInGoogle);
     el.authLogout.addEventListener("click", logout);
 
+    // Ouverture / fermeture de la modale.
+    el.accountBtn.addEventListener("click", openAuthModal);
+    el.authModal.querySelectorAll("[data-close]").forEach((n) =>
+      n.addEventListener("click", closeAuthModal));
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape" && !el.authModal.hidden) closeAuthModal();
+    });
+
     // Session existante + réaction aux connexions/déconnexions.
     sb.auth.getSession().then(({ data }) => onAuth(data.session));
     sb.auth.onAuthStateChange((_evt, session) => onAuth(session));
+  }
+
+  function openAuthModal() {
+    el.authModal.hidden = false;
+    el.authMsg.textContent = "";
+    const focusTarget = user ? el.authLogout : el.authEmail;
+    if (focusTarget) focusTarget.focus();
+  }
+  function closeAuthModal() {
+    el.authModal.hidden = true;
+    el.accountBtn.focus();
   }
 
   function onAuth(session) {
@@ -666,7 +687,10 @@
     const changed = (newUser && newUser.id) !== (user && user.id);
     user = newUser;
     refreshAccountUI();
-    if (user && changed) pullOrPush();
+    if (user && changed) {
+      if (!el.authModal.hidden) closeAuthModal();  // connexion réussie → on ferme
+      pullOrPush();
+    }
   }
 
   function refreshAccountUI() {
@@ -674,12 +698,31 @@
     el.authLoggedOut.hidden = inLog;
     el.authLoggedIn.hidden = !inLog;
     if (inLog) el.authUser.textContent = user.email || "connecté";
+
+    // Bouton de l'en-tête : « Se connecter » ou un pastille email synchronisé.
+    el.accountBtn.classList.toggle("is-connected", inLog);
+    if (inLog) {
+      el.accountBtn.innerHTML = '<span class="account-dot" id="accDot"></span>';
+      el.accountBtn.append(shortEmail(user.email));
+      el.accountBtn.title = "Compte : " + (user.email || "");
+    } else {
+      el.accountBtn.textContent = "Se connecter";
+      el.accountBtn.title = "Se connecter pour synchroniser";
+    }
+  }
+
+  function shortEmail(email) {
+    if (!email) return "Compte";
+    return email.length > 18 ? email.slice(0, 16) + "…" : email;
   }
 
   function setSync(state, text) {
     // state : "ok" | "pending" | "error"
     el.syncDot.className = "acc-dot sync-" + state;
     el.syncState.textContent = text || "";
+    // Reflète l'état sur la pastille de l'en-tête aussi.
+    const accDot = document.getElementById("accDot");
+    if (accDot) accDot.className = "account-dot sync-" + state;
   }
 
   function redirectTo() { return window.location.origin + window.location.pathname; }

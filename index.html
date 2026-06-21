@@ -19,33 +19,11 @@
           <p class="brand-sub">Vocabulaire arabe · flashcards</p>
         </div>
       </div>
-      <p class="progress" id="progress">— / —</p>
+      <div class="header-actions">
+        <p class="progress" id="progress">— / —</p>
+        <button class="account-btn" id="accountBtn" hidden>Se connecter</button>
+      </div>
     </header>
-
-    <!-- Compte (synchro cloud) -->
-    <section class="account" id="account" hidden>
-      <div class="acc-out" id="authLoggedOut">
-        <button type="button" class="btn btn-google" id="googleBtn">
-          <svg class="g-icon" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.57 2.68-3.89 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.29-1.72V4.95H.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.05l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
-          Continuer avec Google
-        </button>
-        <div class="acc-divider"><span>ou</span></div>
-        <form class="acc-pw" id="authForm" autocomplete="on">
-          <input id="authEmail" type="email" placeholder="ton@email.com" autocomplete="email" required />
-          <input id="authPassword" type="password" placeholder="mot de passe (min. 6)" autocomplete="current-password" required minlength="6" />
-          <div class="acc-pw-actions">
-            <button type="submit" class="btn btn-accent btn-sm" id="loginBtn">Se connecter</button>
-            <button type="button" class="btn btn-ghost btn-sm" id="signupBtn">Créer un compte</button>
-          </div>
-        </form>
-        <span class="acc-msg" id="authMsg"></span>
-      </div>
-      <div class="acc-in" id="authLoggedIn" hidden>
-        <span class="acc-user"><span class="acc-dot" id="syncDot"></span><span id="authUser"></span></span>
-        <span class="acc-sync" id="syncState"></span>
-        <button class="btn btn-ghost btn-sm" id="authLogout">Déconnexion</button>
-      </div>
-    </section>
 
     <!-- Catégories / thèmes -->
     <nav class="cats" id="cats" aria-label="Thèmes"></nav>
@@ -131,6 +109,62 @@
       </details>
     </section>
   </main>
+
+  <!-- Modale de connexion / compte -->
+  <div class="modal" id="authModal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="modal-close" id="authClose" type="button" aria-label="Fermer" data-close>×</button>
+
+      <!-- Déconnecté -->
+      <div id="authLoggedOut">
+        <div class="auth-head">
+          <span class="auth-mark" aria-hidden="true">ٱ</span>
+          <h2 id="authTitle">Connexion</h2>
+          <p class="auth-sub">Retrouve ta progression sur tous tes appareils.</p>
+        </div>
+
+        <button type="button" class="btn btn-google btn-block" id="googleBtn">
+          <svg class="g-icon" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.57 2.68-3.89 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.29-1.72V4.95H.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.05l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          Continuer avec Google
+        </button>
+
+        <div class="acc-divider"><span>ou avec un email</span></div>
+
+        <form class="auth-form" id="authForm" autocomplete="on">
+          <label class="field">
+            <span>Email</span>
+            <input id="authEmail" type="email" placeholder="ton@email.com" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Mot de passe</span>
+            <input id="authPassword" type="password" placeholder="6 caractères minimum" autocomplete="current-password" required minlength="6" />
+          </label>
+          <button type="submit" class="btn btn-accent btn-block" id="loginBtn">Se connecter</button>
+        </form>
+
+        <p class="auth-switch">
+          Pas encore de compte ?
+          <button type="button" id="signupBtn">Créer un compte</button>
+        </p>
+        <p class="acc-msg" id="authMsg" role="status"></p>
+      </div>
+
+      <!-- Connecté -->
+      <div id="authLoggedIn" hidden>
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-ok" aria-hidden="true">✓</span>
+          <h2>Connecté</h2>
+          <p class="auth-sub" id="authUser"></p>
+        </div>
+        <div class="sync-row">
+          <span class="acc-dot" id="syncDot"></span>
+          <span id="syncState">Synchronisé</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-block" id="authLogout">Déconnexion</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="config.js"></script>
