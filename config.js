@@ -5,6 +5,6 @@
 // Note : la clé "anon" est PUBLIQUE par conception (protégée par les règles RLS),
 // donc elle peut être commitée sans risque.
 window.SUPABASE_CONFIG = {
-  url: "",      // ex. "https://abcdefgh.supabase.co"
-  anonKey: "",  // ex. "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+  url: "https://kilgobplcmoorrnvihpw.supabase.co",
+  anonKey: "sb_publishable_y2hI-acbyMuTwVrZWzlw_w_o_3ZDn_1", // clé "publishable" (publique)
 };
