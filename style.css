@@ -79,7 +79,70 @@ html, body {
 }
 
 /* ---------- Bouton compte (en-tête) ---------- */
-.header-actions { display: flex; align-items: center; gap: 0.5rem; }
+.header-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+
+/* Pastille langue (ouvre la modale langue) */
+.lang-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  max-width: 9rem;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lang-btn:hover { border-color: var(--saffron); background: #fff; }
+.lang-btn:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
+.lang-glyph { font-size: 0.9rem; }
+#langBtnName { overflow: hidden; text-overflow: ellipsis; }
+
+.lang-pick-name {
+  flex: 1; display: flex; align-items: center; gap: 0.5rem;
+  border: none; background: transparent; font: inherit; text-align: left;
+  cursor: pointer; color: var(--ink);
+  padding: 0.45rem 0.55rem; border-radius: 8px; min-width: 0;
+}
+.lang-pick-name:hover { background: rgba(28, 43, 51, 0.04); }
+.lang-exist-row.active .lang-pick-name { font-weight: 600; }
+.lang-active-chk { color: var(--saffron-deep); font-weight: 700; }
+
+/* Modale langue */
+.auth-mark-globe { font-family: inherit; font-size: 1.8rem; background: linear-gradient(160deg, #3a5e6b, #2c3e47); }
+.lang-presets { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; }
+.lang-chip {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-family: inherit; font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lang-chip:hover { background: #fff; border-color: var(--saffron); }
+.check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.84rem; color: var(--ink); cursor: pointer; }
+.check input { width: 16px; height: 16px; accent-color: var(--saffron); }
+.lang-existing-wrap { margin-top: 1.2rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.lang-existing-title { margin: 0 0 0.5rem; font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+.lang-existing { display: flex; flex-direction: column; gap: 0.3rem; }
+.lang-exist-row {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.88rem;
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 0.2rem 0.35rem;
+  background: var(--paper-2);
+}
+.lang-exist-row.active { border-color: var(--saffron); background: #fff; font-weight: 500; }
+.script-arabic { font-family: "Amiri", serif; font-size: 1.15rem; }
 .account-btn {
   appearance: none;
   display: inline-flex;
@@ -361,13 +424,16 @@ html, body {
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
-.card-main.arabic {
-  direction: rtl;
+/* Terme dans la langue cible */
+.card-main.tgt.non-latin {
   font-family: "Amiri", serif;
   font-weight: 400;
   font-size: 3.8rem;
   line-height: 1.7;
 }
+.card-main.tgt.rtl { direction: rtl; }
+/* Langue cible à alphabet latin : police de titre, taille intermédiaire */
+.card-main.tgt:not(.non-latin) { font-size: 2.6rem; }
 
 /* ---------- Phonétique (indice cliquable) ---------- */
 .phonetic { min-height: 2.2rem; display: flex; align-items: center; }
@@ -712,7 +778,9 @@ html, body {
   border-bottom: 1px solid var(--line);
   font-size: 0.95rem;
 }
-.word-list .wl-ar { font-family: "Amiri", serif; direction: rtl; font-size: 1.5rem; min-width: 5.5rem; }
+.word-list .wl-ar { font-size: 1.15rem; min-width: 5.5rem; font-weight: 500; }
+.word-list .wl-ar.non-latin { font-family: "Amiri", serif; font-weight: 400; font-size: 1.5rem; }
+.word-list .wl-ar.rtl { direction: rtl; }
 .word-list .wl-rest { flex: 1; color: var(--muted); }
 .word-list .wl-rest b { color: var(--ink); font-weight: 500; }
 .word-list .wl-cat {
@@ -767,7 +835,8 @@ html, body {
   .card { min-height: 250px; }
   .card-face { padding: 2rem 1.1rem; }
   .card-main { font-size: 1.6rem; }
-  .card-main.arabic { font-size: 2.6rem; }
+  .card-main.tgt.non-latin { font-size: 2.6rem; }
+  .card-main.tgt:not(.non-latin) { font-size: 2rem; }
 
   .nav { grid-template-columns: 46px 1fr 1fr 46px; gap: 0.4rem; }
   .btn { padding: 0.75rem 0.4rem; font-size: 0.88rem; }
@@ -785,7 +854,7 @@ html, body {
 }
 
 @media (max-width: 340px) {
-  .card-main.arabic { font-size: 2.2rem; }
+  .card-main.tgt.non-latin { font-size: 2.2rem; }
   .btn { font-size: 0.8rem; }
   .m-label, .m-dir { font-size: 0.68rem; }
 }

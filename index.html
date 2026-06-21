@@ -20,6 +20,9 @@
         </div>
       </div>
       <div class="header-actions">
+        <button id="langBtn" class="lang-btn" aria-label="Changer de langue">
+          <span class="lang-glyph" aria-hidden="true">🌐</span><span id="langBtnName">Arabe</span>
+        </button>
         <p class="progress" id="progress">— / —</p>
         <button class="account-btn" id="accountBtn" hidden>Se connecter</button>
       </div>
@@ -119,6 +122,37 @@
       </details>
     </section>
   </main>
+
+  <!-- Modale d'ajout / gestion des langues -->
+  <div class="modal" id="langModal" hidden>
+    <div class="modal-backdrop" data-langclose></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="langTitle">
+      <button class="modal-close" type="button" aria-label="Fermer" data-langclose>×</button>
+      <div class="auth-head">
+        <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
+        <h2 id="langTitle">Langues</h2>
+        <p class="auth-sub">Choisis une langue à apprendre.</p>
+      </div>
+
+      <div class="lang-presets" id="langPresets"></div>
+
+      <div class="acc-divider"><span>ou personnalisée</span></div>
+      <form class="auth-form" id="langForm" autocomplete="off">
+        <label class="field">
+          <span>Nom de la langue</span>
+          <input id="langName" placeholder="ex. Coréen" />
+        </label>
+        <label class="check"><input type="checkbox" id="langRtl" /> Écriture de droite à gauche</label>
+        <label class="check"><input type="checkbox" id="langNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
+        <button type="submit" class="btn btn-accent btn-block">Ajouter cette langue</button>
+      </form>
+
+      <div class="lang-existing-wrap">
+        <p class="lang-existing-title">Mes langues</p>
+        <div id="langExisting" class="lang-existing"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modale de bienvenue (premier lancement) -->
   <div class="modal" id="welcomeModal" hidden>

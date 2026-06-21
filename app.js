@@ -6,6 +6,20 @@
 
   const STORAGE_KEY = "flashcards-arabe";
 
+  // Langues prédéfinies : { id, name, rtl (droite→gauche), nonLatin (phonétique utile) }.
+  const LANG_PRESETS = [
+    { id: "ar", name: "Arabe", rtl: true, nonLatin: true },
+    { id: "en", name: "Anglais", rtl: false, nonLatin: false },
+    { id: "es", name: "Espagnol", rtl: false, nonLatin: false },
+    { id: "de", name: "Allemand", rtl: false, nonLatin: false },
+    { id: "it", name: "Italien", rtl: false, nonLatin: false },
+    { id: "pt", name: "Portugais", rtl: false, nonLatin: false },
+    { id: "ru", name: "Russe", rtl: false, nonLatin: true },
+    { id: "ja", name: "Japonais", rtl: false, nonLatin: true },
+    { id: "zh", name: "Chinois", rtl: false, nonLatin: true },
+    { id: "el", name: "Grec", rtl: false, nonLatin: true },
+  ];
+
   // Maîtrise = réussir dans les deux sens.
   const DIR_TARGET = 5;             // réussites requises par sens (AR→FR et FR→AR)
   const MASTER = DIR_TARGET * 2;    // total visé : 10 points
@@ -34,8 +48,10 @@
   let curAr = true;        // sens réellement affiché pour la carte en cours
   let curId = null;        // id de la carte en cours (pour figer le sens en mode mix)
   let reviewOnly = false;  // n'afficher que les mots "à revoir"
-  let lists = [];          // catalogue des listes (noms, y compris listes vides)
+  let lists = [];          // catalogue des listes de la langue active
   let cat = "all";         // liste active ("all" = toutes)
+  let languages = [];      // [{ id, name, rtl, nonLatin, cards:[...], lists:[...] }]
+  let activeLang = "ar";   // id de la langue active
   let editingId = null;    // id du mot en cours d'édition (null = ajout)
   let sb = null;           // client Supabase (null = synchro désactivée)
   let user = null;         // utilisateur connecté (null = hors-ligne / local)
@@ -84,6 +100,16 @@
     resetBtn: document.getElementById("resetBtn"),
     wordList: document.getElementById("wordList"),
     countInfo: document.getElementById("countInfo"),
+    // Langues
+    langBtn: document.getElementById("langBtn"),
+    langBtnName: document.getElementById("langBtnName"),
+    langModal: document.getElementById("langModal"),
+    langPresets: document.getElementById("langPresets"),
+    langForm: document.getElementById("langForm"),
+    langName: document.getElementById("langName"),
+    langRtl: document.getElementById("langRtl"),
+    langNonLatin: document.getElementById("langNonLatin"),
+    langExisting: document.getElementById("langExisting"),
     // Bienvenue (premier lancement)
     welcomeModal: document.getElementById("welcomeModal"),
     loadStarterBtn: document.getElementById("loadStarterBtn"),
@@ -108,22 +134,48 @@
   };
 
   // --- Persistance ---
-  // Format stocké : { v:2, cards:[...], lists:[noms] }. Ancien format = tableau de cartes.
+  // Format v3 : { v:3, activeLang, languages:[{id,name,rtl,nonLatin,cards,lists}] }.
+  // Anciens formats : tableau de cartes, ou { v:2, cards, lists } → 1 langue "Arabe".
   function load() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return fromStored(JSON.parse(raw));
     } catch (e) { /* ignore */ }
-    return { cards: seedFromDefaults(), lists: null };
+    return { languages: [arabicLang(seedFromDefaults(), [])], activeLang: "ar" };
   }
 
-  // Convertit n'importe quel format stocké/importé/cloud en { cards, lists }.
+  // Convertit n'importe quel format (stocké / importé / cloud) en { languages, activeLang }.
   function fromStored(parsed) {
-    if (Array.isArray(parsed)) return { cards: parsed, lists: null };
-    if (parsed && Array.isArray(parsed.cards)) {
-      return { cards: parsed.cards, lists: Array.isArray(parsed.lists) ? parsed.lists : null };
+    if (parsed && Array.isArray(parsed.languages) && parsed.languages.length) {
+      return {
+        languages: parsed.languages.map(normalizeLang),
+        activeLang: parsed.activeLang || parsed.languages[0].id,
+      };
     }
-    return { cards: seedFromDefaults(), lists: null };
+    // Anciens formats mono-langue (arabe).
+    let oldCards = null, oldLists = null;
+    if (Array.isArray(parsed)) oldCards = parsed;
+    else if (parsed && Array.isArray(parsed.cards)) {
+      oldCards = parsed.cards;
+      oldLists = Array.isArray(parsed.lists) ? parsed.lists : null;
+    }
+    if (oldCards) return { languages: [arabicLang(oldCards, oldLists || [])], activeLang: "ar" };
+    return { languages: [arabicLang(seedFromDefaults(), [])], activeLang: "ar" };
+  }
+
+  function arabicLang(cardsArr, listsArr) {
+    return { id: "ar", name: "Arabe", rtl: true, nonLatin: true, cards: cardsArr, lists: listsArr };
+  }
+
+  function normalizeLang(l) {
+    return {
+      id: l.id || makeId(0),
+      name: l.name || "Langue",
+      rtl: !!l.rtl,
+      nonLatin: !!l.nonLatin,
+      cards: normalizeCards(l.cards || []),
+      lists: Array.isArray(l.lists) ? l.lists.slice() : [],
+    };
   }
 
   function seedFromDefaults() {
@@ -135,7 +187,19 @@
     }));
   }
 
-  function payload() { return { v: 2, cards: cards, lists: lists }; }
+  // --- Langue active ---
+  function activeLangObj() { return languages.find((l) => l.id === activeLang) || languages[0]; }
+
+  // Écrit les variables de travail (cards/lists) dans l'objet de la langue active.
+  function commitActiveLang() {
+    const lo = activeLangObj();
+    if (lo) { lo.cards = cards; lo.lists = lists; }
+  }
+
+  function payload() {
+    commitActiveLang();
+    return { v: 3, activeLang: activeLang, languages: languages };
+  }
 
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload())); } catch (e) {}
@@ -209,6 +273,8 @@
     flipped = false;
     el.card.classList.remove("flipped");
 
+    renderLangBtn();
+    adaptWordForm();
     renderCats();
     renderStats();
     renderListManager();
@@ -238,13 +304,15 @@
     else if (c.id !== curId) curAr = Math.random() < 0.5;
     curId = c.id;
 
-    // Face avant et arrière selon le sens
+    // Face avant et arrière selon le sens. Côté « cible » = la langue apprise.
+    const lang = activeLangObj();
+    const phon = lang.nonLatin ? c.translit : "";
     if (curAr) {
-      setFace("front", "arabe", c.ar, c.translit, true);
-      setFace("back", "français", c.fr, "", false);
+      setFace("front", lang.name, c.ar, phon, lang);
+      setFace("back", "Français", c.fr, "", null);
     } else {
-      setFace("front", "français", c.fr, "", false);
-      setFace("back", "arabe", c.ar, c.translit, true);
+      setFace("front", "Français", c.fr, "", null);
+      setFace("back", lang.name, c.ar, phon, lang);
     }
 
     const lvl = levelOf(points(c));
@@ -264,10 +332,11 @@
     tag.className = "m-label";
     tag.textContent = lvl.label;
 
-    // Deux jauges : AR→FR et FR→AR. Le sens en cours est mis en avant.
+    // Deux jauges : LANGUE→FR et FR→LANGUE. Le sens en cours est mis en avant.
+    const ab = langAbbr(activeLangObj());
     const dirs = document.createElement("span");
     dirs.className = "m-dirs";
-    [["AR→FR", af(c), curAr], ["FR→AR", fa(c), !curAr]].forEach(([name, n, current]) => {
+    [[ab + "→FR", af(c), curAr], ["FR→" + ab, fa(c), !curAr]].forEach(([name, n, current]) => {
       const d = document.createElement("span");
       d.className = "m-dir" + (current ? " current" : "") + (n >= DIR_TARGET ? " done" : "");
       d.textContent = name + " " + n + "/" + DIR_TARGET;
@@ -342,17 +411,30 @@
     });
   }
 
-  function setFace(side, hint, main, sub, isArabic) {
+  // lang = objet langue pour le côté « cible » (style écriture), null = côté français.
+  function setFace(side, hint, main, sub, lang) {
     el[side + "Hint"].textContent = hint;
     const mainEl = el[side + "Main"];
     mainEl.textContent = main;
-    mainEl.className = "card-main" + (isArabic ? " arabic" : "");
+    let cls = "card-main";
+    if (lang) {
+      cls += " tgt";
+      if (lang.nonLatin) cls += " non-latin";
+      if (lang.rtl) cls += " rtl";
+    }
+    mainEl.className = cls;
 
     // Phonétique : masquée par défaut, révélée via le bouton « indice ».
     const phon = el[side + "Phon"];
     el[side + "Sub"].textContent = sub || "";
     phon.classList.remove("revealed");
     phon.hidden = !sub;
+  }
+
+  // Abréviation courte d'une langue (pour les jauges de sens).
+  function langAbbr(lang) {
+    const base = lang.id && lang.id.length <= 3 ? lang.id : lang.name;
+    return base.slice(0, 2).toUpperCase();
   }
 
   function renderCats() {
@@ -390,6 +472,7 @@
   }
 
   function renderWordList() {
+    const lang = activeLangObj();
     const masteredCount = cards.filter(isMastered).length;
     el.countInfo.textContent = cards.length + " mots · " + masteredCount + " maîtrisés";
 
@@ -403,14 +486,14 @@
       dot.title = lvl.label;
 
       const ar = document.createElement("span");
-      ar.className = "wl-ar";
+      ar.className = "wl-ar" + (lang.nonLatin ? " non-latin" : "") + (lang.rtl ? " rtl" : "");
       ar.textContent = c.ar;
 
       const rest = document.createElement("span");
       rest.className = "wl-rest";
       rest.innerHTML = "<b></b>";
       rest.querySelector("b").textContent = c.fr;
-      if (c.translit) rest.append(" · " + c.translit);
+      if (c.translit && lang.nonLatin) rest.append(" · " + c.translit);
       if (c.cat) {
         const tag = document.createElement("span");
         tag.className = "wl-cat";
@@ -562,14 +645,16 @@
     reader.onload = () => {
       try {
         const st = fromStored(JSON.parse(reader.result));
-        const fresh = normalizeCards(st.cards);
-        if (!fresh.length) throw new Error("vide");
-        if (!confirm("Remplacer le paquet actuel par les " + fresh.length + " mots importés ?")) return;
-        cards = fresh;
-        lists = st.lists || [];
+        const total = st.languages.reduce((n, l) => n + l.cards.length, 0);
+        if (!total) throw new Error("vide");
+        if (!confirm("Remplacer tes données par l'import (" + total + " mots) ?")) return;
+        languages = st.languages;
+        activeLang = st.activeLang;
+        loadActiveIntoWorking();
         ensureLists();
         cancelEdit();
         cat = "all";
+        updateDirectionLabel();
         save();
         rebuildOrder();
         render();
@@ -583,8 +668,9 @@
   }
 
   function resetDeck() {
-    if (!confirm("Réinitialiser au paquet de départ ? Tes ajouts, listes et progression seront perdus.")) return;
-    cards = seedFromDefaults();
+    if (!confirm("Réinitialiser la langue « " + activeLangObj().name + " » au paquet de départ ? Ses mots, listes et progression seront perdus.")) return;
+    // Seul l'arabe a un paquet de départ ; les autres langues repartent à vide.
+    cards = activeLang === "ar" ? seedFromDefaults() : [];
     lists = [];
     ensureLists();
     save();
@@ -687,8 +773,9 @@
   }
 
   function updateDirectionLabel() {
+    const ab = langAbbr(activeLangObj());
     el.directionLabel.textContent =
-      sensMode === "af" ? "AR → FR" : sensMode === "fa" ? "FR → AR" : "Aléatoire";
+      sensMode === "af" ? ab + " → FR" : sensMode === "fa" ? "FR → " + ab : "Aléatoire";
   }
 
   // Petit éclat quand une carte vient d'être maîtrisée.
@@ -696,6 +783,126 @@
     el.card.classList.remove("just-mastered");
     void el.card.offsetWidth; // relance l'animation
     el.card.classList.add("just-mastered");
+  }
+
+  // --- Langues ---
+  function slugify(s) {
+    return ((s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")) || "lang";
+  }
+
+  function switchLang(id) {
+    if (id === activeLang) return;
+    commitActiveLang();              // sauve la langue courante
+    activeLang = id;
+    loadActiveIntoWorking();
+    migrate();
+    ensureLists();
+    cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "af"; curId = null;
+    el.reviewBtn.classList.remove("active");
+    el.reviewBtn.setAttribute("aria-pressed", "false");
+    updateDirectionLabel();
+    save();
+    rebuildOrder();
+    render();
+  }
+
+  function addLanguage(name, rtl, nonLatin, presetId) {
+    name = (name || "").trim();
+    if (!name) return;
+    let lo = languages.find((l) =>
+      (presetId && l.id === presetId) || l.name.toLowerCase() === name.toLowerCase());
+    if (!lo) {
+      const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
+      lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
+      languages.push(lo);
+    }
+    closeLangModal();
+    switchLang(lo.id);
+  }
+
+  function deleteLanguage(id) {
+    if (languages.length <= 1) { alert("Garde au moins une langue."); return; }
+    const lo = languages.find((l) => l.id === id);
+    if (!lo) return;
+    const n = lo.cards.length;
+    if (!confirm("Supprimer la langue « " + lo.name + " »" + (n ? " et ses " + n + " mot(s)" : "") + " ?")) return;
+    languages = languages.filter((l) => l.id !== id);
+    if (activeLang === id) {
+      activeLang = languages[0].id;
+      loadActiveIntoWorking();
+      migrate(); ensureLists();
+      cat = "all"; updateDirectionLabel();
+    }
+    save();
+    renderLangModal();
+    rebuildOrder();
+    render();
+  }
+
+  function renderLangBtn() {
+    el.langBtnName.textContent = activeLangObj().name;
+  }
+
+  function openLangModal() { renderLangModal(); el.langModal.hidden = false; }
+  function closeLangModal() { el.langModal.hidden = true; }
+
+  function renderLangModal() {
+    // Langues prédéfinies pas encore ajoutées.
+    el.langPresets.innerHTML = "";
+    const remaining = LANG_PRESETS.filter((p) => !languages.some((l) => l.id === p.id));
+    remaining.forEach((p) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "lang-chip"; b.textContent = p.name;
+      b.addEventListener("click", () => addLanguage(p.name, p.rtl, p.nonLatin, p.id));
+      el.langPresets.append(b);
+    });
+    if (!remaining.length) {
+      const s = document.createElement("span");
+      s.className = "lm-empty";
+      s.textContent = "Toutes les langues prédéfinies sont déjà ajoutées.";
+      el.langPresets.append(s);
+    }
+
+    // Langues actuelles : cliquer le nom = changer de langue, 🗑 = supprimer.
+    el.langExisting.innerHTML = "";
+    languages.forEach((l) => {
+      const row = document.createElement("div");
+      row.className = "lang-exist-row" + (l.id === activeLang ? " active" : "");
+
+      const pick = document.createElement("button");
+      pick.type = "button"; pick.className = "lang-pick-name";
+      pick.innerHTML = "";
+      pick.append(l.name);
+      const cc = document.createElement("span");
+      cc.className = "lm-count";
+      cc.textContent = l.cards.length;
+      pick.append(cc);
+      if (l.id === activeLang) {
+        const chk = document.createElement("span");
+        chk.className = "lang-active-chk"; chk.textContent = "✓";
+        pick.append(chk);
+      }
+      pick.addEventListener("click", () => { switchLang(l.id); closeLangModal(); });
+
+      const del = document.createElement("button");
+      del.type = "button"; del.className = "lm-act";
+      del.textContent = "🗑"; del.title = "Supprimer la langue";
+      del.setAttribute("aria-label", "Supprimer la langue " + l.name);
+      del.addEventListener("click", () => deleteLanguage(l.id));
+
+      row.append(pick, del);
+      el.langExisting.append(row);
+    });
+  }
+
+  // Adapte le formulaire d'ajout à la langue active (sens d'écriture, phonétique).
+  function adaptWordForm() {
+    const lang = activeLangObj();
+    el.inAr.dir = lang.rtl ? "rtl" : "ltr";
+    el.inAr.placeholder = "Mot en " + lang.name.toLowerCase();
+    el.inAr.classList.toggle("script-arabic", !!lang.nonLatin && !!lang.rtl);
+    el.inTranslit.hidden = !lang.nonLatin;
+    if (!lang.nonLatin) el.inTranslit.value = "";
   }
 
   // --- Branchement des événements ---
@@ -755,6 +962,19 @@
     });
     el.loadStarterBtn.addEventListener("click", loadStarter);
     el.startEmptyBtn.addEventListener("click", startEmpty);
+
+    // Langues : pastille ouvre la modale (changer / ajouter / supprimer).
+    el.langBtn.addEventListener("click", openLangModal);
+    el.langModal.querySelectorAll("[data-langclose]").forEach((n) =>
+      n.addEventListener("click", closeLangModal));
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape" && !el.langModal.hidden) closeLangModal();
+    });
+    el.langForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      addLanguage(el.langName.value, el.langRtl.checked, el.langNonLatin.checked);
+      el.langForm.reset();
+    });
 
     // Flèches clavier pour naviguer
     document.addEventListener("keydown", (e) => {
@@ -915,8 +1135,9 @@
     await sb.auth.signOut();
     // Retour aux données locales.
     const st = load();
-    cards = st.cards;
-    lists = st.lists || [];
+    languages = st.languages;
+    activeLang = st.activeLang;
+    loadActiveIntoWorking();
     migrate();
     ensureLists();
     rebuildOrder();
@@ -933,15 +1154,18 @@
       if (error) throw error;
 
       const remote = data && data.data ? fromStored(data.data) : null;
-      if (remote && remote.cards.length) {
+      const hasContent = remote && remote.languages.some((l) => l.cards.length);
+      if (hasContent) {
         el.welcomeModal.hidden = true; // utilisateur existant : pas d'écran de bienvenue
-        cards = normalizeCards(remote.cards);
-        lists = remote.lists || [];
+        languages = remote.languages;
+        activeLang = remote.activeLang;
+        loadActiveIntoWorking();
         migrate();
         ensureLists();
         save();              // met aussi le cache local à jour
         cancelEdit();
         cat = "all";
+        updateDirectionLabel();
         rebuildOrder();
         render();
         setSync("ok", "Synchronisé");
@@ -1028,15 +1252,27 @@
     render();
   }
 
+  function loadActiveIntoWorking() {
+    const lo = activeLangObj();
+    cards = lo.cards;
+    lists = lo.lists;
+  }
+
   // --- Démarrage ---
   function init() {
     const firstRun = localStorage.getItem(STORAGE_KEY) === null;
     const st = load();
-    cards = firstRun ? [] : st.cards;
-    lists = firstRun ? [] : (st.lists || []);
+    languages = st.languages;
+    activeLang = st.activeLang;
+    if (firstRun) {
+      // Langue arabe vide ; l'utilisateur choisira via l'écran de bienvenue.
+      languages = [arabicLang([], [])];
+      activeLang = "ar";
+    }
+    loadActiveIntoWorking();
     migrate();
     ensureLists();
-    if (!firstRun) save(); // au premier lancement, on attend le choix de l'utilisateur
+    if (!firstRun) save();
     updateDirectionLabel();
     rebuildOrder();
     bind();
