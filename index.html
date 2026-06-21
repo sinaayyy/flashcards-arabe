@@ -26,7 +26,7 @@
     </header>
 
     <!-- Catégories / thèmes -->
-    <nav class="cats" id="cats" aria-label="Thèmes"></nav>
+    <nav class="cats" id="cats" aria-label="Listes"></nav>
 
     <!-- Carte -->
     <section class="card-area" id="cardArea">
@@ -78,16 +78,26 @@
       <div id="statsBody" class="stats-body"></div>
     </section>
 
-    <!-- Gestion des mots -->
+    <!-- Gestion des listes & des mots -->
     <section class="manage">
       <details>
-        <summary>Gérer les mots</summary>
+        <summary>Gérer les listes &amp; les mots</summary>
 
+        <div class="lists-panel">
+          <h3 class="lists-title">Mes listes</h3>
+          <div class="lists-create">
+            <input id="newListName" placeholder="Nouvelle liste (ex. Animaux)" />
+            <button id="createListBtn" type="button" class="btn btn-accent btn-sm">Créer</button>
+          </div>
+          <ul id="listManager" class="list-manager"></ul>
+        </div>
+
+        <h3 class="lists-title">Ajouter un mot</h3>
         <form id="addForm" class="add-form" autocomplete="off">
           <input id="inAr" dir="rtl" placeholder="Arabe (ex. مَاءٌ)" required />
           <input id="inTranslit" placeholder="Phonétique (ex. māʾun)" />
           <input id="inFr" placeholder="Français (ex. eau)" required />
-          <input id="inCat" list="catList" placeholder="Thème (ex. Cuisine)" />
+          <input id="inCat" list="catList" placeholder="Liste (ex. Cuisine)" />
           <datalist id="catList"></datalist>
           <div class="form-buttons">
             <button id="cancelEditBtn" type="button" class="btn btn-ghost" hidden>Annuler</button>

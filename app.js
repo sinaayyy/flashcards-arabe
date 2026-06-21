@@ -34,7 +34,8 @@
   let curAr = true;        // sens réellement affiché pour la carte en cours
   let curId = null;        // id de la carte en cours (pour figer le sens en mode mix)
   let reviewOnly = false;  // n'afficher que les mots "à revoir"
-  let cat = "all";         // catégorie / thème actif ("all" = tous)
+  let lists = [];          // catalogue des listes (noms, y compris listes vides)
+  let cat = "all";         // liste active ("all" = toutes)
   let editingId = null;    // id du mot en cours d'édition (null = ajout)
   let sb = null;           // client Supabase (null = synchro désactivée)
   let user = null;         // utilisateur connecté (null = hors-ligne / local)
@@ -74,6 +75,9 @@
     catList: document.getElementById("catList"),
     submitBtn: document.getElementById("submitBtn"),
     cancelEditBtn: document.getElementById("cancelEditBtn"),
+    newListName: document.getElementById("newListName"),
+    createListBtn: document.getElementById("createListBtn"),
+    listManager: document.getElementById("listManager"),
     exportBtn: document.getElementById("exportBtn"),
     importBtn: document.getElementById("importBtn"),
     importFile: document.getElementById("importFile"),
@@ -100,15 +104,22 @@
   };
 
   // --- Persistance ---
+  // Format stocké : { v:2, cards:[...], lists:[noms] }. Ancien format = tableau de cartes.
   function load() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) return parsed;
-      }
+      if (raw) return fromStored(JSON.parse(raw));
     } catch (e) { /* ignore */ }
-    return seedFromDefaults();
+    return { cards: seedFromDefaults(), lists: null };
+  }
+
+  // Convertit n'importe quel format stocké/importé/cloud en { cards, lists }.
+  function fromStored(parsed) {
+    if (Array.isArray(parsed)) return { cards: parsed, lists: null };
+    if (parsed && Array.isArray(parsed.cards)) {
+      return { cards: parsed.cards, lists: Array.isArray(parsed.lists) ? parsed.lists : null };
+    }
+    return { cards: seedFromDefaults(), lists: null };
   }
 
   function seedFromDefaults() {
@@ -120,8 +131,10 @@
     }));
   }
 
+  function payload() { return { v: 2, cards: cards, lists: lists }; }
+
   function save() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload())); } catch (e) {}
     if (user) scheduleCloudSync();
   }
 
@@ -173,12 +186,18 @@
     return c ? c.id : null;
   }
 
-  // Liste ordonnée des catégories présentes (ordre de première apparition).
-  function categories() {
-    const seen = [];
-    cards.forEach((c) => { if (c.cat && seen.indexOf(c.cat) === -1) seen.push(c.cat); });
-    return seen;
+  // Catalogue des listes : noms du catalogue + tout thème présent sur une carte.
+  function categories() { return lists.slice(); }
+
+  // Garantit que le catalogue contient toutes les listes utilisées par les cartes.
+  function ensureLists() {
+    if (!Array.isArray(lists)) lists = [];
+    cards.forEach((c) => {
+      if (c.cat && lists.indexOf(c.cat) === -1) lists.push(c.cat);
+    });
   }
+
+  function listExists(name) { return lists.indexOf(name) !== -1; }
 
   // --- Rendu ---
   function render() {
@@ -188,6 +207,7 @@
 
     renderCats();
     renderStats();
+    renderListManager();
 
     if (!c) {
       el.frontHint.textContent = "";
@@ -470,6 +490,7 @@
     if (!ar || !fr) return;
     const translit = el.inTranslit.value.trim();
     const newCat = el.inCat.value.trim() || (cat !== "all" ? cat : "Autres");
+    if (!listExists(newCat)) lists.push(newCat);
 
     if (editingId) {
       const c = cards.find((x) => x.id === editingId);
@@ -519,7 +540,7 @@
 
   // Sauvegarde : télécharge le paquet (mots + progression) en JSON.
   function exportDeck() {
-    const blob = new Blob([JSON.stringify(cards, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(payload(), null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     const date = new Date().toISOString().slice(0, 10);
@@ -536,10 +557,13 @@
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        const parsed = JSON.parse(reader.result);
-        if (!Array.isArray(parsed) || !parsed.length) throw new Error("vide");
-        if (!confirm("Remplacer le paquet actuel par les " + parsed.length + " mots importés ?")) return;
-        cards = normalizeCards(parsed);
+        const st = fromStored(JSON.parse(reader.result));
+        const fresh = normalizeCards(st.cards);
+        if (!fresh.length) throw new Error("vide");
+        if (!confirm("Remplacer le paquet actuel par les " + fresh.length + " mots importés ?")) return;
+        cards = fresh;
+        lists = st.lists || [];
+        ensureLists();
         cancelEdit();
         cat = "all";
         save();
@@ -555,8 +579,10 @@
   }
 
   function resetDeck() {
-    if (!confirm("Réinitialiser au paquet de départ ? Tes ajouts et ta progression seront perdus.")) return;
+    if (!confirm("Réinitialiser au paquet de départ ? Tes ajouts, listes et progression seront perdus.")) return;
     cards = seedFromDefaults();
+    lists = [];
+    ensureLists();
     save();
     cancelEdit();
     reviewOnly = false;
@@ -568,6 +594,92 @@
     updateDirectionLabel();
     rebuildOrder();
     render();
+  }
+
+  // --- Gestion des listes ---
+  function createList() {
+    const name = (el.newListName.value || "").trim();
+    if (!name) return;
+    if (!listExists(name)) lists.push(name);
+    cat = name;            // active la nouvelle liste (les ajouts iront dedans)
+    el.newListName.value = "";
+    save();
+    rebuildOrder();
+    render();
+  }
+
+  function renameList(name) {
+    const nv = prompt("Nouveau nom pour la liste « " + name + " » :", name);
+    if (nv === null) return;
+    const nn = nv.trim();
+    if (!nn || nn === name) return;
+    if (listExists(nn)) { alert("Une liste « " + nn + " » existe déjà."); return; }
+    const i = lists.indexOf(name);
+    if (i >= 0) lists[i] = nn;
+    cards.forEach((c) => { if (c.cat === name) c.cat = nn; });
+    if (cat === name) cat = nn;
+    save();
+    rebuildOrder();
+    render();
+  }
+
+  function deleteList(name) {
+    const n = cards.filter((c) => c.cat === name).length;
+    const msg = n
+      ? "Supprimer la liste « " + name + " » et ses " + n + " mot(s) ?"
+      : "Supprimer la liste vide « " + name + " » ?";
+    if (!confirm(msg)) return;
+    lists = lists.filter((l) => l !== name);
+    cards = cards.filter((c) => c.cat !== name);
+    if (cat === name) cat = "all";
+    if (editingId) cancelEdit();
+    save();
+    rebuildOrder();
+    render();
+  }
+
+  function renderListManager() {
+    el.listManager.innerHTML = "";
+    if (!lists.length) {
+      const li = document.createElement("li");
+      li.className = "lm-empty";
+      li.textContent = "Aucune liste pour l'instant.";
+      el.listManager.append(li);
+      return;
+    }
+    lists.forEach((name) => {
+      const count = cards.filter((c) => c.cat === name).length;
+      const li = document.createElement("li");
+      li.className = "lm-item" + (cat === name ? " active" : "");
+
+      const nm = document.createElement("button");
+      nm.type = "button";
+      nm.className = "lm-name";
+      nm.textContent = name;
+      const cc = document.createElement("span");
+      cc.className = "lm-count";
+      cc.textContent = count;
+      nm.append(cc);
+      nm.title = "Réviser cette liste";
+      nm.addEventListener("click", () => {
+        cat = cat === name ? "all" : name;
+        rebuildOrder();
+        render();
+      });
+
+      const ren = document.createElement("button");
+      ren.type = "button"; ren.className = "lm-act";
+      ren.textContent = "✎"; ren.title = "Renommer"; ren.setAttribute("aria-label", "Renommer la liste");
+      ren.addEventListener("click", () => renameList(name));
+
+      const del = document.createElement("button");
+      del.type = "button"; del.className = "lm-act";
+      del.textContent = "🗑"; del.title = "Supprimer"; del.setAttribute("aria-label", "Supprimer la liste");
+      del.addEventListener("click", () => deleteList(name));
+
+      li.append(nm, ren, del);
+      el.listManager.append(li);
+    });
   }
 
   function updateDirectionLabel() {
@@ -633,6 +745,10 @@
 
     el.addForm.addEventListener("submit", submitForm);
     el.resetBtn.addEventListener("click", resetDeck);
+    el.createListBtn.addEventListener("click", createList);
+    el.newListName.addEventListener("keydown", (e) => {
+      if (e.code === "Enter") { e.preventDefault(); createList(); }
+    });
 
     // Flèches clavier pour naviguer
     document.addEventListener("keydown", (e) => {
@@ -792,8 +908,11 @@
   async function logout() {
     await sb.auth.signOut();
     // Retour aux données locales.
-    cards = load();
+    const st = load();
+    cards = st.cards;
+    lists = st.lists || [];
     migrate();
+    ensureLists();
     rebuildOrder();
     render();
   }
@@ -807,9 +926,12 @@
         .from("decks").select("data").eq("user_id", user.id).maybeSingle();
       if (error) throw error;
 
-      if (data && Array.isArray(data.data) && data.data.length) {
-        cards = normalizeCards(data.data);
+      const remote = data && data.data ? fromStored(data.data) : null;
+      if (remote && remote.cards.length) {
+        cards = normalizeCards(remote.cards);
+        lists = remote.lists || [];
         migrate();
+        ensureLists();
         save();              // met aussi le cache local à jour
         cancelEdit();
         cat = "all";
@@ -836,7 +958,7 @@
     try {
       const { error } = await sb.from("decks").upsert({
         user_id: user.id,
-        data: cards,
+        data: payload(),
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
@@ -864,8 +986,11 @@
 
   // --- Démarrage ---
   function init() {
-    cards = load();
+    const st = load();
+    cards = st.cards;
+    lists = st.lists || [];
     migrate();
+    ensureLists();
     save(); // fige le paquet de départ au premier lancement
     updateDirectionLabel();
     rebuildOrder();
