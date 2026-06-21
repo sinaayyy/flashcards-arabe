@@ -244,6 +244,26 @@
         <p class="acc-msg" id="authMsg" role="status"></p>
       </div>
 
+      <!-- Définition d'un nouveau mot de passe (récupération) -->
+      <div id="authRecovery" hidden>
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">🔑</span>
+          <h2>Nouveau mot de passe</h2>
+          <p class="auth-sub">Choisis ton nouveau mot de passe.</p>
+        </div>
+        <form class="auth-form" id="recoveryForm" autocomplete="off">
+          <label class="field">
+            <span>Nouveau mot de passe</span>
+            <div class="pw-wrap">
+              <input id="newPw" type="password" placeholder="6 caractères minimum" minlength="6" required autocomplete="new-password" />
+              <button type="button" id="newPwToggle" class="pw-eye" aria-label="Afficher le mot de passe" aria-pressed="false">👁</button>
+            </div>
+          </label>
+          <button type="submit" class="btn btn-accent btn-block">Enregistrer</button>
+        </form>
+        <p class="acc-msg" id="recoveryMsg" role="status"></p>
+      </div>
+
       <!-- Connecté -->
       <div id="authLoggedIn" hidden>
         <div class="auth-head">

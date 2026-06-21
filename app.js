@@ -134,6 +134,11 @@
     signupBtn: document.getElementById("signupBtn"),
     forgotBtn: document.getElementById("forgotBtn"),
     pwToggle: document.getElementById("pwToggle"),
+    authRecovery: document.getElementById("authRecovery"),
+    recoveryForm: document.getElementById("recoveryForm"),
+    newPw: document.getElementById("newPw"),
+    newPwToggle: document.getElementById("newPwToggle"),
+    recoveryMsg: document.getElementById("recoveryMsg"),
     googleBtn: document.getElementById("googleBtn"),
     authMsg: document.getElementById("authMsg"),
     authLoggedIn: document.getElementById("authLoggedIn"),
@@ -1022,13 +1027,9 @@
     el.authForm.addEventListener("submit", signInPassword);
     el.signupBtn.addEventListener("click", signUpPassword);
     el.forgotBtn.addEventListener("click", forgotPassword);
-    el.pwToggle.addEventListener("click", () => {
-      const show = el.authPassword.type === "password";
-      el.authPassword.type = show ? "text" : "password";
-      el.pwToggle.classList.toggle("on", show);
-      el.pwToggle.setAttribute("aria-pressed", String(show));
-      el.pwToggle.setAttribute("aria-label", show ? "Masquer le mot de passe" : "Afficher le mot de passe");
-    });
+    el.recoveryForm.addEventListener("submit", handleRecovery);
+    wireEye(el.authPassword, el.pwToggle);
+    wireEye(el.newPw, el.newPwToggle);
     el.googleBtn.addEventListener("click", signInGoogle);
     el.authLogout.addEventListener("click", logout);
 
@@ -1062,17 +1063,43 @@
     }
   }
 
-  // Retour via le lien de récupération : on demande un nouveau mot de passe.
-  async function promptNewPassword() {
-    const pw = prompt("Nouveau mot de passe (6 caractères minimum) :");
-    if (pw === null) return;
-    if (pw.length < 6) { alert("Mot de passe trop court (6 caractères minimum)."); return; }
+  // Œil afficher/masquer réutilisable.
+  function wireEye(input, btn) {
+    btn.addEventListener("click", () => {
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      btn.classList.toggle("on", show);
+      btn.setAttribute("aria-pressed", String(show));
+      btn.setAttribute("aria-label", show ? "Masquer le mot de passe" : "Afficher le mot de passe");
+    });
+  }
+
+  // Retour via le lien de récupération : vue dédiée pour le nouveau mot de passe.
+  function openRecovery() {
+    el.authModal.hidden = false;
+    el.authLoggedOut.hidden = true;
+    el.authLoggedIn.hidden = true;
+    el.authRecovery.hidden = false;
+    el.recoveryMsg.textContent = "";
+    el.newPw.value = "";
+    setTimeout(() => { try { el.newPw.focus(); } catch (e) {} }, 50);
+  }
+
+  async function handleRecovery(ev) {
+    ev.preventDefault();
+    const pw = el.newPw.value;
+    if (pw.length < 6) { el.recoveryMsg.textContent = "6 caractères minimum."; return; }
+    el.recoveryMsg.textContent = "Enregistrement…";
     try {
       const { error } = await sb.auth.updateUser({ password: pw });
       if (error) throw error;
+      el.authRecovery.hidden = true;
+      refreshAccountUI();
+      closeAuthModal();
+      pullOrPush();
       alert("Mot de passe mis à jour. Tu es connecté.");
     } catch (e) {
-      alert("Erreur : " + frError(e));
+      el.recoveryMsg.textContent = "Erreur : " + frError(e);
     }
   }
 
@@ -1092,7 +1119,7 @@
     const changed = (newUser && newUser.id) !== (user && user.id);
     user = newUser;
     refreshAccountUI();
-    if (evt === "PASSWORD_RECOVERY") { promptNewPassword(); return; }
+    if (evt === "PASSWORD_RECOVERY") { openRecovery(); return; }
     if (user && changed) {
       if (!el.authModal.hidden) closeAuthModal();  // connexion réussie → on ferme
       pullOrPush();
