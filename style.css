@@ -13,6 +13,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html, body {
   margin: 0;
@@ -85,20 +86,53 @@ html, body {
   border: 1px solid var(--line);
   border-radius: 12px;
 }
-.acc-out { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-.acc-out input {
-  flex: 1 1 180px;
+.acc-out { display: flex; flex-direction: column; gap: 0.6rem; }
+.acc-pw { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.acc-pw input {
+  flex: 1 1 150px;
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 9px;
   padding: 0.5rem 0.7rem;
   font-family: inherit;
   font-size: 0.9rem;
-  background: var(--surface, #fff);
+  background: #fff;
   color: var(--ink);
 }
-.acc-out input:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
-.acc-msg { flex-basis: 100%; font-size: 0.78rem; color: var(--muted); }
+.acc-pw input:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
+.acc-pw-actions { display: flex; gap: 0.4rem; flex: 1 1 100%; }
+.acc-pw-actions .btn { flex: 1; }
+.acc-msg { font-size: 0.78rem; color: var(--muted); min-height: 1rem; }
+
+/* Bouton Google */
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: #3c4043;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+}
+.btn-google:hover { background: #fbfaf7; border-color: #cfc7b6; }
+.g-icon { width: 17px; height: 17px; flex: none; }
+
+/* Séparateur « ou » */
+.acc-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.acc-divider::before, .acc-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
 
 .acc-in { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .acc-user { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; font-weight: 500; }

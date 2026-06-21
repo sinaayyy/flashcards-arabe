@@ -82,9 +82,13 @@
     countInfo: document.getElementById("countInfo"),
     // Compte / synchro
     account: document.getElementById("account"),
+    authLoggedOut: document.getElementById("authLoggedOut"),
     authForm: document.getElementById("authForm"),
     authEmail: document.getElementById("authEmail"),
-    authSendBtn: document.getElementById("authSendBtn"),
+    authPassword: document.getElementById("authPassword"),
+    loginBtn: document.getElementById("loginBtn"),
+    signupBtn: document.getElementById("signupBtn"),
+    googleBtn: document.getElementById("googleBtn"),
     authMsg: document.getElementById("authMsg"),
     authLoggedIn: document.getElementById("authLoggedIn"),
     authUser: document.getElementById("authUser"),
@@ -647,7 +651,9 @@
     sb = window.supabase.createClient(cfg.url, cfg.anonKey);
     el.account.hidden = false;
 
-    el.authForm.addEventListener("submit", sendMagicLink);
+    el.authForm.addEventListener("submit", signInPassword);
+    el.signupBtn.addEventListener("click", signUpPassword);
+    el.googleBtn.addEventListener("click", signInGoogle);
     el.authLogout.addEventListener("click", logout);
 
     // Session existante + réaction aux connexions/déconnexions.
@@ -665,7 +671,7 @@
 
   function refreshAccountUI() {
     const inLog = !!user;
-    el.authForm.hidden = inLog;
+    el.authLoggedOut.hidden = inLog;
     el.authLoggedIn.hidden = !inLog;
     if (inLog) el.authUser.textContent = user.email || "connecté";
   }
@@ -676,24 +682,72 @@
     el.syncState.textContent = text || "";
   }
 
-  async function sendMagicLink(ev) {
+  function redirectTo() { return window.location.origin + window.location.pathname; }
+
+  async function signInPassword(ev) {
     ev.preventDefault();
     const email = el.authEmail.value.trim();
-    if (!email) return;
-    el.authSendBtn.disabled = true;
-    el.authMsg.textContent = "Envoi…";
+    const password = el.authPassword.value;
+    if (!email || !password) return;
+    el.loginBtn.disabled = true;
+    el.authMsg.textContent = "Connexion…";
     try {
-      const { error } = await sb.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: window.location.origin + window.location.pathname },
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      el.authMsg.textContent = "";
+    } catch (e) {
+      el.authMsg.textContent = "Erreur : " + frError(e);
+    } finally {
+      el.loginBtn.disabled = false;
+    }
+  }
+
+  async function signUpPassword() {
+    const email = el.authEmail.value.trim();
+    const password = el.authPassword.value;
+    if (!email || password.length < 6) {
+      el.authMsg.textContent = "Entre un email et un mot de passe d'au moins 6 caractères.";
+      return;
+    }
+    el.signupBtn.disabled = true;
+    el.authMsg.textContent = "Création…";
+    try {
+      const { data, error } = await sb.auth.signUp({
+        email, password, options: { emailRedirectTo: redirectTo() },
       });
       if (error) throw error;
-      el.authMsg.textContent = "Lien envoyé ! Vérifie tes emails.";
+      // Si la confirmation d'email est activée, pas encore de session.
+      el.authMsg.textContent = data.session
+        ? "Compte créé, connecté !"
+        : "Compte créé ! Confirme ton email puis connecte-toi.";
     } catch (e) {
-      el.authMsg.textContent = "Erreur : " + (e.message || "envoi impossible");
+      el.authMsg.textContent = "Erreur : " + frError(e);
     } finally {
-      el.authSendBtn.disabled = false;
+      el.signupBtn.disabled = false;
     }
+  }
+
+  async function signInGoogle() {
+    el.authMsg.textContent = "Redirection vers Google…";
+    try {
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: redirectTo() },
+      });
+      if (error) throw error;
+    } catch (e) {
+      el.authMsg.textContent = "Erreur : " + frError(e);
+    }
+  }
+
+  // Messages d'erreur courants traduits.
+  function frError(e) {
+    const m = (e && e.message) || "";
+    if (/Invalid login credentials/i.test(m)) return "email ou mot de passe incorrect";
+    if (/already registered/i.test(m)) return "cet email a déjà un compte — connecte-toi";
+    if (/Email not confirmed/i.test(m)) return "email non confirmé (vérifie ta boîte mail)";
+    if (/provider is not enabled/i.test(m)) return "Google n'est pas activé côté Supabase";
+    return m || "réessaie";
   }
 
   async function logout() {
