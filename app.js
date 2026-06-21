@@ -76,6 +76,7 @@
     passBtn: document.getElementById("passBtn"),
     failBtn: document.getElementById("failBtn"),
     mastery: document.getElementById("mastery"),
+    brandSub: document.getElementById("brandSub"),
     statsBody: document.getElementById("statsBody"),
     resetProgressBtn: document.getElementById("resetProgressBtn"),
     shuffleBtn: document.getElementById("shuffleBtn"),
@@ -353,14 +354,24 @@
     tag.className = "m-label";
     tag.textContent = lvl.label;
 
-    // Deux jauges : LANGUE→FR et FR→LANGUE. Le sens en cours est mis en avant.
+    // Deux jauges (en points) : LANGUE→FR et FR→LANGUE. Sens en cours mis en avant.
     const ab = langAbbr(activeLangObj());
     const dirs = document.createElement("span");
     dirs.className = "m-dirs";
     [[ab + "→FR", af(c), curAr], ["FR→" + ab, fa(c), !curAr]].forEach(([name, n, current]) => {
       const d = document.createElement("span");
       d.className = "m-dir" + (current ? " current" : "") + (n >= DIR_TARGET ? " done" : "");
-      d.textContent = name + " " + n + "/" + DIR_TARGET;
+      const lbl = document.createElement("span");
+      lbl.className = "m-dir-lbl";
+      lbl.textContent = name;
+      const pips = document.createElement("span");
+      pips.className = "m-pips";
+      for (let i = 0; i < DIR_TARGET; i++) {
+        const pip = document.createElement("i");
+        pip.className = "m-pip" + (i < n ? " on" : "");
+        pips.append(pip);
+      }
+      d.append(lbl, pips);
       dirs.append(d);
     });
 
@@ -866,7 +877,9 @@
   }
 
   function renderLangBtn() {
-    el.langBtnName.textContent = activeLangObj().name;
+    const lang = activeLangObj();
+    el.langBtnName.textContent = lang.name;
+    if (el.brandSub) el.brandSub.textContent = "Vocabulaire " + lang.name.toLowerCase() + " · flashcards";
   }
 
   function openLangModal() { renderLangModal(); el.langModal.hidden = false; }
@@ -1415,7 +1428,6 @@
     languages = st.languages;
     activeLang = st.activeLang;
     if (firstRun) {
-      // Langue arabe vide ; l'utilisateur choisira via l'écran de bienvenue.
       languages = [arabicLang([], [])];
       activeLang = "ar";
     }

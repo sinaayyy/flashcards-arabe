@@ -16,7 +16,7 @@
         <span class="brand-mark" aria-hidden="true">ٱ</span>
         <div class="brand-text">
           <h1>Mufradāt</h1>
-          <p class="brand-sub">Vocabulaire arabe · flashcards</p>
+          <p class="brand-sub" id="brandSub">Vocabulaire · flashcards</p>
         </div>
       </div>
       <div class="header-actions">
@@ -54,22 +54,26 @@
         </div>
       </div>
       <div class="mastery" id="mastery" aria-live="polite"></div>
-      <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> retourner · <kbd>←</kbd> <kbd>→</kbd> naviguer · <kbd>↑</kbd> réussi · <kbd>↓</kbd> à revoir</span></p>
+      <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> · <kbd>←</kbd> <kbd>→</kbd></span></p>
     </section>
 
-    <!-- Navigation + réponse -->
-    <section class="nav">
-      <button id="prevBtn" class="btn btn-nav" aria-label="Précédent">‹</button>
+    <!-- Réponse (action principale) -->
+    <section class="answer">
       <button id="failBtn" class="btn btn-fail">À revoir</button>
-      <button id="passBtn" class="btn btn-accent">Réussi ✓</button>
-      <button id="nextBtn" class="btn btn-nav" aria-label="Suivant">›</button>
+      <button id="passBtn" class="btn btn-pass">Réussi&nbsp;✓</button>
     </section>
 
-    <!-- Options d'étude -->
+    <!-- Navigation (secondaire) -->
+    <section class="nav">
+      <button id="prevBtn" class="nav-arrow" aria-label="Carte précédente">‹ Précédent</button>
+      <button id="nextBtn" class="nav-arrow" aria-label="Carte suivante">Suivant ›</button>
+    </section>
+
+    <!-- Options d'étude (tertiaire) -->
     <section class="options">
       <button id="shuffleBtn" class="chip">Mélanger</button>
       <button id="directionBtn" class="chip">Sens · <span id="directionLabel">AR → FR</span></button>
-      <button id="reviewBtn" class="chip" aria-pressed="false">À revoir seulement</button>
+      <button id="reviewBtn" class="chip" aria-pressed="false">Masquer les maîtrisés</button>
     </section>
 
     <!-- Progression par thème -->
