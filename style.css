@@ -305,6 +305,25 @@ html, body {
 }
 .welcome-actions { display: flex; flex-direction: column; gap: 0.6rem; }
 
+/* Carte vide = appel à l'action (ajouter le 1er mot) */
+.card.empty-cta { cursor: pointer; }
+.card.empty-cta .card-front {
+  border: 2px dashed rgba(243, 236, 220, 0.35);
+}
+.card.empty-cta .card-front .card-main {
+  font-size: 3.4rem;
+  color: var(--saffron);
+  line-height: 1;
+}
+.card.empty-cta .card-front .card-hint {
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ivory);
+  opacity: 0.85;
+  font-weight: 400;
+}
+
 /* ---------- Catégories ---------- */
 .cats {
   display: flex;

@@ -110,10 +110,18 @@
     langRtl: document.getElementById("langRtl"),
     langNonLatin: document.getElementById("langNonLatin"),
     langExisting: document.getElementById("langExisting"),
-    // Bienvenue (premier lancement)
+    // Bienvenue (onboarding)
     welcomeModal: document.getElementById("welcomeModal"),
+    welcomeStep1: document.getElementById("welcomeStep1"),
+    welcomeStep2: document.getElementById("welcomeStep2"),
+    welcomePresets: document.getElementById("welcomePresets"),
+    welcomeCustomForm: document.getElementById("welcomeCustomForm"),
+    welcomeLangName: document.getElementById("welcomeLangName"),
+    welcomeRtl: document.getElementById("welcomeRtl"),
+    welcomeNonLatin: document.getElementById("welcomeNonLatin"),
     loadStarterBtn: document.getElementById("loadStarterBtn"),
     startEmptyBtn: document.getElementById("startEmptyBtn"),
+    manageDetails: document.getElementById("manageDetails"),
     // Compte / synchro
     accountBtn: document.getElementById("accountBtn"),
     authModal: document.getElementById("authModal"),
@@ -280,11 +288,15 @@
     renderListManager();
 
     if (!c) {
-      el.frontHint.textContent = "";
-      el.frontMain.textContent = "Aucune carte";
+      const empty = !cards.length;
+      const cta = empty && !reviewOnly;
+      el.frontHint.textContent = reviewOnly
+        ? "🎉 tout est maîtrisé"
+        : cta ? "Clique pour ajouter ton premier mot" : "aucune carte dans ce filtre";
+      el.frontMain.textContent = reviewOnly ? "Bravo !" : cta ? "＋" : "Aucune carte";
       el.frontMain.className = "card-main";
-      el.frontSub.textContent = reviewOnly ? "Tout est maîtrisé ici 🎉" : "Ajoute des mots ci-dessous";
       el.frontPhon.hidden = true;
+      el.card.classList.toggle("empty-cta", cta);
       el.backMain.textContent = "";
       el.backSub.textContent = "";
       el.backHint.textContent = "";
@@ -297,6 +309,7 @@
       return;
     }
     el.passBtn.disabled = el.failBtn.disabled = false;
+    el.card.classList.remove("empty-cta");
 
     // Sens affiché : fixe (af/fa) ou aléatoire figé tant qu'on reste sur la carte.
     if (sensMode === "af") curAr = true;
@@ -399,6 +412,7 @@
       bar.className = "stat-bar";
       LEVELS.forEach((lv) => {
         if (!counts[lv.key]) return;
+        if (lv.key === "new") return; // « à apprendre » = piste vide (reset bien visible)
         const seg = document.createElement("div");
         seg.className = "stat-seg level-" + lv.key;
         seg.style.width = (counts[lv.key] / list.length * 100) + "%";
@@ -525,7 +539,11 @@
   // --- Actions ---
   function next() { if (!order.length) return; pos = (pos + 1) % order.length; render(); }
   function prev() { if (!order.length) return; pos = (pos - 1 + order.length) % order.length; render(); }
-  function flip() { flipped = !flipped; el.card.classList.toggle("flipped", flipped); }
+  function flip() {
+    if (el.card.classList.contains("empty-cta")) { guideToFirstCard(); return; }
+    flipped = !flipped;
+    el.card.classList.toggle("flipped", flipped);
+  }
 
   // Clé du compteur correspondant au sens affiché (af = AR→FR, fa = FR→AR).
   function dirKey() { return curAr ? "af" : "fa"; }
@@ -962,6 +980,10 @@
     });
     el.loadStarterBtn.addEventListener("click", loadStarter);
     el.startEmptyBtn.addEventListener("click", startEmpty);
+    el.welcomeCustomForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      pickWelcomeLang(el.welcomeLangName.value, el.welcomeRtl.checked, el.welcomeNonLatin.checked);
+    });
 
     // Langues : pastille ouvre la modale (changer / ajouter / supprimer).
     el.langBtn.addEventListener("click", openLangModal);
@@ -1231,25 +1253,72 @@
     });
   }
 
-  // Premier lancement : on propose de charger la liste de base ou de partir à vide.
-  function openWelcome() { el.welcomeModal.hidden = false; }
+  // --- Onboarding (premier lancement) ---
+  function openWelcome() {
+    el.welcomeStep1.hidden = false;
+    el.welcomeStep2.hidden = true;
+    renderWelcomePresets();
+    el.welcomeModal.hidden = false;
+  }
+
+  function renderWelcomePresets() {
+    el.welcomePresets.innerHTML = "";
+    LANG_PRESETS.forEach((p) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "lang-chip"; b.textContent = p.name;
+      b.addEventListener("click", () => pickWelcomeLang(p.name, p.rtl, p.nonLatin, p.id));
+      el.welcomePresets.append(b);
+    });
+  }
+
+  // Choix de la 1re langue : remplace la langue par défaut.
+  function pickWelcomeLang(name, rtl, nonLatin, presetId) {
+    name = (name || "").trim();
+    if (!name) return;
+    const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
+    languages = [{ id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] }];
+    activeLang = id;
+    loadActiveIntoWorking();
+    updateDirectionLabel();
+    if (presetId === "ar") {
+      // Étape 2 : proposer la liste de base.
+      el.welcomeStep1.hidden = true;
+      el.welcomeStep2.hidden = false;
+    } else {
+      finishWelcome(true); // langue latine/autre : démarre à vide puis guide
+    }
+  }
+
   function loadStarter() {
     cards = seedFromDefaults();
     lists = [];
     ensureLists();
-    finishWelcome();
+    finishWelcome(false);
   }
   function startEmpty() {
     cards = [];
     lists = [];
-    finishWelcome();
+    finishWelcome(true);
   }
-  function finishWelcome() {
+
+  function finishWelcome(isEmpty) {
     el.welcomeModal.hidden = true;
     cat = "all";
     save();           // crée l'entrée localStorage → la bienvenue ne réapparaît plus
     rebuildOrder();
     render();
+    if (isEmpty) guideToFirstCard();
+  }
+
+  // Guide l'utilisateur vers l'ajout de son premier mot.
+  function guideToFirstCard() {
+    if (el.manageDetails) el.manageDetails.open = true;
+    setTimeout(() => {
+      try {
+        el.addForm.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.inAr.focus();
+      } catch (e) { /* ignore */ }
+    }, 150);
   }
 
   function loadActiveIntoWorking() {

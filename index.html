@@ -83,7 +83,7 @@
 
     <!-- Gestion des listes & des mots -->
     <section class="manage">
-      <details>
+      <details id="manageDetails">
         <summary>Gérer les listes &amp; les mots</summary>
 
         <div class="lists-panel">
@@ -154,22 +154,46 @@
     </div>
   </div>
 
-  <!-- Modale de bienvenue (premier lancement) -->
+  <!-- Modale de bienvenue (onboarding guidé) -->
   <div class="modal" id="welcomeModal" hidden>
     <div class="modal-backdrop"></div>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
-      <div class="auth-head">
-        <span class="auth-mark" aria-hidden="true">ٱ</span>
-        <h2 id="welcomeTitle">Bienvenue&nbsp;!</h2>
-        <p class="auth-sub">Apprends le vocabulaire arabe en flashcards.</p>
+
+      <!-- Étape 1 : choix de la langue -->
+      <div id="welcomeStep1">
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌐</span>
+          <h2 id="welcomeTitle">Bienvenue&nbsp;!</h2>
+          <p class="auth-sub">Quelle langue veux-tu apprendre ?</p>
+        </div>
+        <div class="lang-presets" id="welcomePresets"></div>
+        <div class="acc-divider"><span>ou une autre langue</span></div>
+        <form class="auth-form" id="welcomeCustomForm" autocomplete="off">
+          <label class="field">
+            <span>Nom de la langue</span>
+            <input id="welcomeLangName" placeholder="ex. Coréen" />
+          </label>
+          <label class="check"><input type="checkbox" id="welcomeRtl" /> Écriture de droite à gauche</label>
+          <label class="check"><input type="checkbox" id="welcomeNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
+          <button type="submit" class="btn btn-accent btn-block">Continuer</button>
+        </form>
       </div>
-      <p class="welcome-text">
-        Veux-tu charger la <strong>liste de base</strong> : le vocabulaire arabe des
-        <strong>objets de la maison</strong> (chambre, salle de bain, cuisine) ?
-      </p>
-      <div class="welcome-actions">
-        <button class="btn btn-accent btn-block" id="loadStarterBtn">Charger la liste de base</button>
-        <button class="btn btn-ghost btn-block" id="startEmptyBtn">Commencer à vide</button>
+
+      <!-- Étape 2 : démarrage (arabe → liste de base ou vide) -->
+      <div id="welcomeStep2" hidden>
+        <div class="auth-head">
+          <span class="auth-mark" aria-hidden="true">ٱ</span>
+          <h2>Vocabulaire arabe</h2>
+          <p class="auth-sub">Comment veux-tu commencer ?</p>
+        </div>
+        <p class="welcome-text">
+          Charger la <strong>liste de base</strong> — les <strong>objets de la maison</strong>
+          (chambre, salle de bain, cuisine) — ou partir d'une page blanche ?
+        </p>
+        <div class="welcome-actions">
+          <button class="btn btn-accent btn-block" id="loadStarterBtn">Charger la liste de base</button>
+          <button class="btn btn-ghost btn-block" id="startEmptyBtn">Commencer à vide</button>
+        </div>
       </div>
     </div>
   </div>
