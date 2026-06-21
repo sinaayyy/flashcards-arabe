@@ -77,6 +77,37 @@ html, body {
   white-space: nowrap;
 }
 
+/* ---------- Compte / synchro ---------- */
+.account {
+  margin: -0.5rem 0 1.5rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.acc-out { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.acc-out input {
+  flex: 1 1 180px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 0.5rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--surface, #fff);
+  color: var(--ink);
+}
+.acc-out input:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
+.acc-msg { flex-basis: 100%; font-size: 0.78rem; color: var(--muted); }
+
+.acc-in { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.acc-user { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; font-weight: 500; }
+.acc-sync { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+.acc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.acc-dot.sync-ok { background: #4f7a55; }
+.acc-dot.sync-pending { background: var(--saffron); }
+.acc-dot.sync-error { background: #b4452f; }
+
 /* ---------- Catégories ---------- */
 .cats {
   display: flex;

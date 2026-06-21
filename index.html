@@ -22,6 +22,20 @@
       <p class="progress" id="progress">— / —</p>
     </header>
 
+    <!-- Compte (synchro cloud) -->
+    <section class="account" id="account" hidden>
+      <form class="acc-out" id="authForm" autocomplete="on">
+        <input id="authEmail" type="email" placeholder="ton@email.com" autocomplete="email" required />
+        <button type="submit" class="btn btn-accent btn-sm" id="authSendBtn">Recevoir le lien</button>
+        <span class="acc-msg" id="authMsg"></span>
+      </form>
+      <div class="acc-in" id="authLoggedIn" hidden>
+        <span class="acc-user"><span class="acc-dot" id="syncDot"></span><span id="authUser"></span></span>
+        <span class="acc-sync" id="syncState"></span>
+        <button class="btn btn-ghost btn-sm" id="authLogout">Déconnexion</button>
+      </div>
+    </section>
+
     <!-- Catégories / thèmes -->
     <nav class="cats" id="cats" aria-label="Thèmes"></nav>
 
@@ -107,6 +121,8 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
   <script src="words.js"></script>
   <script src="app.js"></script>
 </body>

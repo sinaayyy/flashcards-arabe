@@ -36,6 +36,9 @@
   let reviewOnly = false;  // n'afficher que les mots "à revoir"
   let cat = "all";         // catégorie / thème actif ("all" = tous)
   let editingId = null;    // id du mot en cours d'édition (null = ajout)
+  let sb = null;           // client Supabase (null = synchro désactivée)
+  let user = null;         // utilisateur connecté (null = hors-ligne / local)
+  let cloudTimer = null;   // minuterie de synchro différée (debounce)
 
   // --- Éléments du DOM ---
   const el = {
@@ -77,6 +80,17 @@
     resetBtn: document.getElementById("resetBtn"),
     wordList: document.getElementById("wordList"),
     countInfo: document.getElementById("countInfo"),
+    // Compte / synchro
+    account: document.getElementById("account"),
+    authForm: document.getElementById("authForm"),
+    authEmail: document.getElementById("authEmail"),
+    authSendBtn: document.getElementById("authSendBtn"),
+    authMsg: document.getElementById("authMsg"),
+    authLoggedIn: document.getElementById("authLoggedIn"),
+    authUser: document.getElementById("authUser"),
+    authLogout: document.getElementById("authLogout"),
+    syncState: document.getElementById("syncState"),
+    syncDot: document.getElementById("syncDot"),
   };
 
   // --- Persistance ---
@@ -102,10 +116,23 @@
 
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); } catch (e) {}
+    if (user) scheduleCloudSync();
   }
 
   function makeId(seed) {
     return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7) + "-" + seed;
+  }
+
+  // Valide / nettoie un tableau de cartes (import fichier ou synchro cloud).
+  function normalizeCards(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map((w, i) => ({
+      id: w.id || makeId(i),
+      ar: w.ar || "", translit: w.translit || "", fr: w.fr || "",
+      cat: w.cat || "Autres",
+      af: Math.min(Math.max(+w.af || 0, 0), DIR_TARGET),
+      fa: Math.min(Math.max(+w.fa || 0, 0), DIR_TARGET),
+    })).filter((w) => w.ar && w.fr);
   }
 
   // --- Ordre / filtre ---
@@ -506,13 +533,7 @@
         const parsed = JSON.parse(reader.result);
         if (!Array.isArray(parsed) || !parsed.length) throw new Error("vide");
         if (!confirm("Remplacer le paquet actuel par les " + parsed.length + " mots importés ?")) return;
-        cards = parsed.map((w, i) => ({
-          id: w.id || makeId(i),
-          ar: w.ar || "", translit: w.translit || "", fr: w.fr || "",
-          cat: w.cat || "Autres",
-          af: Math.min(Math.max(+w.af || 0, 0), DIR_TARGET),
-          fa: Math.min(Math.max(+w.fa || 0, 0), DIR_TARGET),
-        })).filter((w) => w.ar && w.fr);
+        cards = normalizeCards(parsed);
         cancelEdit();
         cat = "all";
         save();
@@ -617,14 +638,125 @@
     });
   }
 
-  // --- Démarrage ---
-  function init() {
+  // --- Compte & synchronisation cloud (Supabase) ---
+  function initAccount() {
+    const cfg = window.SUPABASE_CONFIG || {};
+    // Sans config ou sans SDK : pas de compte, l'app reste 100 % locale.
+    if (!cfg.url || !cfg.anonKey || !window.supabase) return;
+
+    sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+    el.account.hidden = false;
+
+    el.authForm.addEventListener("submit", sendMagicLink);
+    el.authLogout.addEventListener("click", logout);
+
+    // Session existante + réaction aux connexions/déconnexions.
+    sb.auth.getSession().then(({ data }) => onAuth(data.session));
+    sb.auth.onAuthStateChange((_evt, session) => onAuth(session));
+  }
+
+  function onAuth(session) {
+    const newUser = session ? session.user : null;
+    const changed = (newUser && newUser.id) !== (user && user.id);
+    user = newUser;
+    refreshAccountUI();
+    if (user && changed) pullOrPush();
+  }
+
+  function refreshAccountUI() {
+    const inLog = !!user;
+    el.authForm.hidden = inLog;
+    el.authLoggedIn.hidden = !inLog;
+    if (inLog) el.authUser.textContent = user.email || "connecté";
+  }
+
+  function setSync(state, text) {
+    // state : "ok" | "pending" | "error"
+    el.syncDot.className = "acc-dot sync-" + state;
+    el.syncState.textContent = text || "";
+  }
+
+  async function sendMagicLink(ev) {
+    ev.preventDefault();
+    const email = el.authEmail.value.trim();
+    if (!email) return;
+    el.authSendBtn.disabled = true;
+    el.authMsg.textContent = "Envoi…";
+    try {
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin + window.location.pathname },
+      });
+      if (error) throw error;
+      el.authMsg.textContent = "Lien envoyé ! Vérifie tes emails.";
+    } catch (e) {
+      el.authMsg.textContent = "Erreur : " + (e.message || "envoi impossible");
+    } finally {
+      el.authSendBtn.disabled = false;
+    }
+  }
+
+  async function logout() {
+    await sb.auth.signOut();
+    // Retour aux données locales.
     cards = load();
-    // Correspondance mot arabe -> thème, d'après le paquet de départ.
+    migrate();
+    rebuildOrder();
+    render();
+  }
+
+  // À la connexion : si le cloud a déjà un paquet, on le récupère ;
+  // sinon on y envoie le paquet local actuel.
+  async function pullOrPush() {
+    setSync("pending", "Synchro…");
+    try {
+      const { data, error } = await sb
+        .from("decks").select("data").eq("user_id", user.id).maybeSingle();
+      if (error) throw error;
+
+      if (data && Array.isArray(data.data) && data.data.length) {
+        cards = normalizeCards(data.data);
+        migrate();
+        save();              // met aussi le cache local à jour
+        cancelEdit();
+        cat = "all";
+        rebuildOrder();
+        render();
+        setSync("ok", "Synchronisé");
+      } else {
+        await cloudSyncNow(); // premier envoi du paquet local
+      }
+    } catch (e) {
+      setSync("error", "Hors-ligne");
+    }
+  }
+
+  function scheduleCloudSync() {
+    if (!user) return;
+    setSync("pending", "Synchro…");
+    clearTimeout(cloudTimer);
+    cloudTimer = setTimeout(cloudSyncNow, 1200);
+  }
+
+  async function cloudSyncNow() {
+    if (!user || !sb) return;
+    try {
+      const { error } = await sb.from("decks").upsert({
+        user_id: user.id,
+        data: cards,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) throw error;
+      setSync("ok", "Synchronisé");
+    } catch (e) {
+      setSync("error", "Hors-ligne");
+    }
+  }
+
+  // Normalise les cartes chargées (catégorie + scores par sens, anciens formats).
+  function migrate() {
     const catByAr = {};
     (window.DEFAULT_WORDS || []).forEach((w) => { if (w.cat) catByAr[w.ar] = w.cat; });
-
-    // Migration des anciennes données (catégorie + scores par sens).
     cards.forEach((c) => {
       if (!c.cat || c.cat === "Autres") c.cat = catByAr[c.ar] || c.cat || "Autres";
       if (typeof c.af !== "number" || typeof c.fa !== "number") {
@@ -635,11 +767,18 @@
       }
       delete c.known; delete c.score;
     });
+  }
+
+  // --- Démarrage ---
+  function init() {
+    cards = load();
+    migrate();
     save(); // fige le paquet de départ au premier lancement
     updateDirectionLabel();
     rebuildOrder();
     bind();
     render();
+    initAccount();
   }
 
   init();
