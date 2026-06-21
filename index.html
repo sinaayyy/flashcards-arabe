@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="mastery" id="mastery" aria-live="polite"></div>
-      <p class="flip-tip">Clique la carte ou <kbd>Espace</kbd> pour retourner · <kbd>←</kbd> <kbd>→</kbd> pour naviguer</p>
+      <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> retourner · <kbd>←</kbd> <kbd>→</kbd> naviguer · <kbd>↑</kbd> réussi · <kbd>↓</kbd> à revoir</span></p>
     </section>
 
     <!-- Navigation + réponse -->
@@ -154,47 +154,47 @@
     </div>
   </div>
 
-  <!-- Modale de bienvenue (onboarding guidé) -->
-  <div class="modal" id="welcomeModal" hidden>
-    <div class="modal-backdrop"></div>
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <!-- Page d'accueil / onboarding -->
+  <div class="home" id="welcomeModal" hidden>
+    <div class="home-inner">
+      <header class="home-hero">
+        <span class="home-mark" aria-hidden="true">ٱ</span>
+        <h1 class="home-title">Mufradāt</h1>
+        <p class="home-tagline">Apprends du vocabulaire en flashcards, dans la langue de ton choix.</p>
+      </header>
 
-      <!-- Étape 1 : choix de la langue -->
-      <div id="welcomeStep1">
-        <div class="auth-head">
-          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌐</span>
-          <h2 id="welcomeTitle">Bienvenue&nbsp;!</h2>
-          <p class="auth-sub">Quelle langue veux-tu apprendre ?</p>
+      <div class="home-card">
+        <!-- Étape 1 : choix de la langue -->
+        <div id="welcomeStep1">
+          <h2 class="home-step-title">Quelle langue veux-tu apprendre ?</h2>
+          <div class="lang-presets" id="welcomePresets"></div>
+          <div class="acc-divider"><span>ou une autre langue</span></div>
+          <form class="auth-form" id="welcomeCustomForm" autocomplete="off">
+            <label class="field">
+              <span>Nom de la langue</span>
+              <input id="welcomeLangName" placeholder="ex. Coréen" />
+            </label>
+            <label class="check"><input type="checkbox" id="welcomeRtl" /> Écriture de droite à gauche</label>
+            <label class="check"><input type="checkbox" id="welcomeNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
+            <button type="submit" class="btn btn-accent btn-block">Continuer</button>
+          </form>
         </div>
-        <div class="lang-presets" id="welcomePresets"></div>
-        <div class="acc-divider"><span>ou une autre langue</span></div>
-        <form class="auth-form" id="welcomeCustomForm" autocomplete="off">
-          <label class="field">
-            <span>Nom de la langue</span>
-            <input id="welcomeLangName" placeholder="ex. Coréen" />
-          </label>
-          <label class="check"><input type="checkbox" id="welcomeRtl" /> Écriture de droite à gauche</label>
-          <label class="check"><input type="checkbox" id="welcomeNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
-          <button type="submit" class="btn btn-accent btn-block">Continuer</button>
-        </form>
+
+        <!-- Étape 2 : démarrage (arabe → liste de base ou vide) -->
+        <div id="welcomeStep2" hidden>
+          <h2 class="home-step-title">Vocabulaire arabe — comment commencer ?</h2>
+          <p class="welcome-text">
+            Charger la <strong>liste de base</strong> — les <strong>objets de la maison</strong>
+            (chambre, salle de bain, cuisine) — ou partir d'une page blanche ?
+          </p>
+          <div class="welcome-actions">
+            <button class="btn btn-accent btn-block" id="loadStarterBtn">Charger la liste de base</button>
+            <button class="btn btn-ghost btn-block" id="startEmptyBtn">Commencer à vide</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Étape 2 : démarrage (arabe → liste de base ou vide) -->
-      <div id="welcomeStep2" hidden>
-        <div class="auth-head">
-          <span class="auth-mark" aria-hidden="true">ٱ</span>
-          <h2>Vocabulaire arabe</h2>
-          <p class="auth-sub">Comment veux-tu commencer ?</p>
-        </div>
-        <p class="welcome-text">
-          Charger la <strong>liste de base</strong> — les <strong>objets de la maison</strong>
-          (chambre, salle de bain, cuisine) — ou partir d'une page blanche ?
-        </p>
-        <div class="welcome-actions">
-          <button class="btn btn-accent btn-block" id="loadStarterBtn">Charger la liste de base</button>
-          <button class="btn btn-ghost btn-block" id="startEmptyBtn">Commencer à vide</button>
-        </div>
-      </div>
+      <p class="home-signin">Déjà un compte ? <button type="button" id="homeSignin">Se connecter</button></p>
     </div>
   </div>
 

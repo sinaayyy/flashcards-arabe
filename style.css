@@ -274,6 +274,8 @@ html, body {
 /* Champ mot de passe avec œil */
 .pw-wrap { position: relative; display: flex; }
 .pw-wrap input { flex: 1; padding-right: 2.6rem; }
+/* Masque le bouton de révélation natif (Edge/IE) pour éviter le double œil */
+.pw-wrap input::-ms-reveal, .pw-wrap input::-ms-clear { display: none; }
 .pw-eye {
   position: absolute;
   right: 0.3rem; top: 50%; transform: translateY(-50%);
@@ -344,6 +346,61 @@ html, body {
   color: var(--ivory);
   opacity: 0.85;
   font-weight: 400;
+}
+
+/* ---------- Page d'accueil ---------- */
+.home {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  overflow-y: auto;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #efe9dc 0%, var(--paper) 60%) fixed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(1.5rem, 6vh, 4rem) 1.25rem 3rem;
+}
+.home-inner { width: 100%; max-width: 440px; }
+.home-hero { text-align: center; margin-bottom: 1.5rem; }
+.home-mark {
+  display: inline-grid; place-items: center;
+  width: 72px; height: 72px;
+  font-family: "Amiri", serif; font-size: 2.8rem;
+  color: var(--ivory);
+  background: linear-gradient(160deg, var(--ink), var(--ink-soft));
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 5px rgba(207, 145, 52, 0.18), var(--shadow);
+  margin-bottom: 1rem;
+}
+.home-title {
+  font-family: "Fraunces", serif; font-weight: 600;
+  font-size: 2rem; margin: 0; letter-spacing: -0.01em;
+}
+.home-tagline { margin: 0.4rem auto 0; color: var(--muted); font-size: 0.95rem; max-width: 22rem; }
+
+.home-card {
+  background: var(--surface, #fff);
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 1.6rem 1.5rem;
+}
+.home-step-title {
+  font-family: "Fraunces", serif; font-weight: 600;
+  font-size: 1.15rem; margin: 0 0 1rem; text-align: center;
+}
+.home-signin { text-align: center; margin: 1.25rem 0 0; font-size: 0.88rem; color: var(--muted); }
+.home-signin button {
+  border: none; background: none; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--saffron-deep);
+  text-decoration: underline; padding: 0;
+}
+
+/* Indices clavier : masqués sur appareils tactiles (sans souris) */
+@media (hover: none), (pointer: coarse) {
+  .kb-hint { display: none; }
 }
 
 /* ---------- Catégories ---------- */

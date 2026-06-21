@@ -121,6 +121,7 @@
     welcomeNonLatin: document.getElementById("welcomeNonLatin"),
     loadStarterBtn: document.getElementById("loadStarterBtn"),
     startEmptyBtn: document.getElementById("startEmptyBtn"),
+    homeSignin: document.getElementById("homeSignin"),
     manageDetails: document.getElementById("manageDetails"),
     // Compte / synchro
     accountBtn: document.getElementById("accountBtn"),
@@ -991,6 +992,7 @@
       e.preventDefault();
       pickWelcomeLang(el.welcomeLangName.value, el.welcomeRtl.checked, el.welcomeNonLatin.checked);
     });
+    if (el.homeSignin) el.homeSignin.addEventListener("click", () => openAuthModal());
 
     // Langues : pastille ouvre la modale (changer / ajouter / supprimer).
     el.langBtn.addEventListener("click", openLangModal);
@@ -1019,7 +1021,10 @@
   function initAccount() {
     const cfg = window.SUPABASE_CONFIG || {};
     // Sans config ou sans SDK : pas de compte, l'app reste 100 % locale.
-    if (!cfg.url || !cfg.anonKey || !window.supabase) return;
+    if (!cfg.url || !cfg.anonKey || !window.supabase) {
+      if (el.homeSignin) el.homeSignin.hidden = true; // pas de connexion possible
+      return;
+    }
 
     sb = window.supabase.createClient(cfg.url, cfg.anonKey);
     el.accountBtn.hidden = false;
@@ -1261,7 +1266,14 @@
         render();
         setSync("ok", "Synchronisé");
       } else {
-        await cloudSyncNow(); // premier envoi du paquet local
+        // Compte vide. Si rien en local non plus → onboarding (choix de langue).
+        const localEmpty = languages.every((l) => !l.cards.length);
+        if (localEmpty) {
+          setSync("ok", "Synchronisé");
+          openWelcome();
+        } else {
+          await cloudSyncNow(); // on envoie le paquet local existant
+        }
       }
     } catch (e) {
       syncError(e);
