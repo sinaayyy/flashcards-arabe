@@ -306,6 +306,7 @@
       el.frontMain.textContent = reviewOnly ? "Bravo !" : cta ? "＋" : "Aucune carte";
       el.frontMain.className = "card-main";
       el.frontPhon.hidden = true;
+      resetCardShade();
       el.card.classList.toggle("empty-cta", cta);
       el.backMain.textContent = "";
       el.backSub.textContent = "";
@@ -340,10 +341,27 @@
 
     const lvl = levelOf(points(c));
     el.card.classList.toggle("master", lvl.key === "master");
+    applyCardShade(c);
     renderMastery(c, lvl);
 
     el.progress.textContent = (pos + 1) + " / " + order.length;
     renderWordList();
+  }
+
+  // Teinte de la carte selon la maîtrise : claire (peu su) → encre (maîtrisé).
+  function mixRgb(a, b, t) { return [0, 1, 2].map((i) => Math.round(a[i] + (b[i] - a[i]) * t)); }
+  function applyCardShade(c) {
+    const ratio = Math.min(points(c) / MASTER, 1); // 0..1
+    const c1 = mixRgb([241, 235, 222], [28, 43, 51], ratio);   // clair → encre
+    const c2 = mixRgb([230, 220, 202], [44, 62, 71], ratio);
+    const lum = 0.2126 * c1[0] + 0.7152 * c1[1] + 0.0722 * c1[2];
+    const fg = lum < 140 ? "var(--ivory)" : "var(--ink)";
+    el.card.style.setProperty("--front-bg", "linear-gradient(160deg, rgb(" + c1 + "), rgb(" + c2 + "))");
+    el.card.style.setProperty("--front-fg", fg);
+  }
+  function resetCardShade() {
+    el.card.style.removeProperty("--front-bg");
+    el.card.style.removeProperty("--front-fg");
   }
 
   // Badge de maîtrise sous la carte : niveau + compteurs par sens.

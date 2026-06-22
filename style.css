@@ -478,9 +478,11 @@ html, body {
 /* Recto = encre, Verso = papier (ou inversé selon le sens, géré par contenu) */
 .card-front {
   transform: rotateY(0deg);
-  background: linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
-  color: var(--ivory);
+  /* Fond/texte pilotés par la maîtrise (voir applyCardShade) ; valeurs par défaut = encre */
+  background: var(--front-bg, linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%));
+  color: var(--front-fg, var(--ivory));
   box-shadow: var(--shadow);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 .card-back {
   transform: rotateY(180deg);
