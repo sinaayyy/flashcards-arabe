@@ -352,8 +352,8 @@
   function mixRgb(a, b, t) { return [0, 1, 2].map((i) => Math.round(a[i] + (b[i] - a[i]) * t)); }
   function applyCardShade(c) {
     const ratio = Math.min(points(c) / MASTER, 1); // 0..1
-    const c1 = mixRgb([241, 235, 222], [28, 43, 51], ratio);   // clair → encre
-    const c2 = mixRgb([230, 220, 202], [44, 62, 71], ratio);
+    const c1 = mixRgb([255, 254, 251], [28, 43, 51], ratio);   // blanc → encre
+    const c2 = mixRgb([249, 246, 240], [44, 62, 71], ratio);
     const lum = 0.2126 * c1[0] + 0.7152 * c1[1] + 0.0722 * c1[2];
     const fg = lum < 140 ? "var(--ivory)" : "var(--ink)";
     el.card.style.setProperty("--front-bg", "linear-gradient(160deg, rgb(" + c1 + "), rgb(" + c2 + "))");
