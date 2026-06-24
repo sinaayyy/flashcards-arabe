@@ -211,18 +211,7 @@
     }));
   }
 
-  // Paquet de départ d'un dialecte (vrai parler) si un preset en a un.
-  function seedForPreset(presetId) {
-    const pack = (window.DIALECT_PACKS || {})[presetId];
-    if (!pack) return [];
-    return pack.filter((w) => !isKitCat(w.cat)).map((w, i) => ({
-      id: makeId(i),
-      ar: w.ar, translit: w.translit || "", fr: w.fr,
-      cat: w.cat || "Autres", af: 0, fa: 0,
-    }));
-  }
-
-  // Listes thématiques chargeables à la demande (par langue).
+  // Listes considérées comme « kits » (exclues du paquet de base arabe littéraire).
   const KIT_CATS = ["Kit de survie", "Se présenter"];
   function isKitCat(c) { return KIT_CATS.indexOf(c) !== -1; }
 
@@ -230,6 +219,16 @@
   function sourcePackForLang(id) {
     if (id === "ar") return window.DEFAULT_WORDS || [];
     return (window.DIALECT_PACKS || {})[id] || [];
+  }
+
+  // Toutes les listes proposées par le paquet d'une langue, dans l'ordre d'apparition.
+  function packCategories(id) {
+    const seen = [];
+    sourcePackForLang(id).forEach((w) => {
+      const c = w.cat || "Autres";
+      if (seen.indexOf(c) === -1) seen.push(c);
+    });
+    return seen;
   }
 
   // Cartes d'un kit (catégorie) pour une langue donnée, prêtes à insérer.
@@ -261,12 +260,12 @@
     render();
   }
 
-  // Affiche les boutons des kits disponibles pour la langue active.
+  // Affiche les boutons des listes proposées pour la langue active.
   function renderKits() {
     if (!el.langKits) return;
     const lang = activeLangObj();
     el.langKits.innerHTML = "";
-    const available = KIT_CATS.filter((c) => kitCardsFor(lang.id, c).length);
+    const available = packCategories(lang.id);
     if (!available.length) { el.langKitsWrap.hidden = true; return; }
     el.langKitsWrap.hidden = false;
     available.forEach((catName) => {
@@ -946,11 +945,13 @@
       (presetId && l.id === presetId) || l.name.toLowerCase() === name.toLowerCase());
     if (!lo) {
       const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-      lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: seedForPreset(presetId), lists: [] };
+      // Aucune liste chargée d'office : la langue démarre vide, on proposera les listes.
+      lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
       languages.push(lo);
     }
-    closeLangModal();
+    // On garde la modale ouverte : la section « Listes prêtes à charger » propose le contenu.
     switchLang(lo.id);
+    renderLangModal();
   }
 
   function deleteLanguage(id) {
@@ -1486,16 +1487,19 @@
     }
 
     const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-    const seeded = seedForPreset(presetId);
-    const lang = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: seeded, lists: [] };
+    // Aucune liste chargée d'office : la langue démarre vide.
+    const lang = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
     // Si la seule langue est l'arabe placeholder vide (1er lancement), on la remplace.
     const onlyEmptyAr = languages.length === 1 && languages[0].id === "ar" && !languages[0].cards.length;
     languages = onlyEmptyAr ? [lang] : languages.concat([lang]);
     activeLang = id;
     loadActiveIntoWorking();
     updateDirectionLabel();
-    if (presetId === "ar") showStep2();
-    else finishWelcome(!seeded.length); // langue vide → guidage ; dialecte pré-rempli → direct
+    if (presetId === "ar") { showStep2(); return; }
+    finishWelcome(false);
+    // Si la langue propose des listes, on ouvre la modale pour les charger ; sinon guidage 1er mot.
+    if (packCategories(id).length) openLangModal();
+    else guideToFirstCard();
   }
 
   function loadStarter() {
