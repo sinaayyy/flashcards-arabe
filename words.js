@@ -71,7 +71,29 @@ window.DEFAULT_WORDS = [
   { ar: "أُفْرِغُ", translit: "ufrighu", fr: "je verse / je vide", cat: "Cuisine" },
   { ar: "أَفْرَغَ", translit: "afragha", fr: "renverser / vider (la nourriture)", cat: "Cuisine" },
   { ar: "الحِسَاءُ", translit: "al-ḥisāʾu", fr: "la soupe", cat: "Cuisine" },
-  { ar: "بَيْضٌ", translit: "bayḍun", fr: "des œufs", cat: "Cuisine" }
+  { ar: "بَيْضٌ", translit: "bayḍun", fr: "des œufs", cat: "Cuisine" },
+
+  // 🧭 Kit de survie (arabe littéraire)
+  { ar: "السَّلَامُ عَلَيْكُمْ", translit: "as-salāmu ʿalaykum", fr: "bonjour (salut)", cat: "Kit de survie" },
+  { ar: "شُكْرًا", translit: "shukran", fr: "merci", cat: "Kit de survie" },
+  { ar: "نَعَمْ", translit: "naʿam", fr: "oui", cat: "Kit de survie" },
+  { ar: "لَا", translit: "lā", fr: "non", cat: "Kit de survie" },
+  { ar: "بِكَمْ هَذَا؟", translit: "bikam hādhā?", fr: "combien ça coûte ?", cat: "Kit de survie" },
+  { ar: "أَيْنَ...؟", translit: "ayna...?", fr: "où est... ?", cat: "Kit de survie" },
+  { ar: "لَا أَفْهَمُ", translit: "lā afhamu", fr: "je ne comprends pas", cat: "Kit de survie" },
+  { ar: "أَيْنَ الحَمَّامُ؟", translit: "ayna l-ḥammāmu?", fr: "où sont les toilettes ?", cat: "Kit de survie" },
+  { ar: "هَلْ يُمْكِنُكَ مُسَاعَدَتِي؟", translit: "hal yumkinuka musāʿadatī?", fr: "peux-tu m'aider ?", cat: "Kit de survie" },
+  { ar: "الحِسَابُ مِنْ فَضْلِكَ", translit: "al-ḥisābu min faḍlika", fr: "l'addition s'il vous plaît", cat: "Kit de survie" },
+  { ar: "مَعَ السَّلَامَةِ", translit: "maʿa s-salāmati", fr: "au revoir", cat: "Kit de survie" },
+
+  // 🙋 Se présenter (arabe littéraire)
+  { ar: "اِسْمِي...", translit: "ismī...", fr: "je m'appelle...", cat: "Se présenter" },
+  { ar: "عُمْرِي ... سَنَةً", translit: "ʿumrī ... sanatan", fr: "j'ai ... ans", cat: "Se présenter" },
+  { ar: "أَنَا فَرَنْسِيٌّ", translit: "anā faransiyyun", fr: "je suis français", cat: "Se présenter" },
+  { ar: "أَسْكُنُ فِي...", translit: "askunu fī...", fr: "j'habite à...", cat: "Se présenter" },
+  { ar: "تَشَرَّفْنَا", translit: "tasharrafnā", fr: "enchanté", cat: "Se présenter" },
+  { ar: "أَتَكَلَّمُ العَرَبِيَّةَ قَلِيلًا", translit: "atakallamu l-ʿarabiyyata qalīlan", fr: "je parle un peu arabe", cat: "Se présenter" },
+  { ar: "مَا اسْمُكَ؟", translit: "mā ismuka?", fr: "comment t'appelles-tu ?", cat: "Se présenter" }
 ];
 
 // =====================================================================
@@ -102,6 +124,26 @@ window.DIALECT_PACKS = {
     { ar: "عَافَاك", translit: "3afak", fr: "s'il te plaît", cat: "Questions & politesse" },
     { ar: "مَاكَايْن مُشْكِيل", translit: "makayn mushkil", fr: "il n'y a pas de problème", cat: "Questions & politesse" },
     { ar: "بَرَاكَا", translit: "baraka", fr: "ça suffit / arrête", cat: "Questions & politesse" },
+    // Kit de survie
+    { ar: "السَّلَامُ عْلِيكُم", translit: "ssalamu 3likom", fr: "bonjour (salut)", cat: "Kit de survie" },
+    { ar: "بَارَاكَ الله فِيك", translit: "barak llah fik", fr: "merci", cat: "Kit de survie" },
+    { ar: "إِيه", translit: "iyeh", fr: "oui", cat: "Kit de survie" },
+    { ar: "لَا", translit: "la", fr: "non", cat: "Kit de survie" },
+    { ar: "بِشْحَال؟", translit: "bechḥal?", fr: "combien ça coûte ?", cat: "Kit de survie" },
+    { ar: "فِين كَايْن...؟", translit: "fin kayn...?", fr: "où se trouve... ?", cat: "Kit de survie" },
+    { ar: "مَا فْهَمْتْش", translit: "ma fhemtch", fr: "je n'ai pas compris", cat: "Kit de survie" },
+    { ar: "فِين كَايْن المِرْحَاض؟", translit: "fin kayn l-mirḥaḍ?", fr: "où sont les toilettes ?", cat: "Kit de survie" },
+    { ar: "عَاوِنِّي عَافَاك", translit: "3awenni 3afak", fr: "aide-moi s'il te plaît", cat: "Kit de survie" },
+    { ar: "الحْسَاب عَافَاك", translit: "l-ḥsab 3afak", fr: "l'addition s'il te plaît", cat: "Kit de survie" },
+    { ar: "بِسْلَامَة", translit: "bslama", fr: "au revoir", cat: "Kit de survie" },
+    // Se présenter
+    { ar: "سْمِيتِي...", translit: "smiti...", fr: "je m'appelle...", cat: "Se présenter" },
+    { ar: "عَنْدِي ... عَام", translit: "3andi ... 3am", fr: "j'ai ... ans", cat: "Se présenter" },
+    { ar: "أَنَا فْرَنْسَاوِي", translit: "ana fransawi", fr: "je suis français", cat: "Se présenter" },
+    { ar: "كَنْسْكُن فْ...", translit: "kanskun f...", fr: "j'habite à...", cat: "Se présenter" },
+    { ar: "مِتْشَرّْفِين", translit: "mtcharrfin", fr: "enchanté", cat: "Se présenter" },
+    { ar: "كَنْهْضَر شْوِيَّة دْيَال العَرَبِيَّة", translit: "kanhḍar chwiya dyal l-3arabiya", fr: "je parle un peu arabe", cat: "Se présenter" },
+    { ar: "أَشْنُو سْمِيتَك؟", translit: "achno smitek?", fr: "comment t'appelles-tu ?", cat: "Se présenter" },
   ],
 
   // 🇪🇬 Égyptien
@@ -125,6 +167,26 @@ window.DIALECT_PACKS = {
     { ar: "لِيه؟", translit: "leh?", fr: "pourquoi ?", cat: "Questions & politesse" },
     { ar: "عَشَان", translit: "3ashan", fr: "parce que / pour", cat: "Questions & politesse" },
     { ar: "مَعْلِشّ", translit: "ma3lesh", fr: "c'est pas grave / désolé", cat: "Questions & politesse" },
+    // Kit de survie
+    { ar: "السَّلَامُ عَلِيكُم", translit: "es-salamu 3aleykom", fr: "bonjour (salut)", cat: "Kit de survie" },
+    { ar: "شُكْرًا", translit: "shukran", fr: "merci", cat: "Kit de survie" },
+    { ar: "آيْوَة", translit: "aywa", fr: "oui", cat: "Kit de survie" },
+    { ar: "لَأ", translit: "la2", fr: "non", cat: "Kit de survie" },
+    { ar: "بِكَام؟", translit: "bikam?", fr: "combien ça coûte ?", cat: "Kit de survie" },
+    { ar: "فِين...؟", translit: "fein...?", fr: "où est... ?", cat: "Kit de survie" },
+    { ar: "مِش فَاهِم", translit: "mish fahem", fr: "je ne comprends pas", cat: "Kit de survie" },
+    { ar: "فِين الحَمَّام؟", translit: "fein el-ḥammam?", fr: "où sont les toilettes ?", cat: "Kit de survie" },
+    { ar: "مُمْكِن تْسَاعِدْنِي؟", translit: "momken tsa3edni?", fr: "peux-tu m'aider ?", cat: "Kit de survie" },
+    { ar: "الحِسَاب لَو سَمَحْت", translit: "el-ḥesab law samaḥt", fr: "l'addition s'il vous plaît", cat: "Kit de survie" },
+    { ar: "مَع السَّلَامَة", translit: "ma3 es-salama", fr: "au revoir", cat: "Kit de survie" },
+    // Se présenter
+    { ar: "اِسْمِي...", translit: "esmi...", fr: "je m'appelle...", cat: "Se présenter" },
+    { ar: "عَنْدِي ... سَنَة", translit: "3andi ... sana", fr: "j'ai ... ans", cat: "Se présenter" },
+    { ar: "أَنَا فَرَنْسَاوِي", translit: "ana faransawi", fr: "je suis français", cat: "Se présenter" },
+    { ar: "سَاكِن فِي...", translit: "saken fi...", fr: "j'habite à...", cat: "Se présenter" },
+    { ar: "فُرْصَة سَعِيدَة", translit: "forṣa sa3ida", fr: "enchanté", cat: "Se présenter" },
+    { ar: "بَتْكَلِّم عَرَبِي شْوَيَّة", translit: "batkallem 3arabi shwaya", fr: "je parle un peu arabe", cat: "Se présenter" },
+    { ar: "اِسْمَك إِيه؟", translit: "esmak eh?", fr: "comment t'appelles-tu ?", cat: "Se présenter" },
   ],
 
   // 🇱🇧 Libanais
@@ -148,6 +210,26 @@ window.DIALECT_PACKS = {
     { ar: "لِيش؟", translit: "leish?", fr: "pourquoi ?", cat: "Questions & politesse" },
     { ar: "لَأَنُّو", translit: "la2anno", fr: "parce que", cat: "Questions & politesse" },
     { ar: "مَعْلِيش", translit: "ma3lish", fr: "c'est pas grave", cat: "Questions & politesse" },
+    // Kit de survie
+    { ar: "مَرْحَبَا", translit: "marḥaba", fr: "bonjour", cat: "Kit de survie" },
+    { ar: "شُكْرًا", translit: "shukran", fr: "merci", cat: "Kit de survie" },
+    { ar: "إِي", translit: "ei", fr: "oui", cat: "Kit de survie" },
+    { ar: "لَأ", translit: "la2", fr: "non", cat: "Kit de survie" },
+    { ar: "بْكَمّ؟", translit: "bkam?", fr: "combien ça coûte ?", cat: "Kit de survie" },
+    { ar: "وِين...؟", translit: "wein...?", fr: "où est... ?", cat: "Kit de survie" },
+    { ar: "مَا فْهِمِت", translit: "ma fhemet", fr: "je n'ai pas compris", cat: "Kit de survie" },
+    { ar: "وِين الحَمَّام؟", translit: "wein el-ḥammam?", fr: "où sont les toilettes ?", cat: "Kit de survie" },
+    { ar: "فِيك تْسَاعِدْنِي؟", translit: "fik tsa3edni?", fr: "peux-tu m'aider ?", cat: "Kit de survie" },
+    { ar: "الحْسَاب مِن فَضْلَك", translit: "l-ḥseb min faḍlak", fr: "l'addition s'il vous plaît", cat: "Kit de survie" },
+    { ar: "مَع السَّلَامَة", translit: "ma3 es-salame", fr: "au revoir", cat: "Kit de survie" },
+    // Se présenter
+    { ar: "اِسْمِي...", translit: "esme...", fr: "je m'appelle...", cat: "Se présenter" },
+    { ar: "عُمْرِي ... سِنِة", translit: "3omre ... sene", fr: "j'ai ... ans", cat: "Se présenter" },
+    { ar: "أَنَا فَرَنْسَاوِي", translit: "ana faransawi", fr: "je suis français", cat: "Se présenter" },
+    { ar: "سَاكِن بْـ...", translit: "saken b...", fr: "j'habite à...", cat: "Se présenter" },
+    { ar: "تْشَرَّفْنَا", translit: "tsharrafna", fr: "enchanté", cat: "Se présenter" },
+    { ar: "بِحْكِي عَرَبِي شْوَيّ", translit: "beḥke 3arabe shwayy", fr: "je parle un peu arabe", cat: "Se présenter" },
+    { ar: "شُو اِسْمَك؟", translit: "shu esmak?", fr: "comment t'appelles-tu ?", cat: "Se présenter" },
   ],
 
   // 🇹🇳 Tunisien
@@ -171,6 +253,26 @@ window.DIALECT_PACKS = {
     { ar: "عْلَاش؟", translit: "3lech?", fr: "pourquoi ?", cat: "Questions & politesse" },
     { ar: "عْلَى خَاطِر", translit: "3la khater", fr: "parce que", cat: "Questions & politesse" },
     { ar: "يِزِّي", translit: "yezzi", fr: "arrête / ça suffit", cat: "Questions & politesse" },
+    // Kit de survie
+    { ar: "عَسْلَامَة", translit: "3aslema", fr: "bonjour", cat: "Kit de survie" },
+    { ar: "يَعِيشِك", translit: "ya3ayshek", fr: "merci", cat: "Kit de survie" },
+    { ar: "إِيه", translit: "ih", fr: "oui", cat: "Kit de survie" },
+    { ar: "لَا", translit: "la", fr: "non", cat: "Kit de survie" },
+    { ar: "بِقَدَّاش؟", translit: "b'qaddech?", fr: "combien ça coûte ?", cat: "Kit de survie" },
+    { ar: "وِين...؟", translit: "win...?", fr: "où est... ?", cat: "Kit de survie" },
+    { ar: "مَا فْهِمْتِش", translit: "ma fhemtich", fr: "je n'ai pas compris", cat: "Kit de survie" },
+    { ar: "وِين التْوَالِيت؟", translit: "win et-twalit?", fr: "où sont les toilettes ?", cat: "Kit de survie" },
+    { ar: "تْنَجِّم تْعَاوِنِّي؟", translit: "tnajjem t3awenni?", fr: "peux-tu m'aider ?", cat: "Kit de survie" },
+    { ar: "الحْسَاب يَعِيشِك", translit: "l-ḥsab ya3ayshek", fr: "l'addition s'il te plaît", cat: "Kit de survie" },
+    { ar: "بِالسْلَامَة", translit: "b'slema", fr: "au revoir", cat: "Kit de survie" },
+    // Se présenter
+    { ar: "إِسْمِي...", translit: "esmi...", fr: "je m'appelle...", cat: "Se présenter" },
+    { ar: "عَنْدِي ... عَام", translit: "3andi ... 3am", fr: "j'ai ... ans", cat: "Se présenter" },
+    { ar: "أَنَا فْرَنْسِي", translit: "ana fransi", fr: "je suis français", cat: "Se présenter" },
+    { ar: "نُسْكُن فِي...", translit: "noskon fi...", fr: "j'habite à...", cat: "Se présenter" },
+    { ar: "تْشَرَّفْنَا", translit: "tcharrafna", fr: "enchanté", cat: "Se présenter" },
+    { ar: "نَحْكِي شْوَيَّة عَرْبِي", translit: "naḥki chwaya 3arbi", fr: "je parle un peu arabe", cat: "Se présenter" },
+    { ar: "شْنُوَّة إِسْمِك؟", translit: "chnowa esmek?", fr: "comment t'appelles-tu ?", cat: "Se présenter" },
   ],
 
 };
