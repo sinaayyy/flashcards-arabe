@@ -865,6 +865,40 @@ html, body {
 .chip.active { background: var(--ink); border-color: var(--ink); color: var(--ivory); }
 .chip:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
 
+/* ---------- État vide ---------- */
+.empty-state {
+  text-align: center;
+  padding: 2.25rem 1.5rem;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  background: var(--paper-2);
+}
+.empty-title {
+  font-family: "Fraunces", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+.empty-text {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin: 0 auto 1.1rem;
+  max-width: 22rem;
+}
+.wl-empty-row {
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: var(--paper-2);
+}
+
 /* ---------- Progression par thème ---------- */
 .stats { margin-bottom: 2rem; }
 .stats-head {

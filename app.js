@@ -487,8 +487,39 @@
   ];
 
   // Progression par thème : barre segmentée par niveau.
+  // Bloc d'état vide réutilisable (titre + texte + bouton d'action facultatif).
+  function emptyState(title, text, btnLabel, onClick) {
+    const box = document.createElement("div");
+    box.className = "empty-state";
+    const h = document.createElement("p");
+    h.className = "empty-title";
+    h.textContent = title;
+    const p = document.createElement("p");
+    p.className = "empty-text";
+    p.textContent = text;
+    box.append(h, p);
+    if (btnLabel && onClick) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-accent btn-sm";
+      b.textContent = btnLabel;
+      b.addEventListener("click", onClick);
+      box.append(b);
+    }
+    return box;
+  }
+
   function renderStats() {
     el.statsBody.innerHTML = "";
+
+    // Aucun mot encore : état vide guidant vers le chargement de listes.
+    if (!cards.length) {
+      el.statsBody.append(emptyState(
+        "Pas encore de progression",
+        "Charge une liste prête à l'emploi ou ajoute tes propres mots pour voir ta progression apparaître ici.",
+        "Ajouter des mots", () => setView("manage")));
+      return;
+    }
 
     // Légende (une seule fois, en haut).
     const legend = document.createElement("div");
@@ -610,6 +641,13 @@
     el.countInfo.textContent = cards.length + " mots · " + masteredCount + " maîtrisés";
 
     el.wordList.innerHTML = "";
+    if (!cards.length) {
+      const li = document.createElement("li");
+      li.className = "wl-empty-row";
+      li.textContent = "Aucun mot dans cette langue. Ajoute ton premier mot ci-dessus, ou charge une liste depuis la pastille de langue 🌐.";
+      el.wordList.append(li);
+      return;
+    }
     cards.forEach((c) => {
       const li = document.createElement("li");
 
