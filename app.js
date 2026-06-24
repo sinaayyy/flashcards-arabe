@@ -9,6 +9,10 @@
   // Langues prédéfinies : { id, name, rtl (droite→gauche), nonLatin (phonétique utile) }.
   const LANG_PRESETS = [
     { id: "ar", name: "Arabe", rtl: true, nonLatin: true },
+    { id: "darija", name: "Darija (marocain)", rtl: true, nonLatin: true },
+    { id: "egy", name: "Égyptien", rtl: true, nonLatin: true },
+    { id: "leb", name: "Libanais", rtl: true, nonLatin: true },
+    { id: "tun", name: "Tunisien", rtl: true, nonLatin: true },
     { id: "en", name: "Anglais", rtl: false, nonLatin: false },
     { id: "es", name: "Espagnol", rtl: false, nonLatin: false },
     { id: "de", name: "Allemand", rtl: false, nonLatin: false },
@@ -199,6 +203,17 @@
   function seedFromDefaults() {
     const defaults = window.DEFAULT_WORDS || [];
     return defaults.map((w, i) => ({
+      id: makeId(i),
+      ar: w.ar, translit: w.translit || "", fr: w.fr,
+      cat: w.cat || "Autres", af: 0, fa: 0,
+    }));
+  }
+
+  // Paquet de départ d'un dialecte (vrai parler) si un preset en a un.
+  function seedForPreset(presetId) {
+    const pack = (window.DIALECT_PACKS || {})[presetId];
+    if (!pack) return [];
+    return pack.map((w, i) => ({
       id: makeId(i),
       ar: w.ar, translit: w.translit || "", fr: w.fr,
       cat: w.cat || "Autres", af: 0, fa: 0,
@@ -869,7 +884,7 @@
       (presetId && l.id === presetId) || l.name.toLowerCase() === name.toLowerCase());
     if (!lo) {
       const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-      lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
+      lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: seedForPreset(presetId), lists: [] };
       languages.push(lo);
     }
     closeLangModal();
@@ -1408,7 +1423,8 @@
     }
 
     const id = presetId || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-    const lang = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
+    const seeded = seedForPreset(presetId);
+    const lang = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: seeded, lists: [] };
     // Si la seule langue est l'arabe placeholder vide (1er lancement), on la remplace.
     const onlyEmptyAr = languages.length === 1 && languages[0].id === "ar" && !languages[0].cards.length;
     languages = onlyEmptyAr ? [lang] : languages.concat([lang]);
@@ -1416,7 +1432,7 @@
     loadActiveIntoWorking();
     updateDirectionLabel();
     if (presetId === "ar") showStep2();
-    else finishWelcome(true); // nouvelle langue vide → guidage vers le 1er mot
+    else finishWelcome(!seeded.length); // langue vide → guidage ; dialecte pré-rempli → direct
   }
 
   function loadStarter() {

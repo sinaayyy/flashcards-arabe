@@ -73,3 +73,104 @@ window.DEFAULT_WORDS = [
   { ar: "الحِسَاءُ", translit: "al-ḥisāʾu", fr: "la soupe", cat: "Cuisine" },
   { ar: "بَيْضٌ", translit: "bayḍun", fr: "des œufs", cat: "Cuisine" }
 ];
+
+// =====================================================================
+// Paquets de départ par DIALECTE (vrai parler, pas l'arabe standard).
+// Clés = id du preset (voir LANG_PRESETS dans app.js).
+// Chaque mot = { ar, translit, fr, cat }. Termes vocalisés.
+// =====================================================================
+window.DIALECT_PACKS = {
+
+  // 🇲🇦 Darija marocain
+  darija: [
+    { ar: "بْغِيت", translit: "bghit", fr: "je veux", cat: "Mots du quotidien" },
+    { ar: "وَاخّا", translit: "wakha", fr: "d'accord / OK", cat: "Mots du quotidien" },
+    { ar: "بِزّاف", translit: "bezzaf", fr: "beaucoup / trop", cat: "Mots du quotidien" },
+    { ar: "شْوِيَّة", translit: "chwiya", fr: "un peu", cat: "Mots du quotidien" },
+    { ar: "دَابَا", translit: "daba", fr: "maintenant", cat: "Mots du quotidien" },
+    { ar: "مَزْيَان", translit: "mzyan", fr: "bien / bon", cat: "Mots du quotidien" },
+    { ar: "صَافِي", translit: "safi", fr: "ça suffit / voilà", cat: "Mots du quotidien" },
+    { ar: "خُويَا", translit: "khoya", fr: "mon frère / mon pote", cat: "Mots du quotidien" },
+    { ar: "دْيَالِي", translit: "dyali", fr: "à moi / le mien", cat: "Mots du quotidien" },
+    { ar: "الحَانُوت", translit: "l-ḥanut", fr: "l'épicerie du coin", cat: "Mots du quotidien" },
+    { ar: "أَتَاي", translit: "atay", fr: "le thé (à la menthe)", cat: "Mots du quotidien" },
+    { ar: "كِي دَايِر؟", translit: "ki dayer?", fr: "comment vas-tu ? (à un homme)", cat: "Questions & politesse" },
+    { ar: "شْحَال؟", translit: "chḥal?", fr: "combien ?", cat: "Questions & politesse" },
+    { ar: "فِين؟", translit: "fin?", fr: "où ?", cat: "Questions & politesse" },
+    { ar: "كِيفَاش؟", translit: "kifach?", fr: "comment ?", cat: "Questions & politesse" },
+    { ar: "عْلاش؟", translit: "3lach?", fr: "pourquoi ?", cat: "Questions & politesse" },
+    { ar: "عَافَاك", translit: "3afak", fr: "s'il te plaît", cat: "Questions & politesse" },
+    { ar: "مَاكَايْن مُشْكِيل", translit: "makayn mushkil", fr: "il n'y a pas de problème", cat: "Questions & politesse" },
+    { ar: "بَرَاكَا", translit: "baraka", fr: "ça suffit / arrête", cat: "Questions & politesse" },
+  ],
+
+  // 🇪🇬 Égyptien
+  egy: [
+    { ar: "عَايِز", translit: "3ayez", fr: "je veux (homme)", cat: "Mots du quotidien" },
+    { ar: "عَايْزَة", translit: "3ayza", fr: "je veux (femme)", cat: "Mots du quotidien" },
+    { ar: "دِلْوَقْتِي", translit: "delwa2ti", fr: "maintenant", cat: "Mots du quotidien" },
+    { ar: "كِدَه", translit: "keda", fr: "comme ça / ainsi", cat: "Mots du quotidien" },
+    { ar: "قَوِي", translit: "2awi", fr: "très / beaucoup", cat: "Mots du quotidien" },
+    { ar: "شْوَيَّة", translit: "shwaya", fr: "un peu", cat: "Mots du quotidien" },
+    { ar: "كْوَيِّس", translit: "kwayyes", fr: "bien / bon", cat: "Mots du quotidien" },
+    { ar: "حَاجَة", translit: "ḥaga", fr: "une chose / un truc", cat: "Mots du quotidien" },
+    { ar: "خَلَاص", translit: "khalaṣ", fr: "fini / ça suffit", cat: "Mots du quotidien" },
+    { ar: "النَّهَارْدَه", translit: "el-naharda", fr: "aujourd'hui", cat: "Mots du quotidien" },
+    { ar: "بُكْرَة", translit: "bokra", fr: "demain", cat: "Mots du quotidien" },
+    { ar: "إِمْبَارِح", translit: "embareḥ", fr: "hier", cat: "Mots du quotidien" },
+    { ar: "إِزَّيَّك؟", translit: "ezzayyak?", fr: "comment vas-tu ? (à un homme)", cat: "Questions & politesse" },
+    { ar: "فِين؟", translit: "fein?", fr: "où ?", cat: "Questions & politesse" },
+    { ar: "إِزَّاي؟", translit: "ezzay?", fr: "comment ?", cat: "Questions & politesse" },
+    { ar: "عَايِز إِيه؟", translit: "3ayez eh?", fr: "tu veux quoi ?", cat: "Questions & politesse" },
+    { ar: "لِيه؟", translit: "leh?", fr: "pourquoi ?", cat: "Questions & politesse" },
+    { ar: "عَشَان", translit: "3ashan", fr: "parce que / pour", cat: "Questions & politesse" },
+    { ar: "مَعْلِشّ", translit: "ma3lesh", fr: "c'est pas grave / désolé", cat: "Questions & politesse" },
+  ],
+
+  // 🇱🇧 Libanais
+  leb: [
+    { ar: "بَدِّي", translit: "baddi", fr: "je veux", cat: "Mots du quotidien" },
+    { ar: "هَلَّق", translit: "halla2", fr: "maintenant", cat: "Mots du quotidien" },
+    { ar: "هِيك", translit: "heik", fr: "comme ça / ainsi", cat: "Mots du quotidien" },
+    { ar: "كْتِير", translit: "ktir", fr: "beaucoup / très", cat: "Mots du quotidien" },
+    { ar: "شْوَيّ", translit: "shwayy", fr: "un peu", cat: "Mots du quotidien" },
+    { ar: "مْنِيح", translit: "mnih", fr: "bien / bon", cat: "Mots du quotidien" },
+    { ar: "شِي", translit: "shi", fr: "une chose / un truc", cat: "Mots du quotidien" },
+    { ar: "خَلَص", translit: "khalaṣ", fr: "fini / ça suffit", cat: "Mots du quotidien" },
+    { ar: "يَعْنِي", translit: "ya3ni", fr: "c'est-à-dire / genre", cat: "Mots du quotidien" },
+    { ar: "اليَوْم", translit: "lyom", fr: "aujourd'hui", cat: "Mots du quotidien" },
+    { ar: "بُكْرَا", translit: "bukra", fr: "demain", cat: "Mots du quotidien" },
+    { ar: "مْبَارِح", translit: "mbeireḥ", fr: "hier", cat: "Mots du quotidien" },
+    { ar: "كِيفَك؟", translit: "kifak?", fr: "comment vas-tu ? (à un homme)", cat: "Questions & politesse" },
+    { ar: "شُو؟", translit: "shu?", fr: "quoi ?", cat: "Questions & politesse" },
+    { ar: "وِين؟", translit: "wein?", fr: "où ?", cat: "Questions & politesse" },
+    { ar: "كِيف؟", translit: "kif?", fr: "comment ?", cat: "Questions & politesse" },
+    { ar: "لِيش؟", translit: "leish?", fr: "pourquoi ?", cat: "Questions & politesse" },
+    { ar: "لَأَنُّو", translit: "la2anno", fr: "parce que", cat: "Questions & politesse" },
+    { ar: "مَعْلِيش", translit: "ma3lish", fr: "c'est pas grave", cat: "Questions & politesse" },
+  ],
+
+  // 🇹🇳 Tunisien
+  tun: [
+    { ar: "نْحِبّ", translit: "nḥeb", fr: "je veux / j'aime", cat: "Mots du quotidien" },
+    { ar: "تَوَّا", translit: "tawwa", fr: "maintenant", cat: "Mots du quotidien" },
+    { ar: "هَكَّا", translit: "hakka", fr: "comme ça / ainsi", cat: "Mots du quotidien" },
+    { ar: "بَرْشَا", translit: "barcha", fr: "beaucoup / très", cat: "Mots du quotidien" },
+    { ar: "شْوَيَّة", translit: "chwaya", fr: "un peu", cat: "Mots du quotidien" },
+    { ar: "بَاهِي", translit: "behi", fr: "bien / bon / OK", cat: "Mots du quotidien" },
+    { ar: "حَاجَة", translit: "ḥaja", fr: "une chose / un truc", cat: "Mots du quotidien" },
+    { ar: "بَرْكَة", translit: "barka", fr: "ça suffit / arrête", cat: "Mots du quotidien" },
+    { ar: "فَمَّا", translit: "famma", fr: "il y a", cat: "Mots du quotidien" },
+    { ar: "اليُوم", translit: "lyoum", fr: "aujourd'hui", cat: "Mots du quotidien" },
+    { ar: "غُدْوَة", translit: "ghodwa", fr: "demain", cat: "Mots du quotidien" },
+    { ar: "البَارِح", translit: "el-bareḥ", fr: "hier", cat: "Mots du quotidien" },
+    { ar: "شْنُوَّة؟", translit: "chnowa?", fr: "quoi ?", cat: "Questions & politesse" },
+    { ar: "شْنِيَّة أَحْوَالِك؟", translit: "chnia aḥwalek?", fr: "comment vas-tu ?", cat: "Questions & politesse" },
+    { ar: "وِين؟", translit: "win?", fr: "où ?", cat: "Questions & politesse" },
+    { ar: "كِيفَاش؟", translit: "kifech?", fr: "comment ?", cat: "Questions & politesse" },
+    { ar: "عْلَاش؟", translit: "3lech?", fr: "pourquoi ?", cat: "Questions & politesse" },
+    { ar: "عْلَى خَاطِر", translit: "3la khater", fr: "parce que", cat: "Questions & politesse" },
+    { ar: "يِزِّي", translit: "yezzi", fr: "arrête / ça suffit", cat: "Questions & politesse" },
+  ],
+
+};
