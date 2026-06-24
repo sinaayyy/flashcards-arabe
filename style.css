@@ -139,6 +139,12 @@ html, body {
 .lang-chip:hover { background: #fff; border-color: var(--saffron); }
 .check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.84rem; color: var(--ink); cursor: pointer; }
 .check input { width: 16px; height: 16px; accent-color: var(--saffron); }
+.lang-kits-wrap { margin-top: 1.2rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.lang-kits { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.kit-chip { color: var(--saffron); border-color: var(--saffron); font-weight: 500; }
+.kit-chip:hover { background: var(--saffron); color: #fff; border-color: var(--saffron); }
+.kit-chip.kit-done { color: var(--muted); border-color: var(--line); cursor: default; }
+.kit-chip.kit-done:hover { background: var(--paper-2); color: var(--muted); border-color: var(--line); }
 .lang-existing-wrap { margin-top: 1.2rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
 .lang-existing-title { margin: 0 0 0.5rem; font-size: 0.78rem; color: var(--muted); font-weight: 600; }
 .lang-existing { display: flex; flex-direction: column; gap: 0.3rem; }

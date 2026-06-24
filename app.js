@@ -153,6 +153,8 @@
     authLogout: document.getElementById("authLogout"),
     syncState: document.getElementById("syncState"),
     syncDot: document.getElementById("syncDot"),
+    langKitsWrap: document.getElementById("langKitsWrap"),
+    langKits: document.getElementById("langKits"),
   };
 
   // --- Persistance ---
@@ -201,7 +203,7 @@
   }
 
   function seedFromDefaults() {
-    const defaults = window.DEFAULT_WORDS || [];
+    const defaults = (window.DEFAULT_WORDS || []).filter((w) => !isKitCat(w.cat));
     return defaults.map((w, i) => ({
       id: makeId(i),
       ar: w.ar, translit: w.translit || "", fr: w.fr,
@@ -213,11 +215,71 @@
   function seedForPreset(presetId) {
     const pack = (window.DIALECT_PACKS || {})[presetId];
     if (!pack) return [];
-    return pack.map((w, i) => ({
+    return pack.filter((w) => !isKitCat(w.cat)).map((w, i) => ({
       id: makeId(i),
       ar: w.ar, translit: w.translit || "", fr: w.fr,
       cat: w.cat || "Autres", af: 0, fa: 0,
     }));
+  }
+
+  // Listes thématiques chargeables à la demande (par langue).
+  const KIT_CATS = ["Kit de survie", "Se présenter"];
+  function isKitCat(c) { return KIT_CATS.indexOf(c) !== -1; }
+
+  // Paquet source d'une langue : arabe littéraire = DEFAULT_WORDS, dialectes = DIALECT_PACKS.
+  function sourcePackForLang(id) {
+    if (id === "ar") return window.DEFAULT_WORDS || [];
+    return (window.DIALECT_PACKS || {})[id] || [];
+  }
+
+  // Cartes d'un kit (catégorie) pour une langue donnée, prêtes à insérer.
+  function kitCardsFor(id, catName) {
+    return sourcePackForLang(id)
+      .filter((w) => w.cat === catName)
+      .map((w, i) => ({
+        id: makeId(i), ar: w.ar, translit: w.translit || "", fr: w.fr,
+        cat: catName, af: 0, fa: 0,
+      }));
+  }
+
+  // Charge un kit dans la langue active (ignore les mots déjà présents).
+  function loadKit(catName) {
+    const lang = activeLangObj();
+    const pack = kitCardsFor(lang.id, catName);
+    if (!pack.length) return;
+    commitActiveLang();
+    const seen = new Set(lang.cards.map((c) => c.ar + "|" + c.fr));
+    const fresh = pack.filter((c) => !seen.has(c.ar + "|" + c.fr));
+    lang.cards = lang.cards.concat(fresh);
+    if (lang.lists.indexOf(catName) === -1) lang.lists.push(catName);
+    loadActiveIntoWorking();
+    ensureLists();
+    cat = catName;
+    rebuildOrder();
+    save();
+    renderLangModal();
+    render();
+  }
+
+  // Affiche les boutons des kits disponibles pour la langue active.
+  function renderKits() {
+    if (!el.langKits) return;
+    const lang = activeLangObj();
+    el.langKits.innerHTML = "";
+    const available = KIT_CATS.filter((c) => kitCardsFor(lang.id, c).length);
+    if (!available.length) { el.langKitsWrap.hidden = true; return; }
+    el.langKitsWrap.hidden = false;
+    available.forEach((catName) => {
+      const loaded = lang.cards.filter((c) => c.cat === catName).length;
+      const total = kitCardsFor(lang.id, catName).length;
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "lang-chip kit-chip";
+      b.textContent = (loaded >= total ? "✓ " : "+ ") + catName +
+        " (" + (loaded >= total ? total : loaded + "/" + total) + ")";
+      if (loaded >= total) b.classList.add("kit-done");
+      b.addEventListener("click", () => loadKit(catName));
+      el.langKits.append(b);
+    });
   }
 
   // --- Langue active ---
@@ -920,6 +982,7 @@
   function closeLangModal() { el.langModal.hidden = true; }
 
   function renderLangModal() {
+    renderKits();
     // Langues prédéfinies pas encore ajoutées.
     el.langPresets.innerHTML = "";
     const remaining = LANG_PRESETS.filter((p) => !languages.some((l) => l.id === p.id));
