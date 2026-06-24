@@ -418,6 +418,86 @@ html, body {
   .kb-hint { display: none; }
 }
 
+/* ---------- Onglets ---------- */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 0.28rem;
+  margin-bottom: 1.6rem;
+}
+.tab {
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 500;
+  padding: 0.55rem 0.5rem;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { color: var(--ink); }
+.tab.is-active { background: var(--ink); color: var(--ivory); }
+.tab:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
+
+.view { animation: view-in 0.3s ease both; }
+@keyframes view-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Barre d'étude (nav + options) ---------- */
+.study-toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.opts-wrap { position: relative; }
+.opts-toggle.open { background: var(--ink); border-color: var(--ink); color: var(--ivory); }
+.opts-pop {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.55rem);
+  transform: translateX(-50%);
+  min-width: 230px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  z-index: 30;
+}
+.opt-row {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.88rem;
+  text-align: left;
+  padding: 0.6rem 0.7rem;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.opt-row:hover { background: rgba(28, 43, 51, 0.06); }
+.opt-row:focus-visible { outline: 2px solid var(--saffron); outline-offset: -2px; }
+.opt-row.active { color: var(--saffron-deep); font-weight: 600; }
+.opt-row.active::after { content: "✓"; margin-left: auto; color: var(--saffron); font-weight: 700; }
+
 /* ---------- Catégories ---------- */
 .cats {
   display: flex;

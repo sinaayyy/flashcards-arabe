@@ -128,7 +128,6 @@
     loadStarterBtn: document.getElementById("loadStarterBtn"),
     startEmptyBtn: document.getElementById("startEmptyBtn"),
     homeSignin: document.getElementById("homeSignin"),
-    manageDetails: document.getElementById("manageDetails"),
     // Compte / synchro
     accountBtn: document.getElementById("accountBtn"),
     authModal: document.getElementById("authModal"),
@@ -155,6 +154,12 @@
     syncDot: document.getElementById("syncDot"),
     langKitsWrap: document.getElementById("langKitsWrap"),
     langKits: document.getElementById("langKits"),
+    tabs: document.getElementById("tabs"),
+    viewStudy: document.getElementById("viewStudy"),
+    viewProgress: document.getElementById("viewProgress"),
+    viewManage: document.getElementById("viewManage"),
+    optionsBtn: document.getElementById("optionsBtn"),
+    optsPop: document.getElementById("optsPop"),
   };
 
   // --- Persistance ---
@@ -1043,6 +1048,36 @@
   }
 
   // --- Branchement des événements ---
+  // --- Onglets (Étudier / Progression / Gérer) ---
+  function setView(name) {
+    const views = { study: el.viewStudy, progress: el.viewProgress, manage: el.viewManage };
+    Object.keys(views).forEach((k) => { if (views[k]) views[k].hidden = (k !== name); });
+    if (el.tabs) {
+      el.tabs.querySelectorAll(".tab").forEach((t) => {
+        const on = t.getAttribute("data-view") === name;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", String(on));
+      });
+    }
+    closeOptions();
+  }
+
+  // --- Menu d'options d'étude (popover) ---
+  function openOptions() {
+    el.optsPop.hidden = false;
+    el.optionsBtn.setAttribute("aria-expanded", "true");
+    el.optionsBtn.classList.add("open");
+  }
+  function closeOptions() {
+    if (!el.optsPop) return;
+    el.optsPop.hidden = true;
+    el.optionsBtn.setAttribute("aria-expanded", "false");
+    el.optionsBtn.classList.remove("open");
+  }
+  function toggleOptions() {
+    if (el.optsPop.hidden) openOptions(); else closeOptions();
+  }
+
   function bind() {
     el.card.addEventListener("click", flip);
     el.card.addEventListener("keydown", (e) => {
@@ -1068,6 +1103,7 @@
       shuffleOrder();
       el.shuffleBtn.classList.add("active");
       render();
+      closeOptions();
       setTimeout(() => el.shuffleBtn.classList.remove("active"), 600);
     });
 
@@ -1105,6 +1141,21 @@
     });
     if (el.homeSignin) el.homeSignin.addEventListener("click", () => openAuthModal());
     if (el.brand) el.brand.addEventListener("click", openWelcome); // logo → accueil
+
+    // Onglets de navigation.
+    if (el.tabs) {
+      el.tabs.querySelectorAll(".tab").forEach((t) =>
+        t.addEventListener("click", () => setView(t.getAttribute("data-view"))));
+    }
+
+    // Menu d'options d'étude (Mélanger / Sens / Masquer).
+    el.optionsBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleOptions(); });
+    document.addEventListener("click", (e) => {
+      if (!el.optsPop.hidden && !el.optsPop.contains(e.target) && e.target !== el.optionsBtn) closeOptions();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape" && !el.optsPop.hidden) closeOptions();
+    });
 
     // Langues : pastille ouvre la modale (changer / ajouter / supprimer).
     el.langBtn.addEventListener("click", openLangModal);
@@ -1525,7 +1576,7 @@
 
   // Guide l'utilisateur vers l'ajout de son premier mot.
   function guideToFirstCard() {
-    if (el.manageDetails) el.manageDetails.open = true;
+    setView("manage");
     setTimeout(() => {
       try {
         el.addForm.scrollIntoView({ behavior: "smooth", block: "center" });

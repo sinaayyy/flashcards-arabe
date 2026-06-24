@@ -28,68 +28,79 @@
       </div>
     </header>
 
-    <!-- Catégories / thèmes -->
-    <nav class="cats" id="cats" aria-label="Listes"></nav>
+    <!-- Onglets de navigation -->
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
+      <button class="tab is-active" id="tabStudy" type="button" data-view="study" role="tab" aria-selected="true">Étudier</button>
+      <button class="tab" id="tabProgress" type="button" data-view="progress" role="tab" aria-selected="false">Progression</button>
+      <button class="tab" id="tabManage" type="button" data-view="manage" role="tab" aria-selected="false">Gérer</button>
+    </nav>
 
-    <!-- Carte -->
-    <section class="card-area" id="cardArea">
-      <div class="card" id="card" role="button" tabindex="0" aria-label="Retourner la carte">
-        <div class="card-face card-front">
-          <span class="card-corner" aria-hidden="true"></span>
-          <p class="card-hint" id="frontHint"></p>
-          <p class="card-main" id="frontMain"></p>
-          <div class="phonetic" id="frontPhon" hidden>
-            <button class="hint-toggle" id="frontHintBtn" type="button">indice : phonétique</button>
-            <p class="card-sub" id="frontSub"></p>
+    <!-- ============ Vue : Étudier ============ -->
+    <div class="view" id="viewStudy" role="tabpanel" aria-labelledby="tabStudy">
+      <!-- Catégories / thèmes -->
+      <nav class="cats" id="cats" aria-label="Listes"></nav>
+
+      <!-- Carte -->
+      <section class="card-area" id="cardArea">
+        <div class="card" id="card" role="button" tabindex="0" aria-label="Retourner la carte">
+          <div class="card-face card-front">
+            <span class="card-corner" aria-hidden="true"></span>
+            <p class="card-hint" id="frontHint"></p>
+            <p class="card-main" id="frontMain"></p>
+            <div class="phonetic" id="frontPhon" hidden>
+              <button class="hint-toggle" id="frontHintBtn" type="button">indice : phonétique</button>
+              <p class="card-sub" id="frontSub"></p>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <span class="card-corner" aria-hidden="true"></span>
+            <p class="card-hint" id="backHint"></p>
+            <p class="card-main" id="backMain"></p>
+            <div class="phonetic" id="backPhon" hidden>
+              <button class="hint-toggle" id="backHintBtn" type="button">indice : phonétique</button>
+              <p class="card-sub" id="backSub"></p>
+            </div>
           </div>
         </div>
-        <div class="card-face card-back">
-          <span class="card-corner" aria-hidden="true"></span>
-          <p class="card-hint" id="backHint"></p>
-          <p class="card-main" id="backMain"></p>
-          <div class="phonetic" id="backPhon" hidden>
-            <button class="hint-toggle" id="backHintBtn" type="button">indice : phonétique</button>
-            <p class="card-sub" id="backSub"></p>
+        <div class="mastery" id="mastery" aria-live="polite"></div>
+        <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> · <kbd>←</kbd> <kbd>→</kbd></span></p>
+      </section>
+
+      <!-- Réponse (action principale) -->
+      <section class="answer">
+        <button id="failBtn" class="btn btn-fail">À revoir</button>
+        <button id="passBtn" class="btn btn-pass">Réussi&nbsp;<span class="pass-check">✓</span></button>
+      </section>
+
+      <!-- Barre d'étude : navigation + options regroupées -->
+      <section class="study-toolbar">
+        <button id="prevBtn" class="nav-arrow" aria-label="Carte précédente">‹ Précédent</button>
+        <div class="opts-wrap">
+          <button id="optionsBtn" class="chip opts-toggle" type="button" aria-expanded="false" aria-controls="optsPop">Options ▾</button>
+          <div class="opts-pop" id="optsPop" hidden role="menu">
+            <button id="shuffleBtn" class="opt-row" type="button" role="menuitem">Mélanger les cartes</button>
+            <button id="directionBtn" class="opt-row" type="button" role="menuitem">Sens · <span id="directionLabel">AR → FR</span></button>
+            <button id="reviewBtn" class="opt-row" type="button" role="menuitem" aria-pressed="false">Masquer les maîtrisés</button>
           </div>
         </div>
-      </div>
-      <div class="mastery" id="mastery" aria-live="polite"></div>
-      <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> · <kbd>←</kbd> <kbd>→</kbd></span></p>
-    </section>
+        <button id="nextBtn" class="nav-arrow" aria-label="Carte suivante">Suivant ›</button>
+      </section>
+    </div>
 
-    <!-- Réponse (action principale) -->
-    <section class="answer">
-      <button id="failBtn" class="btn btn-fail">À revoir</button>
-      <button id="passBtn" class="btn btn-pass">Réussi&nbsp;<span class="pass-check">✓</span></button>
-    </section>
+    <!-- ============ Vue : Progression ============ -->
+    <div class="view" id="viewProgress" role="tabpanel" aria-labelledby="tabProgress" hidden>
+      <section class="stats">
+        <div class="stats-head">
+          <h2>Progression</h2>
+          <button id="resetProgressBtn" class="btn btn-ghost btn-sm">Réinitialiser</button>
+        </div>
+        <div id="statsBody" class="stats-body"></div>
+      </section>
+    </div>
 
-    <!-- Navigation (secondaire) -->
-    <section class="nav">
-      <button id="prevBtn" class="nav-arrow" aria-label="Carte précédente">‹ Précédent</button>
-      <button id="nextBtn" class="nav-arrow" aria-label="Carte suivante">Suivant ›</button>
-    </section>
-
-    <!-- Options d'étude (tertiaire) -->
-    <section class="options">
-      <button id="shuffleBtn" class="chip">Mélanger</button>
-      <button id="directionBtn" class="chip">Sens · <span id="directionLabel">AR → FR</span></button>
-      <button id="reviewBtn" class="chip" aria-pressed="false">Masquer les maîtrisés</button>
-    </section>
-
-    <!-- Progression par thème -->
-    <section class="stats">
-      <div class="stats-head">
-        <h2>Progression</h2>
-        <button id="resetProgressBtn" class="btn btn-ghost btn-sm">Réinitialiser la progression</button>
-      </div>
-      <div id="statsBody" class="stats-body"></div>
-    </section>
-
-    <!-- Gestion des listes & des mots -->
-    <section class="manage">
-      <details id="manageDetails">
-        <summary>Gérer les listes &amp; les mots</summary>
-
+    <!-- ============ Vue : Gérer ============ -->
+    <div class="view" id="viewManage" role="tabpanel" aria-labelledby="tabManage" hidden>
+      <section class="manage">
         <div class="lists-panel">
           <h3 class="lists-title">Mes listes</h3>
           <div class="lists-create">
@@ -123,8 +134,8 @@
         </div>
 
         <ul id="wordList" class="word-list"></ul>
-      </details>
-    </section>
+      </section>
+    </div>
   </main>
 
   <!-- Modale d'ajout / gestion des langues -->
