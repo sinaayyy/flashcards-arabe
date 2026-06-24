@@ -420,6 +420,9 @@ html, body {
 
 /* ---------- Onglets ---------- */
 .tabs {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 25;
   display: flex;
   gap: 0.25rem;
   background: var(--paper-2);
@@ -427,9 +430,15 @@ html, body {
   border-radius: 13px;
   padding: 0.28rem;
   margin-bottom: 1.6rem;
+  box-shadow: 0 6px 22px -16px rgba(28, 43, 51, 0.5);
+  backdrop-filter: saturate(1.1) blur(2px);
 }
 .tab {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   appearance: none;
   border: none;
   background: transparent;
@@ -440,11 +449,27 @@ html, body {
   padding: 0.55rem 0.5rem;
   border-radius: 9px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 .tab:hover { color: var(--ink); }
 .tab.is-active { background: var(--ink); color: var(--ivory); }
 .tab:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
+.tab-ic {
+  width: 17px; height: 17px; flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  transition: opacity 0.18s ease;
+}
+.tab.is-active .tab-ic { opacity: 1; stroke: var(--ivory); }
+@media (max-width: 380px) {
+  .tab span { display: none; }
+  .tab { padding: 0.6rem 0.4rem; }
+  .tab-ic { width: 19px; height: 19px; }
+}
 
 .view { animation: view-in 0.3s ease both; }
 @keyframes view-in {
@@ -478,6 +503,12 @@ html, body {
   flex-direction: column;
   gap: 0.15rem;
   z-index: 30;
+  transform-origin: bottom center;
+  animation: pop-in 0.16s ease both;
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px) scale(0.97); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
 }
 .opt-row {
   appearance: none;
