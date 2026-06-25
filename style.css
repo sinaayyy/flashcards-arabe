@@ -139,7 +139,20 @@ html, body {
 .lang-chip:hover { background: #fff; border-color: var(--saffron); }
 .check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.84rem; color: var(--ink); cursor: pointer; }
 .check input { width: 16px; height: 16px; accent-color: var(--saffron); }
-.lang-kits-wrap { margin-top: 1.2rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.lang-kits-wrap {
+  margin-top: 1.2rem;
+  padding: 0.9rem 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper-2);
+  scroll-margin: 1rem;
+}
+.lang-kits-wrap.flash { animation: kits-flash 1.4s ease; }
+@keyframes kits-flash {
+  0% { border-color: var(--line); box-shadow: none; }
+  25% { border-color: var(--saffron); box-shadow: 0 0 0 3px rgba(207, 145, 52, 0.22); }
+  100% { border-color: var(--line); box-shadow: none; }
+}
 .lang-kits-hint { margin: -0.25rem 0 0.6rem; font-size: 0.76rem; color: var(--muted); line-height: 1.35; }
 .lang-kits { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 .kit-chip { color: var(--saffron); border-color: var(--saffron); font-weight: 500; }
@@ -197,9 +210,12 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 50;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   padding: 1.25rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .modal-backdrop {
   position: absolute;
@@ -212,6 +228,7 @@ html, body {
   position: relative;
   width: 100%;
   max-width: 380px;
+  margin: auto;            /* centre verticalement si court, défile si trop haut */
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 20px;

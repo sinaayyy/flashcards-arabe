@@ -265,6 +265,18 @@
     render();
   }
 
+  // Met en avant la section « Listes prêtes à charger » (scroll + surlignage),
+  // appelée juste après le choix d'une langue pour proposer le chargement.
+  function revealKits() {
+    if (!el.langKitsWrap || el.langKitsWrap.hidden) return;
+    el.langKitsWrap.classList.remove("flash");
+    void el.langKitsWrap.offsetWidth; // force le redémarrage de l'animation
+    el.langKitsWrap.classList.add("flash");
+    setTimeout(() => {
+      try { el.langKitsWrap.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) { /* ignore */ }
+    }, 60);
+  }
+
   // Affiche les boutons des listes proposées pour la langue active.
   function renderKits() {
     if (!el.langKits) return;
@@ -992,9 +1004,10 @@
       lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
       languages.push(lo);
     }
-    // On garde la modale ouverte : la section « Listes prêtes à charger » propose le contenu.
+    // On garde la modale ouverte et on met en avant les listes à charger.
     switchLang(lo.id);
     renderLangModal();
+    revealKits();
   }
 
   function deleteLanguage(id) {
@@ -1587,7 +1600,7 @@
     if (presetId === "ar") { showStep2(); return; }
     finishWelcome(false);
     // Si la langue propose des listes, on ouvre la modale pour les charger ; sinon guidage 1er mot.
-    if (packCategories(id).length) openLangModal();
+    if (packCategories(id).length) { openLangModal(); revealKits(); }
     else guideToFirstCard();
   }
 
