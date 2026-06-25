@@ -153,6 +153,8 @@
     syncState: document.getElementById("syncState"),
     syncDot: document.getElementById("syncDot"),
     langKits: document.getElementById("langKits"),
+    manageKits: document.getElementById("manageKits"),
+    manageKitsWrap: document.getElementById("manageKitsWrap"),
     langPanelHome: document.getElementById("langPanelHome"),
     langPanelAdd: document.getElementById("langPanelAdd"),
     langPanelLists: document.getElementById("langPanelLists"),
@@ -287,12 +289,10 @@
     });
   }
 
-  // Remplit le panneau « Charger des listes » pour la langue active.
-  function renderKits() {
-    if (!el.langKits) return;
+  // Construit les boutons des listes proposées de la langue active dans un conteneur.
+  function buildKitChips(container) {
     const lang = activeLangObj();
-    if (el.langListsName) el.langListsName.textContent = lang.name;
-    el.langKits.innerHTML = "";
+    container.innerHTML = "";
     packCategories(lang.id).forEach((catName) => {
       const { loaded, total } = listStatus(lang, catName);
       const done = loaded >= total;
@@ -301,8 +301,23 @@
       b.textContent = (done ? "✓ " : "+ ") + catName +
         " (" + (done ? total : loaded + "/" + total) + ")";
       b.addEventListener("click", () => loadKit(catName));
-      el.langKits.append(b);
+      container.append(b);
     });
+  }
+
+  // Remplit le panneau « Charger des listes » de la modale.
+  function renderKits() {
+    if (!el.langKits) return;
+    if (el.langListsName) el.langListsName.textContent = activeLangObj().name;
+    buildKitChips(el.langKits);
+  }
+
+  // Remplit la section « Listes prêtes à charger » de l'onglet Gérer.
+  function renderManageKits() {
+    if (!el.manageKits) return;
+    const has = packCategories(activeLangObj().id).length > 0;
+    el.manageKitsWrap.hidden = !has;
+    if (has) buildKitChips(el.manageKits);
   }
 
   // --- Langue active ---
@@ -396,6 +411,7 @@
     renderCats();
     renderStats();
     renderListManager();
+    renderManageKits();
 
     if (!c) {
       const empty = !cards.length;
