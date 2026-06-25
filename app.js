@@ -152,8 +152,15 @@
     authLogout: document.getElementById("authLogout"),
     syncState: document.getElementById("syncState"),
     syncDot: document.getElementById("syncDot"),
-    langKitsWrap: document.getElementById("langKitsWrap"),
     langKits: document.getElementById("langKits"),
+    langPanelHome: document.getElementById("langPanelHome"),
+    langPanelAdd: document.getElementById("langPanelAdd"),
+    langPanelLists: document.getElementById("langPanelLists"),
+    langAddBtn: document.getElementById("langAddBtn"),
+    langAddBack: document.getElementById("langAddBack"),
+    langLoadListsBtn: document.getElementById("langLoadListsBtn"),
+    langListsDone: document.getElementById("langListsDone"),
+    langListsName: document.getElementById("langListsName"),
     tabs: document.getElementById("tabs"),
     viewStudy: document.getElementById("viewStudy"),
     viewProgress: document.getElementById("viewProgress"),
@@ -265,34 +272,34 @@
     render();
   }
 
-  // Met en avant la section « Listes prêtes à charger » (scroll + surlignage),
-  // appelée juste après le choix d'une langue pour proposer le chargement.
-  function revealKits() {
-    if (!el.langKitsWrap || el.langKitsWrap.hidden) return;
-    el.langKitsWrap.classList.remove("flash");
-    void el.langKitsWrap.offsetWidth; // force le redémarrage de l'animation
-    el.langKitsWrap.classList.add("flash");
-    setTimeout(() => {
-      try { el.langKitsWrap.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) { /* ignore */ }
-    }, 60);
+  // État de chargement d'une liste pour une langue : { loaded, total }.
+  function listStatus(langObj, catName) {
+    const loaded = langObj.cards.filter((c) => c.cat === catName).length;
+    const total = kitCardsFor(langObj.id, catName).length;
+    return { loaded, total };
   }
 
-  // Affiche les boutons des listes proposées pour la langue active.
+  // Vrai si la langue a au moins une liste proposée pas encore (entièrement) chargée.
+  function hasLoadableLists(langObj) {
+    return packCategories(langObj.id).some((c) => {
+      const s = listStatus(langObj, c);
+      return s.loaded < s.total;
+    });
+  }
+
+  // Remplit le panneau « Charger des listes » pour la langue active.
   function renderKits() {
     if (!el.langKits) return;
     const lang = activeLangObj();
+    if (el.langListsName) el.langListsName.textContent = lang.name;
     el.langKits.innerHTML = "";
-    const available = packCategories(lang.id);
-    if (!available.length) { el.langKitsWrap.hidden = true; return; }
-    el.langKitsWrap.hidden = false;
-    available.forEach((catName) => {
-      const loaded = lang.cards.filter((c) => c.cat === catName).length;
-      const total = kitCardsFor(lang.id, catName).length;
+    packCategories(lang.id).forEach((catName) => {
+      const { loaded, total } = listStatus(lang, catName);
+      const done = loaded >= total;
       const b = document.createElement("button");
-      b.type = "button"; b.className = "lang-chip kit-chip";
-      b.textContent = (loaded >= total ? "✓ " : "+ ") + catName +
-        " (" + (loaded >= total ? total : loaded + "/" + total) + ")";
-      if (loaded >= total) b.classList.add("kit-done");
+      b.type = "button"; b.className = "lang-chip kit-chip" + (done ? " kit-done" : "");
+      b.textContent = (done ? "✓ " : "+ ") + catName +
+        " (" + (done ? total : loaded + "/" + total) + ")";
       b.addEventListener("click", () => loadKit(catName));
       el.langKits.append(b);
     });
@@ -1004,10 +1011,11 @@
       lo = { id: id, name: name, rtl: !!rtl, nonLatin: !!nonLatin, cards: [], lists: [] };
       languages.push(lo);
     }
-    // On garde la modale ouverte et on met en avant les listes à charger.
+    // Bascule sur la nouvelle langue, puis propose ses listes (panneau dédié) si elle en a.
     switchLang(lo.id);
     renderLangModal();
-    revealKits();
+    if (hasLoadableLists(lo)) setLangPanel("lists");
+    else { closeLangModal(); setView("study"); }
   }
 
   function deleteLanguage(id) {
@@ -1035,11 +1043,20 @@
     if (el.brandSub) el.brandSub.textContent = "Vocabulaire " + lang.name.toLowerCase() + " · flashcards";
   }
 
-  function openLangModal() { renderLangModal(); el.langModal.hidden = false; }
+  // Bascule entre les panneaux de la modale (home / add / lists).
+  function setLangPanel(name) {
+    const panels = { home: el.langPanelHome, add: el.langPanelAdd, lists: el.langPanelLists };
+    Object.keys(panels).forEach((k) => { if (panels[k]) panels[k].hidden = (k !== name); });
+    if (name === "lists") renderKits();
+  }
+
+  function openLangModal() { renderLangModal(); setLangPanel("home"); el.langModal.hidden = false; }
   function closeLangModal() { el.langModal.hidden = true; }
 
   function renderLangModal() {
     renderKits();
+    // Bouton « Charger des listes » : visible seulement si la langue active en propose.
+    if (el.langLoadListsBtn) el.langLoadListsBtn.hidden = !hasLoadableLists(activeLangObj());
     // Langues prédéfinies pas encore ajoutées.
     el.langPresets.innerHTML = "";
     const remaining = LANG_PRESETS.filter((p) => !languages.some((l) => l.id === p.id));
@@ -1220,6 +1237,12 @@
       addLanguage(el.langName.value, el.langRtl.checked, el.langNonLatin.checked);
       el.langForm.reset();
     });
+
+    // Navigation entre panneaux de la modale de langue.
+    if (el.langAddBtn) el.langAddBtn.addEventListener("click", () => setLangPanel("add"));
+    if (el.langAddBack) el.langAddBack.addEventListener("click", () => setLangPanel("home"));
+    if (el.langLoadListsBtn) el.langLoadListsBtn.addEventListener("click", () => setLangPanel("lists"));
+    if (el.langListsDone) el.langListsDone.addEventListener("click", () => { closeLangModal(); setView("study"); });
 
     // Flèches clavier pour naviguer
     document.addEventListener("keydown", (e) => {
@@ -1599,8 +1622,8 @@
     updateDirectionLabel();
     if (presetId === "ar") { showStep2(); return; }
     finishWelcome(false);
-    // Si la langue propose des listes, on ouvre la modale pour les charger ; sinon guidage 1er mot.
-    if (packCategories(id).length) { openLangModal(); revealKits(); }
+    // Si la langue propose des listes, on ouvre le panneau de chargement ; sinon guidage 1er mot.
+    if (hasLoadableLists(activeLangObj())) { openLangModal(); setLangPanel("lists"); }
     else guideToFirstCard();
   }
 

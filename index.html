@@ -147,39 +147,54 @@
     </div>
   </main>
 
-  <!-- Modale d'ajout / gestion des langues -->
+  <!-- Modale des langues (3 panneaux : Mes langues · Ajouter · Charger des listes) -->
   <div class="modal" id="langModal" hidden>
     <div class="modal-backdrop" data-langclose></div>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="langTitle">
       <button class="modal-close" type="button" aria-label="Fermer" data-langclose>×</button>
-      <div class="auth-head">
-        <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
-        <h2 id="langTitle">Langues</h2>
-        <p class="auth-sub">Choisis une langue à apprendre.</p>
-      </div>
 
-      <div class="lang-presets" id="langPresets"></div>
-
-      <div class="acc-divider"><span>ou personnalisée</span></div>
-      <form class="auth-form" id="langForm" autocomplete="off">
-        <label class="field">
-          <span>Nom de la langue</span>
-          <input id="langName" placeholder="ex. Coréen" />
-        </label>
-        <label class="check"><input type="checkbox" id="langRtl" /> Écriture de droite à gauche</label>
-        <label class="check"><input type="checkbox" id="langNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
-        <button type="submit" class="btn btn-accent btn-block">Ajouter cette langue</button>
-      </form>
-
-      <div class="lang-kits-wrap" id="langKitsWrap" hidden>
-        <p class="lang-existing-title">Listes prêtes à charger</p>
-        <p class="lang-kits-hint">Choisis les listes à étudier — tu pourras en ajouter d'autres plus tard.</p>
-        <div id="langKits" class="lang-kits"></div>
-      </div>
-
-      <div class="lang-existing-wrap">
-        <p class="lang-existing-title">Mes langues</p>
+      <!-- Panneau 1 : Mes langues -->
+      <div id="langPanelHome">
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
+          <h2 id="langTitle">Mes langues</h2>
+          <p class="auth-sub">Choisis la langue à étudier.</p>
+        </div>
         <div id="langExisting" class="lang-existing"></div>
+        <button type="button" id="langLoadListsBtn" class="btn btn-ghost btn-block lang-home-btn" hidden>＋ Charger des listes</button>
+        <button type="button" id="langAddBtn" class="btn btn-accent btn-block lang-home-btn">＋ Ajouter une langue</button>
+      </div>
+
+      <!-- Panneau 2 : Ajouter une langue -->
+      <div id="langPanelAdd" hidden>
+        <button type="button" id="langAddBack" class="lm-back">‹ Mes langues</button>
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
+          <h2>Ajouter une langue</h2>
+          <p class="auth-sub">Une langue prédéfinie, ou la tienne.</p>
+        </div>
+        <div class="lang-presets" id="langPresets"></div>
+        <div class="acc-divider"><span>ou personnalisée</span></div>
+        <form class="auth-form" id="langForm" autocomplete="off">
+          <label class="field">
+            <span>Nom de la langue</span>
+            <input id="langName" placeholder="ex. Coréen" />
+          </label>
+          <label class="check"><input type="checkbox" id="langRtl" /> Écriture de droite à gauche</label>
+          <label class="check"><input type="checkbox" id="langNonLatin" /> Alphabet non latin (afficher la phonétique)</label>
+          <button type="submit" class="btn btn-accent btn-block">Ajouter cette langue</button>
+        </form>
+      </div>
+
+      <!-- Panneau 3 : Charger des listes -->
+      <div id="langPanelLists" hidden>
+        <div class="auth-head">
+          <span class="auth-mark auth-mark-ok" aria-hidden="true">✓</span>
+          <h2><span id="langListsName">Langue</span></h2>
+          <p class="auth-sub">Quelles listes veux-tu étudier ? (facultatif)</p>
+        </div>
+        <div id="langKits" class="lang-kits"></div>
+        <button type="button" id="langListsDone" class="btn btn-accent btn-block lang-home-btn">Commencer à étudier</button>
       </div>
     </div>
   </div>
