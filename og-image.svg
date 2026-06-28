@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Mufradāt — apprendre du vocabulaire en flashcards">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="-10%" r="90%">
+      <stop offset="0%" stop-color="#efe9dc"/>
+      <stop offset="60%" stop-color="#e9e3d6"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Logo : carré encre avec alef -->
+  <g transform="translate(120 175)">
+    <rect width="170" height="170" rx="34" fill="#1c2b33"/>
+    <rect x="14" y="14" width="142" height="142" rx="24" fill="none" stroke="#cf9134" stroke-opacity="0.5" stroke-width="4"/>
+    <text x="85" y="126" font-family="Georgia, 'Times New Roman', serif" font-size="110" fill="#f3ecdc" text-anchor="middle">ٱ</text>
+  </g>
+
+  <!-- Texte -->
+  <text x="340" y="270" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="600" fill="#1c2b33">Mufradāt</text>
+  <text x="344" y="332" font-family="Inter, -apple-system, 'Segoe UI', sans-serif" font-size="34" fill="#8c8576">Apprends du vocabulaire en flashcards</text>
+
+  <!-- Puces de langues -->
+  <g font-family="Inter, -apple-system, 'Segoe UI', sans-serif" font-size="26" fill="#1c2b33">
+    <g transform="translate(120 430)">
+      <rect width="150" height="58" rx="29" fill="#f1ebde" stroke="#d8cfbd"/>
+      <text x="75" y="38" text-anchor="middle">العربية</text>
+    </g>
+    <g transform="translate(290 430)">
+      <rect width="150" height="58" rx="29" fill="#f1ebde" stroke="#d8cfbd"/>
+      <text x="75" y="38" text-anchor="middle">English</text>
+    </g>
+    <g transform="translate(460 430)">
+      <rect width="150" height="58" rx="29" fill="#f1ebde" stroke="#d8cfbd"/>
+      <text x="75" y="38" text-anchor="middle">Español</text>
+    </g>
+    <g transform="translate(630 430)">
+      <rect width="130" height="58" rx="29" fill="#f1ebde" stroke="#d8cfbd"/>
+      <text x="65" y="38" text-anchor="middle">日本語</text>
+    </g>
+    <g transform="translate(780 430)">
+      <rect width="150" height="58" rx="29" fill="#1c2b33"/>
+      <text x="75" y="38" text-anchor="middle" fill="#f3ecdc">+ 10</text>
+    </g>
+  </g>
+</svg>

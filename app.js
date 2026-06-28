@@ -42,6 +42,14 @@
     { id: "el", name: "Grec", rtl: false, nonLatin: true },
   ];
 
+  // Code de langue (BCP 47) pour l'attribut lang — aide les lecteurs d'écran.
+  const LANG_BCP47 = {
+    ar: "ar", darija: "ar", egy: "ar", leb: "ar", tun: "ar",
+    en: "en", es: "es", de: "de", it: "it", pt: "pt",
+    ru: "ru", ja: "ja", zh: "zh", el: "el",
+  };
+  function bcp47(id) { return LANG_BCP47[id] || ""; }
+
   // Maîtrise = réussir dans les deux sens.
   const DIR_TARGET = 5;             // réussites requises par sens (AR→FR et FR→AR)
   const MASTER = DIR_TARGET * 2;    // total visé : 10 points
@@ -84,6 +92,8 @@
   const el = {
     progress: document.getElementById("progress"),
     card: document.getElementById("card"),
+    cardFront: document.querySelector(".card-front"),
+    cardBack: document.querySelector(".card-back"),
     frontHint: document.getElementById("frontHint"),
     frontMain: document.getElementById("frontMain"),
     frontSub: document.getElementById("frontSub"),
@@ -450,6 +460,7 @@
     const c = currentCard();
     flipped = false;
     el.card.classList.remove("flipped");
+    updateFaceA11y();
 
     renderLangBtn();
     adaptWordForm();
@@ -505,7 +516,11 @@
     applyCardShade(c);
     renderMastery(c, lvl);
 
-    el.progress.textContent = (pos + 1) + " / " + order.length;
+    // Progression : compter les cartes uniques (l'ordre pondéré duplique les cartes).
+    const uniqIds = [];
+    order.forEach((i) => { const id = cards[i].id; if (uniqIds.indexOf(id) === -1) uniqIds.push(id); });
+    const uniPos = uniqIds.indexOf(c.id);
+    el.progress.textContent = (uniPos + 1) + " / " + uniqIds.length;
     renderWordList();
   }
 
@@ -665,6 +680,11 @@
       cls += " tgt";
       if (lang.nonLatin) cls += " non-latin";
       if (lang.rtl) cls += " rtl";
+      mainEl.lang = bcp47(lang.id);            // prononciation correcte (lecteur d'écran)
+      mainEl.dir = lang.rtl ? "rtl" : "ltr";
+    } else {
+      mainEl.lang = "fr";
+      mainEl.dir = "ltr";
     }
     mainEl.className = cls;
 
@@ -780,6 +800,14 @@
     if (el.card.classList.contains("empty-cta")) { guideToFirstCard(); return; }
     flipped = !flipped;
     el.card.classList.toggle("flipped", flipped);
+    updateFaceA11y();
+  }
+
+  // Cache la face non visible aux lecteurs d'écran (sinon recto + verso lus ensemble).
+  function updateFaceA11y() {
+    if (el.cardFront) el.cardFront.setAttribute("aria-hidden", String(flipped));
+    if (el.cardBack) el.cardBack.setAttribute("aria-hidden", String(!flipped));
+    el.card.setAttribute("aria-pressed", String(flipped));
   }
 
   // Clé du compteur correspondant au sens affiché (af = AR→FR, fa = FR→AR).
@@ -1214,6 +1242,14 @@
     if (el.optsPop.hidden) openOptions(); else closeOptions();
   }
 
+  // Conteneur de la modale actuellement ouverte (pour le piège à focus), sinon null.
+  function openModalBox() {
+    if (el.langModal && !el.langModal.hidden) return el.langModal.querySelector(".modal-card");
+    if (el.authModal && !el.authModal.hidden) return el.authModal.querySelector(".modal-card");
+    if (el.welcomeModal && !el.welcomeModal.hidden) return el.welcomeModal.querySelector(".home-inner");
+    return null;
+  }
+
   function bind() {
     el.card.addEventListener("click", flip);
     el.card.addEventListener("keydown", (e) => {
@@ -1320,6 +1356,20 @@
     if (el.langAddBack) el.langAddBack.addEventListener("click", () => setLangPanel("home"));
     if (el.langLoadListsBtn) el.langLoadListsBtn.addEventListener("click", () => setLangPanel("lists"));
     if (el.langListsDone) el.langListsDone.addEventListener("click", () => { closeLangModal(); setView("study"); });
+
+    // Piège le focus (Tab) à l'intérieur de la modale ouverte.
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      const box = openModalBox();
+      if (!box) return;
+      const sel = 'a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])';
+      const items = Array.prototype.filter.call(box.querySelectorAll(sel), (n) => n.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (!box.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
 
     // Flèches clavier pour naviguer
     document.addEventListener("keydown", (e) => {

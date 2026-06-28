@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mufradāt">
+  <rect width="64" height="64" rx="14" fill="#1c2b33"/>
+  <rect x="7" y="7" width="50" height="50" rx="10" fill="none" stroke="#cf9134" stroke-opacity="0.55" stroke-width="2"/>
+  <text x="32" y="47" font-family="Georgia, 'Times New Roman', serif" font-size="42" fill="#f3ecdc" text-anchor="middle">ٱ</text>
+</svg>
