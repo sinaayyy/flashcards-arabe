@@ -84,6 +84,7 @@
   let languages = [];      // [{ id, name, rtl, nonLatin, cards:[...], lists:[...] }]
   let activeLang = "ar";   // id de la langue active
   let editingId = null;    // id du mot en cours d'édition (null = ajout)
+  let wordQuery = "";      // texte de recherche dans la liste de mots (onglet Gérer)
   let sb = null;           // client Supabase (null = synchro désactivée)
   let user = null;         // utilisateur connecté (null = hors-ligne / local)
   let cloudTimer = null;   // minuterie de synchro différée (debounce)
@@ -136,6 +137,8 @@
     resetBtn: document.getElementById("resetBtn"),
     wordList: document.getElementById("wordList"),
     countInfo: document.getElementById("countInfo"),
+    wordSearch: document.getElementById("wordSearch"),
+    wordsClear: document.getElementById("wordsClear"),
     // Langues
     langBtn: document.getElementById("langBtn"),
     langBtnName: document.getElementById("langBtnName"),
@@ -737,8 +740,25 @@
 
   function renderWordList() {
     const lang = activeLangObj();
-    const masteredCount = cards.filter(isMastered).length;
-    el.countInfo.textContent = cards.length + " mots · " + masteredCount + " maîtrisés";
+    const q = wordQuery.trim().toLowerCase();
+    const inCat = cat !== "all";
+
+    // Filtre : liste active (cohérent avec « Mes listes ») puis recherche.
+    let list = inCat ? cards.filter((c) => c.cat === cat) : cards.slice();
+    if (q) list = list.filter((c) =>
+      (c.ar && c.ar.toLowerCase().indexOf(q) !== -1) ||
+      (c.fr && c.fr.toLowerCase().indexOf(q) !== -1) ||
+      (c.translit && c.translit.toLowerCase().indexOf(q) !== -1) ||
+      (c.cat && c.cat.toLowerCase().indexOf(q) !== -1));
+
+    // Compteur : global, ou « affichés / total » si un filtre est actif.
+    if (inCat || q) {
+      el.countInfo.textContent = list.length + " / " + cards.length + " mots"
+        + (inCat ? " · liste « " + cat + " »" : "");
+    } else {
+      el.countInfo.textContent = cards.length + " mots · " + cards.filter(isMastered).length + " maîtrisés";
+    }
+    if (el.wordsClear) el.wordsClear.hidden = !inCat;
 
     el.wordList.innerHTML = "";
     if (!cards.length) {
@@ -748,7 +768,16 @@
       el.wordList.append(li);
       return;
     }
-    cards.forEach((c) => {
+    if (!list.length) {
+      const li = document.createElement("li");
+      li.className = "wl-empty-row";
+      li.textContent = q
+        ? "Aucun mot ne correspond à « " + wordQuery.trim() + " »."
+        : "Cette liste est vide.";
+      el.wordList.append(li);
+      return;
+    }
+    list.forEach((c) => {
       const li = document.createElement("li");
 
       const lvl = levelOf(points(c));
@@ -1209,6 +1238,10 @@
     el.inAr.classList.toggle("script-arabic", !!lang.nonLatin && !!lang.rtl);
     el.inTranslit.hidden = !lang.nonLatin;
     if (!lang.nonLatin) el.inTranslit.value = "";
+    // Indique dans quelle liste le mot sera ajouté par défaut.
+    if (el.inCat) el.inCat.placeholder = cat !== "all"
+      ? "Liste (défaut : " + cat + ")"
+      : "Liste (ex. Cuisine)";
   }
 
   // --- Branchement des événements ---
@@ -1311,6 +1344,18 @@
     el.addForm.addEventListener("submit", submitForm);
     el.resetBtn.addEventListener("click", resetDeck);
     el.createListBtn.addEventListener("click", createList);
+
+    // Recherche dans la liste de mots (filtre instantané).
+    if (el.wordSearch) el.wordSearch.addEventListener("input", (e) => {
+      wordQuery = e.target.value;
+      renderWordList();
+    });
+    // Revenir à toutes les listes (annule le filtre par liste active).
+    if (el.wordsClear) el.wordsClear.addEventListener("click", () => {
+      cat = "all";
+      rebuildOrder();
+      render();
+    });
     el.newListName.addEventListener("keydown", (e) => {
       if (e.code === "Enter") { e.preventDefault(); createList(); }
     });

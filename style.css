@@ -45,20 +45,23 @@ html, body {
   font-family: inherit; text-align: left; color: inherit; cursor: pointer;
   border-radius: 14px;
 }
-.brand:hover .brand-mark { border-color: var(--saffron); }
 .brand:hover h1 { text-decoration: underline; text-decoration-color: var(--saffron); text-underline-offset: 3px; }
 .brand:focus-visible { outline: 2px solid var(--saffron); outline-offset: 3px; }
 .brand-mark {
   font-family: "Amiri", serif;
-  font-size: 2.4rem;
+  font-size: 2.1rem;
   line-height: 1;
-  color: var(--ink);
-  width: 54px; height: 54px;
+  color: var(--ivory);
+  width: 50px; height: 50px;
   display: grid; place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--paper-2);
-  box-shadow: inset 0 0 0 4px rgba(207, 145, 52, 0.06);
+  border-radius: 15px;
+  background: linear-gradient(160deg, var(--ink), var(--ink-soft));
+  box-shadow: inset 0 0 0 4px rgba(207, 145, 52, 0.18), 0 8px 18px -10px rgba(28, 43, 51, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.brand:hover .brand-mark {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 4px rgba(207, 145, 52, 0.3), 0 10px 22px -10px rgba(28, 43, 51, 0.55);
 }
 .brand-text h1 {
   font-family: "Fraunces", serif;
@@ -73,13 +76,20 @@ html, body {
   color: var(--muted);
   letter-spacing: 0.02em;
 }
+/* Compteur de progression — désormais au-dessus de la carte (vue Étudier) */
+.study-status {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.6rem 0 0.9rem;
+}
 .progress {
   margin: 0;
-  color: var(--ink);
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  padding: 0.3rem 0.7rem;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.7rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--paper-2);
@@ -1089,6 +1099,34 @@ html, body {
 }
 .manage-buttons { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .count-info { color: var(--muted); font-size: 0.82rem; }
+
+/* Bouton d'action destructive (réinitialiser le paquet) */
+.btn-danger { color: #9c3a23; }
+.btn-danger:hover { background: #e6c9bf; color: #7d2c18; border-color: transparent; }
+
+/* En-tête + recherche de la liste de mots */
+.words-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 0.6rem; flex-wrap: wrap;
+  margin: 1.6rem 0 0.6rem;
+}
+.words-tools { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.7rem; }
+.word-search {
+  flex: 1; min-width: 0;
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  font-family: inherit; font-size: 0.92rem;
+  background: #fff; color: var(--ink);
+}
+.word-search:focus { outline: 2px solid var(--saffron); outline-offset: 1px; border-color: var(--saffron); }
+.words-clear {
+  flex: none;
+  border: 1px solid var(--saffron); background: var(--paper-2);
+  color: var(--saffron-deep); font: inherit; font-size: 0.78rem;
+  cursor: pointer; padding: 0.4rem 0.7rem; border-radius: 999px;
+  white-space: nowrap;
+}
+.words-clear:hover { background: var(--saffron); color: #fff; }
 
 .word-list {
   list-style: none;

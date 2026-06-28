@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mufradāt — Apprendre du vocabulaire en flashcards</title>
   <meta name="description" content="Mufradāt : apprends du vocabulaire en flashcards, dans la langue de ton choix (arabe et dialectes, anglais, espagnol, japonais…). Phonétique, listes prêtes à l'emploi, progression et synchro." />
-  <meta name="theme-color" content="#1c2b33" />
+  <meta name="theme-color" content="#e9e3d6" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://flashcards-arabe.vercel.app/" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -67,7 +67,6 @@
         <button id="langBtn" class="lang-btn" aria-label="Changer de langue">
           <span class="lang-glyph" aria-hidden="true">🌐</span><span id="langBtnName">Arabe</span>
         </button>
-        <p class="progress" id="progress">— / —</p>
         <button class="account-btn" id="accountBtn" hidden>Se connecter</button>
       </div>
     </header>
@@ -92,6 +91,11 @@
     <div class="view" id="viewStudy" role="tabpanel" aria-labelledby="tabStudy">
       <!-- Catégories / thèmes -->
       <nav class="cats" id="cats" aria-label="Listes"></nav>
+
+      <!-- Compteur de progression de la session -->
+      <div class="study-status">
+        <span class="progress" id="progress" aria-label="Position dans le paquet">— / —</span>
+      </div>
 
       <!-- Carte -->
       <section class="card-area" id="cardArea">
@@ -184,15 +188,22 @@
         </form>
 
         <div class="manage-actions">
-          <span id="countInfo" class="count-info"></span>
           <div class="manage-buttons">
             <button id="exportBtn" class="btn btn-ghost btn-sm">Exporter</button>
             <button id="importBtn" class="btn btn-ghost btn-sm">Importer</button>
             <input id="importFile" type="file" accept="application/json,.json" hidden />
-            <button id="resetBtn" class="btn btn-ghost btn-sm">Paquet de départ</button>
+            <button id="resetBtn" class="btn btn-ghost btn-sm btn-danger">Paquet de départ</button>
           </div>
         </div>
 
+        <div class="words-head">
+          <h3 class="lists-title">Mes mots</h3>
+          <span id="countInfo" class="count-info"></span>
+        </div>
+        <div class="words-tools">
+          <input id="wordSearch" class="word-search" type="search" placeholder="Rechercher un mot…" aria-label="Rechercher un mot" />
+          <button id="wordsClear" class="words-clear" type="button" hidden>✕ liste</button>
+        </div>
         <ul id="wordList" class="word-list"></ul>
       </section>
     </div>
