@@ -150,7 +150,7 @@
       <section class="stats">
         <div class="stats-head">
           <h2>Progression</h2>
-          <button id="resetProgressBtn" class="btn btn-ghost btn-sm">Réinitialiser</button>
+          <button id="resetProgressBtn" class="btn btn-ghost btn-sm btn-danger">Réinitialiser</button>
         </div>
         <div id="statsBody" class="stats-body"></div>
       </section>
@@ -218,7 +218,9 @@
       <!-- Panneau 1 : Mes langues -->
       <div id="langPanelHome">
         <div class="auth-head">
-          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">
+            <svg class="auth-mark-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
+          </span>
           <h2 id="langTitle">Mes langues</h2>
           <p class="auth-sub">Choisis la langue à étudier.</p>
         </div>
@@ -231,7 +233,9 @@
       <div id="langPanelAdd" hidden>
         <button type="button" id="langAddBack" class="lm-back">‹ Mes langues</button>
         <div class="auth-head">
-          <span class="auth-mark auth-mark-globe" aria-hidden="true">🌍</span>
+          <span class="auth-mark auth-mark-globe" aria-hidden="true">
+            <svg class="auth-mark-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
+          </span>
           <h2>Ajouter une langue</h2>
           <p class="auth-sub">Une langue prédéfinie, ou la tienne.</p>
         </div>

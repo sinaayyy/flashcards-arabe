@@ -132,8 +132,13 @@ html, body {
 .lang-exist-row.active .lang-pick-name { font-weight: 600; }
 .lang-active-chk { color: var(--saffron-deep); font-weight: 700; }
 
-/* Modale langue */
-.auth-mark-globe { font-family: inherit; font-size: 1.8rem; background: linear-gradient(160deg, #3a5e6b, #2c3e47); }
+/* Modale langue — même boîte encre/safran que les autres marques */
+.auth-mark-globe { font-family: inherit; font-size: 1.6rem; }
+.auth-mark-ic {
+  width: 28px; height: 28px;
+  fill: none; stroke: var(--ivory);
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
 .lang-presets { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; }
 .lang-chip {
   appearance: none;
