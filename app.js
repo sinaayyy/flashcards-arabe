@@ -1554,7 +1554,8 @@
       el.accountBtn.querySelector(".account-email").textContent = user.email || "Compte";
       el.accountBtn.title = "Connecté : " + (user.email || "");
     } else {
-      el.accountBtn.textContent = "Se connecter";
+      el.accountBtn.innerHTML =
+        '<svg class="hdr-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.3"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/></svg><span>Se connecter</span>';
       el.accountBtn.title = "Se connecter pour synchroniser";
     }
   }

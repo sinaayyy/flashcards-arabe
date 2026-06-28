@@ -105,23 +105,39 @@ html, body {
   appearance: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   border: 1px solid var(--line);
   background: var(--paper-2);
   color: var(--ink);
   font-family: inherit;
   font-size: 0.82rem;
-  padding: 0.35rem 0.8rem;
+  font-weight: 500;
+  padding: 0.42rem 0.85rem;
   border-radius: 999px;
   cursor: pointer;
-  max-width: 9rem;
+  max-width: 11rem;
   white-space: nowrap;
   transition: background 0.15s, border-color 0.15s;
 }
 .lang-btn:hover { border-color: var(--saffron); background: #fff; }
+.lang-btn:hover .hdr-ic { color: var(--saffron-deep); opacity: 1; }
 .lang-btn:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
-.lang-glyph { font-size: 0.9rem; }
 #langBtnName { overflow: hidden; text-overflow: ellipsis; }
+
+/* Icônes au trait des contrôles d'en-tête (langue, compte) */
+.hdr-ic {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0.65;
+  transition: opacity 0.15s, color 0.15s;
+}
+.hdr-chev {
+  width: 13px; height: 13px; flex: none;
+  fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0.4; margin-left: -0.05rem;
+}
 
 .lang-pick-name {
   flex: 1; display: flex; align-items: center; gap: 0.5rem;
@@ -209,13 +225,14 @@ html, body {
   appearance: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   border: 1px solid var(--line);
   background: var(--paper-2);
   color: var(--ink);
   font-family: inherit;
   font-size: 0.82rem;
-  padding: 0.35rem 0.8rem;
+  font-weight: 500;
+  padding: 0.42rem 0.85rem;
   border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
@@ -224,6 +241,7 @@ html, body {
   transition: background 0.15s, border-color 0.15s;
 }
 .account-btn:hover { border-color: var(--saffron); background: #fff; }
+.account-btn:hover .hdr-ic { color: var(--saffron-deep); opacity: 1; }
 .account-btn:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
 .account-btn.is-connected {
   font-weight: 500;
