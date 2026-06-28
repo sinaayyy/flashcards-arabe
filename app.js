@@ -1814,6 +1814,17 @@
     render();
     initAccount();
     if (firstRun) openWelcome();
+    registerServiceWorker();
+  }
+
+  // Active le mode hors-ligne (PWA) : enregistre le Service Worker s'il est supporté.
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    // Pas de SW sur file:// (test local) — uniquement http(s).
+    if (location.protocol !== "https:" && location.hostname !== "localhost") return;
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* hors-ligne indisponible */ });
+    });
   }
 
   init();
