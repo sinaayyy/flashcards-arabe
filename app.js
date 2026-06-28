@@ -5,6 +5,24 @@
   "use strict";
 
   const STORAGE_KEY = "flashcards-arabe";
+  const PREFS_KEY = "flashcards-arabe-prefs";
+
+  // Préférences d'étude locales (non synchronisées) : sens par défaut + priorisation.
+  function loadPrefs() {
+    try {
+      const raw = localStorage.getItem(PREFS_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p.sensMode === "af" || p.sensMode === "fa" || p.sensMode === "mix") sensMode = p.sensMode;
+        if (typeof p.weightedOrder === "boolean") weightedOrder = p.weightedOrder;
+      }
+    } catch (e) { /* ignore */ }
+  }
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify({ sensMode: sensMode, weightedOrder: weightedOrder }));
+    } catch (e) { /* ignore */ }
+  }
 
   // Langues prédéfinies : { id, name, rtl (droite→gauche), nonLatin (phonétique utile) }.
   const LANG_PRESETS = [
@@ -48,10 +66,11 @@
   let order = [];          // indices dans "cards", éventuellement mélangés/filtrés
   let pos = 0;             // position dans "order"
   let flipped = false;     // carte retournée ?
-  let sensMode = "af";     // sens : "af" (AR→FR), "fa" (FR→AR), "mix" (aléatoire)
+  let sensMode = "mix";    // sens : "af" (AR→FR), "fa" (FR→AR), "mix" (aléatoire) — défaut aléatoire
   let curAr = true;        // sens réellement affiché pour la carte en cours
   let curId = null;        // id de la carte en cours (pour figer le sens en mode mix)
   let reviewOnly = false;  // n'afficher que les mots "à revoir"
+  let weightedOrder = true; // mots peu réussis plus fréquents (défaut activé)
   let lists = [];          // catalogue des listes de la langue active
   let cat = "all";         // liste active ("all" = toutes)
   let languages = [];      // [{ id, name, rtl, nonLatin, cards:[...], lists:[...] }]
@@ -88,6 +107,7 @@
     directionBtn: document.getElementById("directionBtn"),
     directionLabel: document.getElementById("directionLabel"),
     reviewBtn: document.getElementById("reviewBtn"),
+    weightBtn: document.getElementById("weightBtn"),
     cats: document.getElementById("cats"),
     addForm: document.getElementById("addForm"),
     inAr: document.getElementById("inAr"),
@@ -363,11 +383,36 @@
     let indices = cards.map((_, i) => i);
     if (cat !== "all") indices = indices.filter((i) => cards[i].cat === cat);
     if (reviewOnly) indices = indices.filter((i) => !isMastered(cards[i]));
-    order = indices;
+    order = weightedOrder ? buildWeightedOrder(indices) : indices;
     // Replacer sur la même carte si possible
     const newPos = order.findIndex((i) => cards[i].id === currentId);
     pos = newPos >= 0 ? newPos : 0;
     if (pos >= order.length) pos = 0;
+  }
+
+  // Nombre de répétitions d'une carte dans le tour : plus elle est réussie, moins elle revient.
+  // 0 pt → 5 copies … 8-10 pts → 1 copie.
+  function repsFor(c) { return Math.max(1, Math.round((MASTER - points(c)) / 2)); }
+
+  // Construit un ordre pondéré : les mots peu réussis apparaissent plus souvent dans le tour.
+  function buildWeightedOrder(indices) {
+    if (indices.length <= 1) return indices.slice();
+    // Expansion : chaque carte dupliquée selon son nombre de réussites.
+    const bag = [];
+    indices.forEach((i) => { const r = repsFor(cards[i]); for (let k = 0; k < r; k++) bag.push(i); });
+    // Mélange (Fisher-Yates).
+    for (let k = bag.length - 1; k > 0; k--) {
+      const j = Math.floor(Math.random() * (k + 1));
+      [bag[k], bag[j]] = [bag[j], bag[k]];
+    }
+    // Espacement : éviter deux occurrences de la même carte côte à côte.
+    for (let k = 1; k < bag.length; k++) {
+      if (bag[k] !== bag[k - 1]) continue;
+      for (let m = k + 1; m < bag.length; m++) {
+        if (bag[m] !== bag[k] && bag[m] !== bag[k - 1]) { [bag[k], bag[m]] = [bag[m], bag[k]]; break; }
+      }
+    }
+    return bag;
   }
 
   function shuffleOrder() {
@@ -886,7 +931,7 @@
     save();
     cancelEdit();
     reviewOnly = false;
-    sensMode = "af";
+    sensMode = "mix";
     curId = null;
     cat = "all";
     el.reviewBtn.classList.remove("active");
@@ -988,6 +1033,13 @@
       sensMode === "af" ? ab + " → FR" : sensMode === "fa" ? "FR → " + ab : "Aléatoire";
   }
 
+  // Reflète l'état du bouton « Prioriser les mots difficiles ».
+  function updateWeightBtn() {
+    if (!el.weightBtn) return;
+    el.weightBtn.setAttribute("aria-pressed", String(weightedOrder));
+    el.weightBtn.classList.toggle("active", weightedOrder);
+  }
+
   // Petit éclat quand une carte vient d'être maîtrisée.
   function celebrate() {
     el.card.classList.remove("just-mastered");
@@ -1007,7 +1059,7 @@
     loadActiveIntoWorking();
     migrate();
     ensureLists();
-    cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "af"; curId = null;
+    cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
     el.reviewBtn.classList.remove("active");
     el.reviewBtn.setAttribute("aria-pressed", "false");
     updateDirectionLabel();
@@ -1195,6 +1247,15 @@
       sensMode = sensMode === "af" ? "fa" : sensMode === "fa" ? "mix" : "af";
       curId = null; // force un nouveau tirage en mode aléatoire
       updateDirectionLabel();
+      savePrefs();
+      render();
+    });
+
+    el.weightBtn.addEventListener("click", () => {
+      weightedOrder = !weightedOrder;
+      updateWeightBtn();
+      savePrefs();
+      rebuildOrder();
       render();
     });
 
@@ -1619,7 +1680,7 @@
       activeLang = existing.id;
       loadActiveIntoWorking();
       migrate(); ensureLists();
-      cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "af"; curId = null;
+      cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
       el.reviewBtn.classList.remove("active");
       updateDirectionLabel();
       if (existing.id === "ar" && !existing.cards.length) { showStep2(); save(); return; }
@@ -1684,6 +1745,7 @@
   // --- Démarrage ---
   function init() {
     const firstRun = localStorage.getItem(STORAGE_KEY) === null;
+    loadPrefs();
     const st = load();
     languages = st.languages;
     activeLang = st.activeLang;
@@ -1696,6 +1758,7 @@
     ensureLists();
     if (!firstRun) save();
     updateDirectionLabel();
+    updateWeightBtn();
     rebuildOrder();
     bind();
     render();
