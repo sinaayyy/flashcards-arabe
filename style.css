@@ -1253,14 +1253,15 @@ html, body {
   .header { margin-bottom: 1.5rem; }
   .brand-sub { display: none; }
   .brand-mark { width: 44px; height: 44px; font-size: 1.9rem; }
-  .account-btn { max-width: 8.5rem; font-size: 0.78rem; }
-  .header-actions { gap: 0.4rem; flex-wrap: nowrap; }
+  .account-btn { max-width: 10rem; font-size: 0.78rem; }
   .brand { min-width: 0; }
   .brand-text h1 { font-size: 1.3rem; }
   /* Langue : pastille icône seule pour gagner de la place */
   #langBtnName { display: none; }
   .lang-btn { padding: 0.4rem 0.55rem; max-width: none; }
-  .lang-glyph { font-size: 1rem; }
+  /* Sécurité : si ça ne tient pas, les pastilles passent sur une 2e ligne, à droite */
+  .header { flex-wrap: wrap; row-gap: 0.55rem; }
+  .header-actions { gap: 0.4rem; flex-wrap: wrap; margin-left: auto; }
 
   .card { min-height: 250px; }
   .card-face { padding: 2rem 1.1rem; }
