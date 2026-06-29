@@ -995,6 +995,22 @@ html, body {
 }
 .btn-sm { padding: 0.4rem 0.7rem; font-size: 0.78rem; }
 
+/* Boutons « soft » bordés (Exporter, Importer, Paquet de départ) */
+.btn-soft {
+  background: var(--paper-2);
+  border-color: var(--line);
+  color: var(--ink);
+  font-weight: 500;
+  border-radius: 10px;
+}
+.btn-soft:hover { background: #fff; border-color: var(--saffron); }
+.btn-soft .btn-ic-svg { opacity: 0.6; transition: color 0.15s, opacity 0.15s; }
+.btn-soft:hover .btn-ic-svg { color: var(--saffron-deep); opacity: 1; }
+.btn-soft-danger { color: #9c3a23; }
+.btn-soft-danger .btn-ic-svg { color: #9c3a23; opacity: 0.8; }
+.btn-soft-danger:hover { background: #fbeae4; border-color: #c8765e; color: #7d2c18; }
+.btn-soft-danger:hover .btn-ic-svg { color: #7d2c18; }
+
 /* Boutons avec icône au trait (Exporter, Importer, Paquet de départ…) */
 .btn-ic { display: inline-flex; align-items: center; gap: 0.4rem; }
 .btn-ic-svg {
