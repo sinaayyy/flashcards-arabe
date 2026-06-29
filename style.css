@@ -595,10 +595,18 @@ html, body {
   display: flex;
   align-items: center;
 }
+.opt-row { gap: 0.65rem; }
 .opt-row:hover { background: rgba(28, 43, 51, 0.06); }
 .opt-row:focus-visible { outline: 2px solid var(--saffron); outline-offset: -2px; }
 .opt-row.active { color: var(--saffron-deep); font-weight: 600; }
 .opt-row.active::after { content: "✓"; margin-left: auto; color: var(--saffron); font-weight: 700; }
+.opt-ic {
+  width: 17px; height: 17px; flex: none;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0.7;
+}
+.opt-row.active .opt-ic { color: var(--saffron-deep); opacity: 1; }
 
 /* ---------- Catégories ---------- */
 .cats {
@@ -986,6 +994,15 @@ html, body {
   margin: 0;
 }
 .btn-sm { padding: 0.4rem 0.7rem; font-size: 0.78rem; }
+
+/* Boutons avec icône au trait (Exporter, Importer, Paquet de départ…) */
+.btn-ic { display: inline-flex; align-items: center; gap: 0.4rem; }
+.btn-ic-svg {
+  width: 15px; height: 15px; flex: none;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0.75;
+}
 .stats-body { display: flex; flex-direction: column; gap: 0.7rem; }
 
 /* Couleurs des niveaux (légende + segments de barre). */

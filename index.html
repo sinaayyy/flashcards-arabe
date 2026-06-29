@@ -140,10 +140,22 @@
         <div class="opts-wrap">
           <button id="optionsBtn" class="chip opts-toggle" type="button" aria-expanded="false" aria-controls="optsPop">Options ▾</button>
           <div class="opts-pop" id="optsPop" hidden role="menu">
-            <button id="shuffleBtn" class="opt-row" type="button" role="menuitem">Mélanger les cartes</button>
-            <button id="directionBtn" class="opt-row" type="button" role="menuitem">Sens · <span id="directionLabel">AR → FR</span></button>
-            <button id="reviewBtn" class="opt-row" type="button" role="menuitem" aria-pressed="false">Masquer les maîtrisés</button>
-            <button id="weightBtn" class="opt-row" type="button" role="menuitem" aria-pressed="true">Prioriser les mots difficiles</button>
+            <button id="shuffleBtn" class="opt-row" type="button" role="menuitem">
+              <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              <span>Mélanger les cartes</span>
+            </button>
+            <button id="directionBtn" class="opt-row" type="button" role="menuitem">
+              <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 13 4 4-4 4"/><path d="M20 17H4"/></svg>
+              <span>Sens · <span id="directionLabel">AR → FR</span></span>
+            </button>
+            <button id="reviewBtn" class="opt-row" type="button" role="menuitem" aria-pressed="false">
+              <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/><path d="m3 3 18 18"/></svg>
+              <span>Masquer les maîtrisés</span>
+            </button>
+            <button id="weightBtn" class="opt-row" type="button" role="menuitem" aria-pressed="true">
+              <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+              <span>Prioriser les mots difficiles</span>
+            </button>
           </div>
         </div>
         <button id="nextBtn" class="nav-arrow" aria-label="Carte suivante">Suivant ›</button>
@@ -194,10 +206,16 @@
 
         <div class="manage-actions">
           <div class="manage-buttons">
-            <button id="exportBtn" class="btn btn-ghost btn-sm">Exporter</button>
-            <button id="importBtn" class="btn btn-ghost btn-sm">Importer</button>
+            <button id="exportBtn" class="btn btn-ghost btn-sm btn-ic">
+              <svg class="btn-ic-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10"/><path d="m8 12 4 4 4-4"/><path d="M5 19h14"/></svg><span>Exporter</span>
+            </button>
+            <button id="importBtn" class="btn btn-ghost btn-sm btn-ic">
+              <svg class="btn-ic-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V10"/><path d="m8 14 4-4 4 4"/><path d="M5 5h14"/></svg><span>Importer</span>
+            </button>
             <input id="importFile" type="file" accept="application/json,.json" hidden />
-            <button id="resetBtn" class="btn btn-ghost btn-sm btn-danger">Paquet de départ</button>
+            <button id="resetBtn" class="btn btn-ghost btn-sm btn-danger btn-ic">
+              <svg class="btn-ic-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span>Paquet de départ</span>
+            </button>
           </div>
         </div>
 
