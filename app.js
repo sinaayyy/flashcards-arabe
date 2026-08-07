@@ -259,7 +259,11 @@
   }
 
   // Listes considérées comme « kits » (exclues du paquet de base arabe littéraire).
-  const KIT_CATS = ["Kit de survie", "Se présenter"];
+  const KIT_CATS = [
+    "Kit de survie", "Se présenter",
+    "Jumu'a — Rituel & ouverture", "Jumu'a — Vocabulaire du sermon",
+    "Jumu'a — Coran & hadith", "Jumu'a — Thèmes fréquents",
+  ];
   function isKitCat(c) { return KIT_CATS.indexOf(c) !== -1; }
 
   // Paquet source d'une langue : arabe littéraire = DEFAULT_WORDS, dialectes = DIALECT_PACKS.

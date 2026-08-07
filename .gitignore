@@ -20,3 +20,8 @@ node_modules/
 # Supports de cours (PDF/DOCX/scans du prof). Matière première pour fabriquer
 # les cartes, pas du code du site — et le dépôt est public.
 support_cours/
+
+# Corpus de khutbas + scripts d'analyse ayant servi à bâtir le bloc « Jumu'a ».
+# Matière première de travail, pas du code du site : on ne la commite pas.
+# Voir REPRISE-jumua.md pour savoir comment la régénérer.
+_jumua-corpus/

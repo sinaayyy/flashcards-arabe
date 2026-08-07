@@ -15,6 +15,10 @@ Petit site pour réviser du vocabulaire arabe avec des flashcards. 100 % statiqu
 - 🚿 Cours 2 « الحمّام » : 69 cartes en 2 listes — le lexique de la salle de bain
   et de la routine (48), et les أسماء الإشارة / démonstratifs (21). Chargeables
   depuis l'onglet « Gérer » sans perdre la progression en cours.
+- 🕌 Bloc « Jumu'a » : 275 cartes pour suivre la prêche du vendredi en arabe
+  littéraire, en 4 listes à charger à la demande (rituel & ouverture, vocabulaire
+  du sermon, coran & hadith, thèmes fréquents). Construit à partir d'une analyse
+  de fréquence sur un corpus de 200 khutbas complètes.
 
 ## Utilisation en local
 Ouvre simplement `index.html` dans ton navigateur (double-clic).
