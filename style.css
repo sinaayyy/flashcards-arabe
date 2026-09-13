@@ -657,8 +657,14 @@ html, body {
 }
 
 .card-face {
-  position: absolute;
-  inset: 0;
+  /* Les deux faces sont empilées dans la même cellule de grille (.card est en
+     display:grid) plutôt qu'en position:absolute. Différence : en absolu elles
+     ne poussaient pas la hauteur du parent, donc la carte restait à sa
+     min-height et tout texte arabe passant à la 2e ligne était coupé —
+     overflow:hidden ne scrolle pas. En flux, la rangée prend la hauteur de la
+     face la plus haute et la carte grandit avec le texte. */
+  grid-area: 1 / 1;
+  position: relative; /* conserve l'ancrage du filet .card-corner */
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -16,3 +16,7 @@ Thumbs.db
 # Dépendances / build (aucune pour ce site statique, mais au cas où)
 node_modules/
 .vercel
+
+# Supports de cours (PDF/DOCX/scans du prof). Matière première pour fabriquer
+# les cartes, pas du code du site — et le dépôt est public.
+support_cours/
