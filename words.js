@@ -221,6 +221,50 @@ window.DEFAULT_WORDS = [
   { ar: "أُنَشِّفُ جِسْمِي بِالْمِنْشَفَةِ", translit: "unashshifu jismī bi-l-minshafati", fr: "je me sèche le corps avec la serviette", cat: "Cours 2 — Le hammam" },
   { ar: "أُنَظِّفُ أَسْنَانِي بِالْفُرْشَاةِ وَالْمَعْجُونِ", translit: "unaẓẓifu asnānī bi-l-furshāti wa-l-maʿjūni", fr: "je me brosse les dents avec la brosse et le dentifrice", cat: "Cours 2 — Le hammam" },
 
+
+  // Le corps, atomisé depuis les phrases du texte
+  { ar: "الْوَجْهُ", translit: "al-wajhu", fr: "le visage", cat: "Cours 2 — Le hammam" },
+  { ar: "الْأَسْنَانُ", translit: "al-asnānu", fr: "les dents", cat: "Cours 2 — Le hammam" },
+  { ar: "الشَّعْرُ", translit: "ash-shaʿru", fr: "les cheveux", cat: "Cours 2 — Le hammam" },
+  { ar: "الْيَدُ", translit: "al-yadu", fr: "la main", cat: "Cours 2 — Le hammam" },
+
+  // Moments de la journée
+  { ar: "النَّوْمُ", translit: "an-nawmu", fr: "le sommeil", cat: "Cours 2 — Le hammam" },
+  { ar: "الْعَشَاءُ", translit: "al-ʿashāʾu", fr: "le dîner", cat: "Cours 2 — Le hammam" },
+  { ar: "الصَّبَاحُ ≠ الْمَسَاءُ", translit: "aṣ-ṣabāḥu ≠ al-masāʾu", fr: "le matin ≠ le soir", cat: "Cours 2 — Le hammam" },
+  { ar: "قَبْلَ ≠ بَعْدَ", translit: "qabla ≠ baʿda", fr: "avant ≠ après", cat: "Cours 2 — Le hammam" },
+
+  // Les verbes du texte, en forme de citation (accompli / inaccompli)
+  { ar: "غَسَلَ / يَغْسِلُ / الْغَسْلُ", translit: "ghasala / yaghsilu / al-ghaslu", fr: "laver / il lave / le lavage", cat: "Cours 2 — Le hammam" },
+  { ar: "نَظَّفَ / يُنَظِّفُ / التَّنْظِيفُ", translit: "naẓẓafa / yunaẓẓifu / at-tanẓīfu", fr: "nettoyer / il nettoie / le nettoyage", cat: "Cours 2 — Le hammam" },
+  { ar: "نَظَرَ / يَنْظُرُ / النَّظَرُ", translit: "naẓara / yanẓuru / an-naẓaru", fr: "regarder / il regarde / le regard", cat: "Cours 2 — Le hammam" },
+  { ar: "مَشَّطَ / يُمَشِّطُ", translit: "mashshaṭa / yumashshiṭu", fr: "peigner / il peigne", cat: "Cours 2 — Le hammam" },
+  { ar: "مَلَأَ / يَمْلَأُ", translit: "malaʾa / yamlaʾu", fr: "remplir / il remplit", cat: "Cours 2 — Le hammam" },
+  { ar: "اسْتَحَمَّ / يَسْتَحِمُّ", translit: "istaḥamma / yastaḥimmu", fr: "se laver / il se lave", cat: "Cours 2 — Le hammam" },
+  { ar: "نَشَّفَ / يُنَشِّفُ", translit: "nashshafa / yunashshifu", fr: "sécher / il sèche", cat: "Cours 2 — Le hammam" },
+  { ar: "أَخَذَ / يَأْخُذُ", translit: "akhadha / yaʾkhudhu", fr: "prendre / il prend", cat: "Cours 2 — Le hammam" },
+  { ar: "فَتَحَ / يَفْتَحُ", translit: "fataḥa / yaftaḥu", fr: "ouvrir / il ouvre", cat: "Cours 2 — Le hammam" },
+  { ar: "دَخَلَ / يَدْخُلُ", translit: "dakhala / yadkhulu", fr: "entrer / il entre", cat: "Cours 2 — Le hammam" },
+  { ar: "خَرَجَ / يَخْرُجُ", translit: "kharaja / yakhruju", fr: "sortir / il sort", cat: "Cours 2 — Le hammam" },
+  { ar: "لَبِسَ / يَلْبَسُ", translit: "labisa / yalbasu", fr: "s'habiller / il met (un vêtement)", cat: "Cours 2 — Le hammam" },
+  { ar: "اسْتَيْقَظَ / يَسْتَيْقِظُ", translit: "istayqaẓa / yastayqiẓu", fr: "se réveiller / il se réveille", cat: "Cours 2 — Le hammam" },
+  { ar: "فَعَلَ / يَفْعَلُ", translit: "faʿala / yafʿalu", fr: "faire / il fait", cat: "Cours 2 — Le hammam" },
+  { ar: "يُوجَدُ", translit: "yūjadu", fr: "il y a / il se trouve", cat: "Cours 2 — Le hammam" },
+
+  // Qualité de l'eau
+  { ar: "سَاخِنٌ ≠ بَارِدٌ", translit: "sākhinun ≠ bāridun", fr: "chaud ≠ froid", cat: "Cours 2 — Le hammam" },
+
+  // Les interrogatifs, tirés des questions de compréhension
+  { ar: "مَاذَا", translit: "mādhā", fr: "que ? quoi ?", cat: "Cours 2 — Le hammam" },
+  { ar: "بِمَاذَا", translit: "bimādhā", fr: "avec quoi ?", cat: "Cours 2 — Le hammam" },
+  { ar: "مَتَى", translit: "matā", fr: "quand ?", cat: "Cours 2 — Le hammam" },
+  { ar: "كَيْفَ", translit: "kayfa", fr: "comment ?", cat: "Cours 2 — Le hammam" },
+  { ar: "مِنْ أَيْنَ", translit: "min ayna", fr: "d'où ?", cat: "Cours 2 — Le hammam" },
+
+  // Divers
+  { ar: "فَقَطْ", translit: "faqaṭ", fr: "seulement", cat: "Cours 2 — Le hammam" },
+  { ar: "مُبَاشَرَةً", translit: "mubāsharatan", fr: "directement, tout de suite", cat: "Cours 2 — Le hammam" },
+  { ar: "الرَّاوِي", translit: "ar-rāwī", fr: "le narrateur (celui qui raconte le texte)", cat: "Cours 2 — Le hammam" },
   // --- 2/2 · أسماء الإشارة : le démonstratif, proche ou lointain ----------
 
   // Le tableau du cours : proche / lointain × genre × nombre
@@ -247,6 +291,42 @@ window.DEFAULT_WORDS = [
   { ar: "هَؤُلَاءِ هُمُ الْأَوْلَادُ", translit: "hāʾulāʾi humu l-awlādu", fr: "ce sont les enfants (proches)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "أُولَئِكَ هُمُ الْجِيرَانُ", translit: "ulāʾika humu l-jīrānu", fr: "ce sont les voisins (là-bas)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "الصَّابُونُ هُنَا وَالْمِنْشَفَةُ هُنَاكَ", translit: "aṣ-ṣābūnu hunā wa-l-minshafatu hunāka", fr: "le savon est ici, la serviette là-bas", cat: "Cours 2 — Les démonstratifs" },
+
+  // Le métalangage de la leçon : ce que dit le tableau du cours
+  { ar: "أَسْمَاءُ الْإِشَارَةِ", translit: "asmāʾu l-ishārati", fr: "les noms de démonstration (les démonstratifs)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "اسْمُ الْإِشَارَةِ", translit: "ismu l-ishārati", fr: "le démonstratif (un seul)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُفْرَدٌ", translit: "mufradun", fr: "singulier", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُثَنَّى", translit: "muthannā", fr: "duel (deux)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "جَمْعٌ", translit: "jamʿun", fr: "pluriel", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُذَكَّرٌ ≠ مُؤَنَّثٌ", translit: "mudhakkarun ≠ muʾannathun", fr: "masculin ≠ féminin", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "قَرِيبٌ ≠ بَعِيدٌ", translit: "qarībun ≠ baʿīdun", fr: "proche ≠ lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "رَفْعٌ", translit: "rafʿun", fr: "cas sujet (nominatif, -u)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "نَصْبٌ", translit: "naṣbun", fr: "cas direct (accusatif, -a)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "جَرٌّ", translit: "jarrun", fr: "cas indirect (génitif, -i)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "عَاقِلٌ", translit: "ʿāqilun", fr: "doué de raison (pluriel de personnes)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "الْعَدَدُ", translit: "al-ʿadadu", fr: "le nombre (singulier / duel / pluriel)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "النَّوْعُ", translit: "an-nawʿu", fr: "le genre (masculin / féminin)", cat: "Cours 2 — Les démonstratifs" },
+
+  // --- Bonus · Les consignes des exercices --------------------------------
+  // Ce qui est écrit en haut de chaque exercice. Ce n'est pas le sujet du
+  // cours, mais c'est ce qu'il faut savoir lire pour faire la feuille.
+  { ar: "تَمْرِينٌ", translit: "tamrīnun", fr: "un exercice", cat: "Cours 2 — Consignes" },
+  { ar: "النَّصُّ", translit: "an-naṣṣu", fr: "le texte", cat: "Cours 2 — Consignes" },
+  { ar: "أَسْئِلَةُ الْفَهْمِ", translit: "asʾilatu l-fahmi", fr: "questions de compréhension", cat: "Cours 2 — Consignes" },
+  { ar: "الْإِجَابَةُ الصَّحِيحَةُ", translit: "al-ijābatu ṣ-ṣaḥīḥatu", fr: "la bonne réponse", cat: "Cours 2 — Consignes" },
+  { ar: "صَحِيحٌ أَمْ خَطَأٌ", translit: "ṣaḥīḥun am khaṭaʾun", fr: "vrai ou faux ?", cat: "Cours 2 — Consignes" },
+  { ar: "اِخْتَرْ", translit: "ikhtar", fr: "choisis", cat: "Cours 2 — Consignes" },
+  { ar: "أَكْمِلْ", translit: "akmil", fr: "complète", cat: "Cours 2 — Consignes" },
+  { ar: "الْفَرَاغُ", translit: "al-farāghu", fr: "le blanc (à compléter)", cat: "Cours 2 — Consignes" },
+  { ar: "اُكْتُبْ", translit: "uktub", fr: "écris", cat: "Cours 2 — Consignes" },
+  { ar: "أَجِبْ", translit: "ajib", fr: "réponds", cat: "Cours 2 — Consignes" },
+  { ar: "رَتِّبْ", translit: "rattib", fr: "mets en ordre", cat: "Cours 2 — Consignes" },
+  { ar: "كَوِّنْ جُمْلَةً", translit: "kawwin jumlatan", fr: "forme une phrase", cat: "Cours 2 — Consignes" },
+  { ar: "جُمْلَةٌ كَامِلَةٌ", translit: "jumlatun kāmilatun", fr: "une phrase complète", cat: "Cours 2 — Consignes" },
+  { ar: "اِسْتَمِعْ", translit: "istamiʿ", fr: "écoute", cat: "Cours 2 — Consignes" },
+  { ar: "اِقْرَأْ", translit: "iqraʾ", fr: "lis", cat: "Cours 2 — Consignes" },
+  { ar: "اُنْظُرِ الصُّورَةَ", translit: "unẓuri ṣ-ṣūrata", fr: "regarde l'image", cat: "Cours 2 — Consignes" },
+  { ar: "الْمُفْرَدَاتُ", translit: "al-mufradātu", fr: "le vocabulaire", cat: "Cours 2 — Consignes" },
 
   // =====================================================================
   // 🕌 Bloc « Jumu'a » — comprendre la prêche du vendredi (arabe littéraire)
