@@ -1733,10 +1733,19 @@
   }
 
   // Normalise les cartes chargées (catégorie + scores par sens, anciens formats).
+  // Catégories renommées après coup. Les cartes déjà en base (localStorage ou
+  // cloud) gardent l'ancien nom : sans ce réétiquetage la liste s'afficherait
+  // vide, et sa puce resterait bloquée à 0/N sans jamais rien charger, puisque
+  // loadKit() dédoublonne sur « ar|fr » sans regarder la catégorie.
+  const CAT_RENAMES = {
+    "Cours 2": "Cours — Maison & jardin", // cours de 2025-26 ; le n° 2 resservait cette année
+  };
+
   function migrate() {
     const catByAr = {};
     (window.DEFAULT_WORDS || []).forEach((w) => { if (w.cat) catByAr[w.ar] = w.cat; });
     cards.forEach((c) => {
+      if (c.cat && CAT_RENAMES[c.cat]) c.cat = CAT_RENAMES[c.cat];
       if (!c.cat || c.cat === "Autres") c.cat = catByAr[c.ar] || c.cat || "Autres";
       if (typeof c.af !== "number" || typeof c.fa !== "number") {
         // Ancien format : un seul "score" (ou booléen "known") → réparti sur les deux sens.
@@ -1746,6 +1755,12 @@
       }
       delete c.known; delete c.score;
     });
+    // Le catalogue et le filtre actif portent aussi l'ancien nom.
+    if (Array.isArray(lists)) {
+      lists = lists.map((n) => CAT_RENAMES[n] || n)
+                   .filter((n, i, a) => a.indexOf(n) === i);
+    }
+    if (CAT_RENAMES[cat]) cat = CAT_RENAMES[cat];
   }
 
   // --- Onboarding (premier lancement) ---
