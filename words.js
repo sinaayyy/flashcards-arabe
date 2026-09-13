@@ -203,7 +203,7 @@ window.DEFAULT_WORDS = [
   { ar: "كَبِيرَةٌ ≠ صَغِيرَةٌ", translit: "kabīratun ≠ ṣaghīratun", fr: "grande ≠ petite", cat: "Cours 2 — Le hammam" },
   { ar: "الْحَارُّ / الدَّافِئُ / الْبَارِدُ", translit: "al-ḥārru / ad-dāfiʾu / al-bāridu", fr: "chaud / tiède / froid", cat: "Cours 2 — Le hammam" },
   { ar: "عَطِرٌ", translit: "ʿaṭirun", fr: "parfumé", cat: "Cours 2 — Le hammam" },
-  { ar: "مُنْتَعِشًا وَنَظِيفًا", translit: "muntaʿishan wa-naẓīfan", fr: "frais et propre (en sortant)", cat: "Cours 2 — Le hammam" },
+  { ar: "يَخْرُجُ مُنْتَعِشًا وَنَظِيفًا", translit: "yakhruju muntaʿishan wa-naẓīfan", fr: "il sort frais et propre (état, ḥāl à l'accusatif)", cat: "Cours 2 — Le hammam" },
   { ar: "كُلَّ صَبَاحٍ", translit: "kulla ṣabāḥin", fr: "chaque matin", cat: "Cours 2 — Le hammam" },
 
   // Les phrases du texte « هَذَا حَمَّامِي »
@@ -239,7 +239,7 @@ window.DEFAULT_WORDS = [
   // Les phrases-modèles, toutes prises dans le hammam
   { ar: "هَذَا هُوَ الصَّابُونُ الْعَطِرُ", translit: "hādhā huwa ṣ-ṣābūnu l-ʿaṭiru", fr: "voici le savon parfumé", cat: "Cours 2 — Les démonstratifs" },
   { ar: "هَذِهِ هِيَ الْمِرْآةُ", translit: "hādhihi hiya l-mirʾātu", fr: "voici le miroir", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هَذَانِ حَوْضَانِ", translit: "hādhāni ḥawḍāni", fr: "voici deux bacs (duel masculin)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَذَانِ حَوْضَانِ", translit: "hādhāni ḥawḍāni", fr: "voici deux baignoires (duel masculin)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "هَاتَانِ مِنْشَفَتَانِ", translit: "hātāni minshafatāni", fr: "voici deux serviettes (duel féminin)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "ذَلِكَ هُوَ حَوْضُ الِاسْتِحْمَامِ", translit: "dhālika huwa ḥawḍu l-istiḥmāmi", fr: "là-bas, c'est la baignoire", cat: "Cours 2 — Les démonstratifs" },
   { ar: "تِلْكَ هِيَ الْمِنْشَفَةُ عَلَى الْحَائِطِ", translit: "tilka hiya l-minshafatu ʿalā l-ḥāʾiṭi", fr: "là-bas, c'est la serviette au mur", cat: "Cours 2 — Les démonstratifs" },
@@ -322,7 +322,7 @@ window.DEFAULT_WORDS = [
   { ar: "وَيَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ وَالْبَغْيِ", translit: "wa-yanhā ʿani l-faḥshāʾi wa-l-munkari wa-l-baghyi", fr: "et Il interdit la turpitude, le blâmable et l'injustice", cat: "Jumu'a — Rituel & ouverture" },
   { ar: "يَعِظُكُمْ لَعَلَّكُمْ تَذَكَّرُونَ", translit: "yaʿiẓukum laʿallakum tadhakkarūna", fr: "Il vous exhorte, peut-être vous souviendrez-vous", cat: "Jumu'a — Rituel & ouverture" },
   { ar: "فَاذْكُرُوا اللَّهَ يَذْكُرْكُمْ", translit: "fa-dhkurū llāha yadhkurkum", fr: "invoquez Allah, Il se souviendra de vous", cat: "Jumu'a — Rituel & ouverture" },
-  { ar: "وَاشْكُرُوهُ يَزِدْكُمْ", translit: "wa-shkurūhu yazidkum", fr: "remerciez-Le, Il vous donnera davantage", cat: "Jumu'a — Rituel & ouverture" },
+  { ar: "وَاشْكُرُوهُ عَلَى نِعَمِهِ يَزِدْكُمْ", translit: "wa-shkurūhu ʿalā niʿamihi yazidkum", fr: "remerciez-Le pour Ses bienfaits, Il vous donnera davantage", cat: "Jumu'a — Rituel & ouverture" },
   { ar: "وَأَقِيمُوا الصَّلَاةَ", translit: "wa-aqīmū ṣ-ṣalāta", fr: "et accomplissez la prière", cat: "Jumu'a — Rituel & ouverture" },
 
   // --- 2/4 · Vocabulaire du sermon : le noyau abstrait qui porte le propos --
@@ -479,7 +479,7 @@ window.DEFAULT_WORDS = [
   { ar: "وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا", translit: "wa-man yattaqi llāha yajʿal lahu makhrajan", fr: "à qui craint Allah, Il ménage une issue", cat: "Jumu'a — Coran & hadith" },
   { ar: "إِنَّ أَكْرَمَكُمْ عِنْدَ اللَّهِ أَتْقَاكُمْ", translit: "inna akramakum ʿinda llāhi atqākum", fr: "le plus noble d'entre vous auprès d'Allah est le plus pieux", cat: "Jumu'a — Coran & hadith" },
   // Fragments de hadiths qui reviennent en boucle
-  { ar: "إِنَّ أَحْسَنَ الْحَدِيثِ كِتَابُ اللَّهِ", translit: "inna aḥsana l-ḥadīthi kitābu llāhi", fr: "la meilleure parole est le Livre d'Allah", cat: "Jumu'a — Coran & hadith" },
+  { ar: "إِنَّ أَصْدَقَ الْحَدِيثِ كِتَابُ اللَّهِ", translit: "inna aṣdaqa l-ḥadīthi kitābu llāhi", fr: "la plus véridique des paroles est le Livre d'Allah", cat: "Jumu'a — Coran & hadith" },
   { ar: "وَخَيْرَ الْهَدْيِ هَدْيُ مُحَمَّدٍ", translit: "wa-khayra l-hadyi hadyu muḥammadin", fr: "et la meilleure guidance est celle de Muhammad", cat: "Jumu'a — Coran & hadith" },
   { ar: "وَشَرَّ الْأُمُورِ مُحْدَثَاتُهَا", translit: "wa-sharra l-umūri muḥdathātuhā", fr: "et les pires choses sont les nouveautés (en religion)", cat: "Jumu'a — Coran & hadith" },
   { ar: "وَكُلَّ بِدْعَةٍ ضَلَالَةٌ", translit: "wa-kulla bidʿatin ḍalālatun", fr: "et toute innovation est un égarement", cat: "Jumu'a — Coran & hadith" },
@@ -487,7 +487,7 @@ window.DEFAULT_WORDS = [
   { ar: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ", translit: "man kāna yuʾminu bi-llāhi wa-l-yawmi l-ākhiri", fr: "celui qui croit en Allah et au Jour dernier", cat: "Jumu'a — Coran & hadith" },
   { ar: "فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", translit: "fal-yaqul khayran aw li-yaṣmut", fr: "qu'il dise du bien ou qu'il se taise", cat: "Jumu'a — Coran & hadith" },
   { ar: "الدِّينُ النَّصِيحَةُ", translit: "ad-dīnu n-naṣīḥatu", fr: "la religion, c'est le bon conseil", cat: "Jumu'a — Coran & hadith" },
-  { ar: "الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ", translit: "al-muslimu man salima l-muslimūna min lisānihi wa-yadihi", fr: "le musulman est celui dont les autres sont préservés de sa langue et de sa main", cat: "Jumu'a — Coran & hadith" },
+  { ar: "الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ", translit: "al-muslimu man salima l-muslimūna min lisānihi wa-yadihi", fr: "le musulman est celui dont les musulmans sont préservés de sa langue et de sa main", cat: "Jumu'a — Coran & hadith" },
   { ar: "اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ", translit: "ittaqi llāha ḥaythumā kunta", fr: "crains Allah où que tu sois", cat: "Jumu'a — Coran & hadith" },
   { ar: "وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ", translit: "wa-khāliqi n-nāsa bi-khuluqin ḥasanin", fr: "et comporte-toi bien avec les gens", cat: "Jumu'a — Coran & hadith" },
 
