@@ -1,20 +1,14 @@
 # Reprise — bloc « Jumu'a »
 
-Note de passation, écrite le 2026-08-07. À supprimer une fois la feature validée
-et mergée.
+Note de passation écrite le 2026-08-07, mise à jour le 2026-09-13 : le bloc est
+mergé et déployé. Le fichier reste tant que la réserve sur la vocalisation
+n'est pas levée — il documente aussi comment régénérer le corpus.
 
 ## Où on en est
 
-Branche **`feat/bloc-jumua`**. Le travail est **fait et non commité** :
-
-```
- M .gitignore     ignore _jumua-corpus/
- M README.md      +4 lignes dans « Fonctionnalités »
- M app.js         KIT_CATS passe de 2 à 6 entrées (ligne ~262)
- M words.js       +307 lignes : 275 cartes ajoutées à DEFAULT_WORDS
-?? REPRISE-jumua.md   ce fichier
-?? _jumua-corpus/     corpus + scripts (gitignoré)
-```
+**Mergé dans `main` le 2026-09-13** (commit `2307b56`, rebasé sur le bloc
+« Cours 2 — hammam »). `app.js` : `KIT_CATS` passe de 2 à 6 entrées.
+`words.js` : 275 cartes ajoutées à `DEFAULT_WORDS`.
 
 **275 cartes** en 4 listes opt-in :
 
@@ -25,42 +19,30 @@ Branche **`feat/bloc-jumua`**. Le travail est **fait et non commité** :
 | `Jumu'a — Coran & hadith` | 61 |
 | `Jumu'a — Thèmes fréquents` | 61 |
 
-## Ce qui reste à faire
+## Vérification navigateur — faite le 2026-09-13
 
-**La vérification visuelle en navigateur.** C'est le seul point ouvert.
+Le point qui bloquait. L'extension Claude in Chrome n'était toujours pas
+joignable ; la vérification a été faite avec Playwright, en mesurant les
+478 cartes du paquet à 320, 375 et 1280 px.
 
-L'extension Claude in Chrome a été installée en cours de session mais n'était pas
-visible depuis celle-ci (liste d'outils figée au démarrage du CLI). Il faut une
-**nouvelle session Claude Code** pour qu'elle soit détectée — `/chrome` si la
-connexion ne se fait pas seule.
+- Les 4 puces `Jumu'a — …` s'affichent en `0/55`, `0/98`, `0/61`, `0/61`.
+- Un clic charge la liste (185 → 246 cartes pour « Coran & hadith »), la puce
+  passe en `✓`, la catégorie apparaît dans le filtre, la progression est
+  conservée.
+- **Aucune carte n'est coupée**, sur les 478. Les trois cartes identifiées
+  comme les plus à risque tiennent en entier :
+  `الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ` s'affiche sur 3 lignes
+  dans une carte de 362 px.
+- « Réinitialiser » → paquet de départ de 185 cartes, dont **0** Jumu'a.
+- 0 erreur console.
 
-Pour servir le site en local :
-
-```bash
-cd flashcards-arabe
-python -m http.server 8765
-# puis http://127.0.0.1:8765/index.html
-```
-
-À contrôler :
-
-1. Onglet **Gérer** → « Listes prêtes à charger » : les 4 puces `Jumu'a — …`
-   avec `0/55`, `0/98`, `0/61`, `0/61`.
-2. Cliquer une puce → les cartes se chargent, la liste apparaît dans le filtre
-   par catégorie, la puce passe en `✓` une fois tout chargé.
-3. Réviser dans les deux sens (AR→FR et FR→AR) : affichage RTL, vocalisation,
-   translittération.
-4. **Largeur mobile ~375 px** — le point le plus important. `.card-face` est en
-   `position:absolute; inset:0; overflow:hidden` (`style.css:659`) sur une carte
-   de 250 px en mobile (`style.css:1266`) : un texte trop long est **coupé, pas
-   scrollé**. Les cartes ont été plafonnées à 8 mots arabes, mais c'est une
-   estimation, pas une mesure. Vérifier les plus longues :
-   - `الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ` (7 mots, 62 caractères)
-   - `وَمَا خَلَقْتُ الْجِنَّ وَالْإِنْسَ إِلَّا لِيَعْبُدُونِ`
-   - `وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ`
-5. « Réinitialiser » → vérifier que le paquet de départ (116 cartes) ne contient
-   **aucune** carte Jumu'a.
-6. Recharger la page → cartes chargées et progression conservées (`localStorage`).
+La cause du risque a d'ailleurs été corrigée à la racine : `.card-face` était
+en `position:absolute; inset:0` dans une `.card` en `display:grid`, donc les
+faces ne poussaient pas la hauteur du parent et tout texte arabe passant à la
+2e ligne était tronqué (`overflow:hidden` ne scrolle pas). Les faces sont
+passées en `grid-area: 1 / 1` — voir le commentaire dans `style.css:659`.
+Avant ce correctif, 17 cartes du paquet étaient coupées à 375 px, dont 4 déjà
+en production.
 
 ## Ce qui a déjà été vérifié (en headless, Node)
 
@@ -81,15 +63,15 @@ w.forEach(x=>c[x.cat]=(c[x.cat]||0)+1);
 Object.keys(c).filter(k=>k.startsWith('Jumu')).forEach(k=>console.log(c[k],k));"
 ```
 
-## Deux réserves à lever avant mise en ligne
+## La réserve qui reste
 
-**1. La vocalisation n'est pas sourcée.** Les textes du corpus ne sont pas
+**La vocalisation n'est pas sourcée.** Les textes du corpus ne sont pas
 vocalisés : l'analyse de fréquence a dit *quels* mots méritaient une carte, mais
 les harakat et l'i'rab des 275 cartes ont été écrits par Claude. C'est le point le
 plus susceptible de contenir une erreur, et une harakat fausse s'apprend mal.
 Une relecture par quelqu'un de solide en grammaire arabe serait utile.
 
-**2. Traductions du sens, sans glose.** Les citations coraniques et fragments de
+**Traductions du sens, sans glose.** Les citations coraniques et fragments de
 hadith sont rendus au sens, sans interprétation. Rien n'a été tranché sur des
 points demandant un arbitrage théologique. Signaler tout terme mal rendu plutôt
 que de supposer un choix délibéré.
