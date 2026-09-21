@@ -12,10 +12,15 @@ Petit site pour réviser du vocabulaire arabe avec des flashcards. 100 % statiqu
 - Marquer un mot « connu », compteur de progression.
 - Ajouter / supprimer des mots (sauvegardés dans le navigateur via `localStorage`).
 - Bouton pour réinitialiser au paquet de départ.
-- 🚿 Cours 2 « الحمّام » : 131 cartes en 3 listes — le lexique de la salle de bain
-  et de la routine (80), les أسماء الإشارة / démonstratifs et le métalangage
-  grammatical (34), et les consignes d'exercice (17). Chargeables depuis
-  l'onglet « Gérer » sans perdre la progression en cours.
+- 🚿 Cours 2 « الحمّام » : 122 cartes, une carte par mot, en 3 listes — le
+  lexique de la salle de bain et de la routine (70), les أسماء الإشارة /
+  démonstratifs et le métalangage grammatical (30), et les consignes d'exercice
+  (22). Chargeables depuis l'onglet « Gérer » sans perdre la progression en
+  cours. Les anciennes cartes-phrases sont retirées automatiquement des paquets
+  enregistrés (`RETIRED_CARDS` dans `words.js`).
+- 🍳 Cours 3 « هَذَا مَطْبَخِي » : 107 cartes, une carte par mot, en 3 listes —
+  le lexique de la cuisine avec les petits mots du texte (65), les أسماء
+  الموصولة / relatifs et le duel (20), et les consignes de la fiche (22).
 - 🕌 Bloc « Jumu'a » : 275 cartes pour suivre la prêche du vendredi en arabe
   littéraire, en 4 listes à charger à la demande (rituel & ouverture, vocabulaire
   du sermon, coran & hadith, thèmes fréquents). Construit à partir d'une analyse

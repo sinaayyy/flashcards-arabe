@@ -155,117 +155,102 @@ window.DEFAULT_WORDS = [
   // 🚿 Cours 2 — « الحمّام » : la salle de bain et la routine
   //
   // Bâti sur le support du cours : le texte « هَذَا حَمَّامِي », le cahier
-  // d'exercices d'écoute (A1/A2) et les contraires notés à la main sur le
-  // scan. Deux listes : le lexique d'un côté, le point de grammaire de
-  // l'autre, pour pouvoir piocher les démonstratifs en bloc serré.
+  // d'exercices d'écoute (A1/A2), les contraires notés à la main sur le
+  // scan et les notes du cahier.
   //
-  // Cartes tenues courtes pour rester lisibles d'un coup d'œil ; la carte
-  // s'agrandit désormais avec le texte (.card-face en grid-area, style.css:659).
+  // Une carte = un mot, comme au cours 3 : les phrases du texte, les
+  // expressions et les paires (≠, accompli / inaccompli) ont été
+  // fragmentées. Les anciennes cartes sont listées dans RETIRED_CARDS, en
+  // fin de paquet, pour disparaître des paquets déjà enregistrés.
   // =====================================================================
 
-  // --- 1/2 · Le hammam : objets, gestes, contraires, phrases -------------
+  // --- 1/3 · Le hammam : objets, corps, verbes, qualificatifs ------------
 
   // Ce qu'il y a dans la pièce
   { ar: "الْحَمَّامُ", translit: "al-ḥammāmu", fr: "la salle de bain / le hammam", cat: "Cours 2 — Le hammam" },
-  { ar: "مِرْآةٌ كَبِيرَةٌ", translit: "mirʾātun kabīratun", fr: "un grand miroir", cat: "Cours 2 — Le hammam" },
-  { ar: "مَغْسَلَةٌ بَيْضَاءُ", translit: "maghsalatun bayḍāʾu", fr: "un lavabo blanc", cat: "Cours 2 — Le hammam" },
-  { ar: "حَوْضُ الِاسْتِحْمَامِ", translit: "ḥawḍu l-istiḥmāmi", fr: "la baignoire", cat: "Cours 2 — Le hammam" },
-  { ar: "مِنْشَفَةٌ نَاعِمَةٌ", translit: "minshafatun nāʿimatun", fr: "une serviette douce", cat: "Cours 2 — Le hammam" },
-  { ar: "الصَّابُونُ الْعَطِرُ", translit: "aṣ-ṣābūnu l-ʿaṭiru", fr: "le savon parfumé", cat: "Cours 2 — Le hammam" },
-  { ar: "فُرْشَاةُ الْأَسْنَانِ", translit: "furshātu l-asnāni", fr: "la brosse à dents", cat: "Cours 2 — Le hammam" },
+  { ar: "مِرْآةٌ", translit: "mirʾātun", fr: "un miroir", cat: "Cours 2 — Le hammam" },
+  { ar: "مَغْسَلَةٌ", translit: "maghsalatun", fr: "un lavabo", cat: "Cours 2 — Le hammam" },
+  { ar: "حَوْضٌ", translit: "ḥawḍun", fr: "une baignoire (ḥawḍu l-istiḥmāmi) / un bassin", cat: "Cours 2 — Le hammam" },
+  { ar: "مِنْشَفَةٌ", translit: "minshafatun", fr: "une serviette de toilette", cat: "Cours 2 — Le hammam" },
+  { ar: "الصَّابُونُ", translit: "aṣ-ṣābūnu", fr: "le savon", cat: "Cours 2 — Le hammam" },
+  { ar: "فُرْشَاةٌ", translit: "furshātun", fr: "une brosse (furshātu l-asnāni : la brosse à dents)", cat: "Cours 2 — Le hammam" },
   { ar: "الْمَعْجُونُ", translit: "al-maʿjūnu", fr: "le dentifrice", cat: "Cours 2 — Le hammam" },
   { ar: "الْحَنَفِيَّةُ", translit: "al-ḥanafiyyatu", fr: "le robinet", cat: "Cours 2 — Le hammam" },
   { ar: "الْحَائِطُ", translit: "al-ḥāʾiṭu", fr: "le mur", cat: "Cours 2 — Le hammam" },
   { ar: "الضَّوْءُ", translit: "aḍ-ḍawʾu", fr: "la lumière", cat: "Cours 2 — Le hammam" },
-  { ar: "الْمَاءُ السَّاخِنُ", translit: "al-māʾu s-sākhinu", fr: "l'eau chaude", cat: "Cours 2 — Le hammam" },
+  { ar: "الْمَاءُ", translit: "al-māʾu", fr: "l'eau", cat: "Cours 2 — Le hammam" },
 
-  // La routine, du réveil à la sortie (ordre du texte)
-  { ar: "الِاسْتِيقَاظُ", translit: "al-istīqāẓu", fr: "le réveil (le fait de se réveiller)", cat: "Cours 2 — Le hammam" },
-  { ar: "بَعْدَ الِاسْتِيقَاظِ", translit: "baʿda l-istīqāẓi", fr: "après le réveil", cat: "Cours 2 — Le hammam" },
-  { ar: "يَدْخُلُ الْحَمَّامَ", translit: "yadkhulu l-ḥammāma", fr: "il entre dans la salle de bain", cat: "Cours 2 — Le hammam" },
-  { ar: "أَفْتَحُ الْحَنَفِيَّةَ", translit: "aftaḥu l-ḥanafiyyata", fr: "j'ouvre le robinet", cat: "Cours 2 — Le hammam" },
-  { ar: "يَغْسِلُ وَجْهَهُ", translit: "yaghsilu wajhahu", fr: "il se lave le visage", cat: "Cours 2 — Le hammam" },
-  { ar: "يُنَظِّفُ أَسْنَانَهُ", translit: "yunaẓẓifu asnānahu", fr: "il se brosse les dents", cat: "Cours 2 — Le hammam" },
-  { ar: "يَنْظُرُ فِي الْمِرْآةِ", translit: "yanẓuru fī l-mirʾāti", fr: "il se regarde dans le miroir", cat: "Cours 2 — Le hammam" },
-  { ar: "يُمَشِّطُ شَعْرَهُ", translit: "yumashshiṭu shaʿrahu", fr: "il se peigne les cheveux", cat: "Cours 2 — Le hammam" },
-  { ar: "يَمْلَأُ حَوْضَ الِاسْتِحْمَامِ", translit: "yamlaʾu ḥawḍa l-istiḥmāmi", fr: "il remplit la baignoire", cat: "Cours 2 — Le hammam" },
-  { ar: "يَسْتَحِمُّ", translit: "yastaḥimmu", fr: "il se lave / il prend un bain", cat: "Cours 2 — Le hammam" },
-  { ar: "يُنَشِّفُ جِسْمَهُ", translit: "yunashshifu jismahu", fr: "il se sèche le corps", cat: "Cours 2 — Le hammam" },
-  { ar: "يَأْخُذُ الْمِنْشَفَةَ مِنَ الْحَائِطِ", translit: "yaʾkhudhu l-minshafata mina l-ḥāʾiṭi", fr: "il prend la serviette au mur", cat: "Cours 2 — Le hammam" },
-  { ar: "يُطْفِئُ الضَّوْءَ وَيَخْرُجُ", translit: "yuṭfiʾu ḍ-ḍawʾa wa-yakhruju", fr: "il éteint la lumière et sort", cat: "Cours 2 — Le hammam" },
-  { ar: "يَخْرُجُ مِنَ الْحَمَّامِ", translit: "yakhruju mina l-ḥammāmi", fr: "il sort de la salle de bain", cat: "Cours 2 — Le hammam" },
-
-  // Contraires et qualificatifs — notés à la main sur le scan
-  { ar: "نَظِيفٌ ≠ وَسِخٌ", translit: "naẓīfun ≠ wasikhun", fr: "propre ≠ sale", cat: "Cours 2 — Le hammam" },
-  { ar: "مُرَتَّبٌ ≠ مُبَعْثَرٌ", translit: "murattabun ≠ mubaʿtharun", fr: "rangé ≠ en désordre", cat: "Cours 2 — Le hammam" },
-  { ar: "أُرَتِّبُ ≠ أُبَعْثِرُ", translit: "urattibu ≠ ubaʿthiru", fr: "je range ≠ je mets en désordre", cat: "Cours 2 — Le hammam" },
-  { ar: "نَاعِمَةٌ ≠ خَشِنَةٌ", translit: "nāʿimatun ≠ khashinatun", fr: "douce ≠ rêche", cat: "Cours 2 — Le hammam" },
-  { ar: "أُنَشِّفُ ≠ أُبَلِّلُ", translit: "unashshifu ≠ uballilu", fr: "je sèche ≠ je mouille", cat: "Cours 2 — Le hammam" },
-  { ar: "كَبِيرَةٌ ≠ صَغِيرَةٌ", translit: "kabīratun ≠ ṣaghīratun", fr: "grande ≠ petite", cat: "Cours 2 — Le hammam" },
-  { ar: "الْحَارُّ / الدَّافِئُ / الْبَارِدُ", translit: "al-ḥārru / ad-dāfiʾu / al-bāridu", fr: "chaud / tiède / froid", cat: "Cours 2 — Le hammam" },
-  { ar: "عَطِرٌ", translit: "ʿaṭirun", fr: "parfumé", cat: "Cours 2 — Le hammam" },
-  { ar: "يَخْرُجُ مُنْتَعِشًا وَنَظِيفًا", translit: "yakhruju muntaʿishan wa-naẓīfan", fr: "il sort frais et propre (état, ḥāl à l'accusatif)", cat: "Cours 2 — Le hammam" },
-  { ar: "كُلَّ صَبَاحٍ", translit: "kulla ṣabāḥin", fr: "chaque matin", cat: "Cours 2 — Le hammam" },
-
-  // Les phrases du texte « هَذَا حَمَّامِي »
-  { ar: "هَذَا حَمَّامِي", translit: "hādhā ḥammāmī", fr: "voici ma salle de bain", cat: "Cours 2 — Le hammam" },
-  { ar: "الْحَمَّامُ نَظِيفٌ وَمُرَتَّبٌ", translit: "al-ḥammāmu naẓīfun wa-murattabun", fr: "la salle de bain est propre et rangée", cat: "Cours 2 — Le hammam" },
-  { ar: "فِي الْحَمَّامِ مِرْآةٌ كَبِيرَةٌ", translit: "fī l-ḥammāmi mirʾātun kabīratun", fr: "dans la salle de bain, un grand miroir", cat: "Cours 2 — Le hammam" },
-  { ar: "أَنْظُرُ إِلَى وَجْهِي فِي الْمِرْآةِ", translit: "anẓuru ilā wajhī fī l-mirʾāti", fr: "je regarde mon visage dans le miroir", cat: "Cours 2 — Le hammam" },
-  { ar: "بِجَانِبِ الْمِرْآةِ مَغْسَلَةٌ بَيْضَاءُ", translit: "bijānibi l-mirʾāti maghsalatun bayḍāʾu", fr: "à côté du miroir, un lavabo blanc", cat: "Cours 2 — Le hammam" },
-  { ar: "أَغْسِلُ يَدَيَّ وَوَجْهِي بِالصَّابُونِ", translit: "aghsilu yadayya wa-wajhī bi-ṣ-ṣābūni", fr: "je me lave les mains et le visage au savon", cat: "Cours 2 — Le hammam" },
-  { ar: "يُوجَدُ أَيْضًا حَوْضُ اسْتِحْمَامٍ", translit: "yūjadu ayḍan ḥawḍu stiḥmāmin", fr: "il y a aussi une baignoire", cat: "Cours 2 — Le hammam" },
-  { ar: "أَمْلَأُ حَوْضَ الِاسْتِحْمَامِ بِالْمَاءِ السَّاخِنِ", translit: "amlaʾu ḥawḍa l-istiḥmāmi bi-l-māʾi s-sākhini", fr: "je remplis la baignoire d'eau chaude", cat: "Cours 2 — Le hammam" },
-  { ar: "أَسْتَحِمُّ بِالْمَاءِ الدَّافِئِ", translit: "astaḥimmu bi-l-māʾi d-dāfiʾi", fr: "je me lave à l'eau tiède", cat: "Cours 2 — Le hammam" },
-  { ar: "عَلَى الْحَائِطِ مِنْشَفَةٌ نَاعِمَةٌ", translit: "ʿalā l-ḥāʾiṭi minshafatun nāʿimatun", fr: "au mur, une serviette douce", cat: "Cours 2 — Le hammam" },
-  { ar: "أُنَشِّفُ جِسْمِي بِالْمِنْشَفَةِ", translit: "unashshifu jismī bi-l-minshafati", fr: "je me sèche le corps avec la serviette", cat: "Cours 2 — Le hammam" },
-  { ar: "أُنَظِّفُ أَسْنَانِي بِالْفُرْشَاةِ وَالْمَعْجُونِ", translit: "unaẓẓifu asnānī bi-l-furshāti wa-l-maʿjūni", fr: "je me brosse les dents avec la brosse et le dentifrice", cat: "Cours 2 — Le hammam" },
-
-
-  // Le corps, atomisé depuis les phrases du texte
+  // Le corps
   { ar: "الْوَجْهُ", translit: "al-wajhu", fr: "le visage", cat: "Cours 2 — Le hammam" },
   { ar: "الْأَسْنَانُ", translit: "al-asnānu", fr: "les dents", cat: "Cours 2 — Le hammam" },
   { ar: "الشَّعْرُ", translit: "ash-shaʿru", fr: "les cheveux", cat: "Cours 2 — Le hammam" },
   { ar: "الْيَدُ", translit: "al-yadu", fr: "la main", cat: "Cours 2 — Le hammam" },
+  { ar: "الْجِسْمُ", translit: "al-jismu", fr: "le corps", cat: "Cours 2 — Le hammam" },
 
-  // Moments de la journée
+  // Les moments de la journée
+  { ar: "الِاسْتِيقَاظُ", translit: "al-istīqāẓu", fr: "le réveil (le fait de se réveiller)", cat: "Cours 2 — Le hammam" },
+  { ar: "الِاسْتِحْمَامُ", translit: "al-istiḥmāmu", fr: "la douche / la toilette (le fait de se laver)", cat: "Cours 2 — Le hammam" },
   { ar: "النَّوْمُ", translit: "an-nawmu", fr: "le sommeil", cat: "Cours 2 — Le hammam" },
   { ar: "الْعَشَاءُ", translit: "al-ʿashāʾu", fr: "le dîner", cat: "Cours 2 — Le hammam" },
-  { ar: "الصَّبَاحُ ≠ الْمَسَاءُ", translit: "aṣ-ṣabāḥu ≠ al-masāʾu", fr: "le matin ≠ le soir", cat: "Cours 2 — Le hammam" },
-  { ar: "قَبْلَ ≠ بَعْدَ", translit: "qabla ≠ baʿda", fr: "avant ≠ après", cat: "Cours 2 — Le hammam" },
+  { ar: "الصَّبَاحُ", translit: "aṣ-ṣabāḥu", fr: "le matin", cat: "Cours 2 — Le hammam" },
+  { ar: "الْمَسَاءُ", translit: "al-masāʾu", fr: "le soir", cat: "Cours 2 — Le hammam" },
+  { ar: "قَبْلَ", translit: "qabla", fr: "avant", cat: "Cours 2 — Le hammam" },
+  { ar: "بَعْدَ", translit: "baʿda", fr: "après", cat: "Cours 2 — Le hammam" },
 
-  // Les verbes du texte, en forme de citation (accompli / inaccompli)
-  { ar: "غَسَلَ / يَغْسِلُ / الْغَسْلُ", translit: "ghasala / yaghsilu / al-ghaslu", fr: "laver / il lave / le lavage", cat: "Cours 2 — Le hammam" },
-  { ar: "نَظَّفَ / يُنَظِّفُ / التَّنْظِيفُ", translit: "naẓẓafa / yunaẓẓifu / at-tanẓīfu", fr: "nettoyer / il nettoie / le nettoyage", cat: "Cours 2 — Le hammam" },
-  { ar: "نَظَرَ / يَنْظُرُ / النَّظَرُ", translit: "naẓara / yanẓuru / an-naẓaru", fr: "regarder / il regarde / le regard", cat: "Cours 2 — Le hammam" },
-  { ar: "مَشَّطَ / يُمَشِّطُ", translit: "mashshaṭa / yumashshiṭu", fr: "peigner / il peigne", cat: "Cours 2 — Le hammam" },
-  { ar: "مَلَأَ / يَمْلَأُ", translit: "malaʾa / yamlaʾu", fr: "remplir / il remplit", cat: "Cours 2 — Le hammam" },
-  { ar: "اسْتَحَمَّ / يَسْتَحِمُّ", translit: "istaḥamma / yastaḥimmu", fr: "se laver / il se lave", cat: "Cours 2 — Le hammam" },
-  { ar: "نَشَّفَ / يُنَشِّفُ", translit: "nashshafa / yunashshifu", fr: "sécher / il sèche", cat: "Cours 2 — Le hammam" },
-  { ar: "أَخَذَ / يَأْخُذُ", translit: "akhadha / yaʾkhudhu", fr: "prendre / il prend", cat: "Cours 2 — Le hammam" },
-  { ar: "فَتَحَ / يَفْتَحُ", translit: "fataḥa / yaftaḥu", fr: "ouvrir / il ouvre", cat: "Cours 2 — Le hammam" },
-  { ar: "دَخَلَ / يَدْخُلُ", translit: "dakhala / yadkhulu", fr: "entrer / il entre", cat: "Cours 2 — Le hammam" },
-  { ar: "خَرَجَ / يَخْرُجُ", translit: "kharaja / yakhruju", fr: "sortir / il sort", cat: "Cours 2 — Le hammam" },
-  { ar: "لَبِسَ / يَلْبَسُ", translit: "labisa / yalbasu", fr: "s'habiller / il met (un vêtement)", cat: "Cours 2 — Le hammam" },
-  { ar: "اسْتَيْقَظَ / يَسْتَيْقِظُ", translit: "istayqaẓa / yastayqiẓu", fr: "se réveiller / il se réveille", cat: "Cours 2 — Le hammam" },
-  { ar: "فَعَلَ / يَفْعَلُ", translit: "faʿala / yafʿalu", fr: "faire / il fait", cat: "Cours 2 — Le hammam" },
+  // Les verbes du texte, à la 3e personne comme dans la fiche
+  { ar: "يَدْخُلُ", translit: "yadkhulu", fr: "il entre", cat: "Cours 2 — Le hammam" },
+  { ar: "يَخْرُجُ", translit: "yakhruju", fr: "il sort", cat: "Cours 2 — Le hammam" },
+  { ar: "يَفْتَحُ", translit: "yaftaḥu", fr: "il ouvre", cat: "Cours 2 — Le hammam" },
+  { ar: "يَغْسِلُ", translit: "yaghsilu", fr: "il lave (yaghsilu wajhahu : il se lave le visage)", cat: "Cours 2 — Le hammam" },
+  { ar: "يُنَظِّفُ", translit: "yunaẓẓifu", fr: "il nettoie (yunaẓẓifu asnānahu : il se brosse les dents)", cat: "Cours 2 — Le hammam" },
+  { ar: "التَّنْظِيفُ", translit: "at-tanẓīfu", fr: "le nettoyage", cat: "Cours 2 — Le hammam" },
+  { ar: "يَنْظُرُ", translit: "yanẓuru", fr: "il regarde", cat: "Cours 2 — Le hammam" },
+  { ar: "يُمَشِّطُ", translit: "yumashshiṭu", fr: "il peigne (yumashshiṭu shaʿrahu : il se coiffe)", cat: "Cours 2 — Le hammam" },
+  { ar: "يَمْلَأُ", translit: "yamlaʾu", fr: "il remplit", cat: "Cours 2 — Le hammam" },
+  { ar: "يَسْتَحِمُّ", translit: "yastaḥimmu", fr: "il se lave / il prend un bain", cat: "Cours 2 — Le hammam" },
+  { ar: "يُنَشِّفُ", translit: "yunashshifu", fr: "il sèche (≠ yuballilu : il mouille)", cat: "Cours 2 — Le hammam" },
+  { ar: "يُبَلِّلُ", translit: "yuballilu", fr: "il mouille", cat: "Cours 2 — Le hammam" },
+  { ar: "يَأْخُذُ", translit: "yaʾkhudhu", fr: "il prend", cat: "Cours 2 — Le hammam" },
+  { ar: "يُطْفِئُ", translit: "yuṭfiʾu", fr: "il éteint (la lumière)", cat: "Cours 2 — Le hammam" },
+  { ar: "يَلْبَسُ", translit: "yalbasu", fr: "il met (un vêtement) / il s'habille", cat: "Cours 2 — Le hammam" },
+  { ar: "يَسْتَيْقِظُ", translit: "yastayqiẓu", fr: "il se réveille", cat: "Cours 2 — Le hammam" },
+  { ar: "يُرَتِّبُ", translit: "yurattibu", fr: "il range (≠ yubaʿthiru : il met en désordre)", cat: "Cours 2 — Le hammam" },
+  { ar: "يُبَعْثِرُ", translit: "yubaʿthiru", fr: "il met en désordre", cat: "Cours 2 — Le hammam" },
+  { ar: "يَفْعَلُ", translit: "yafʿalu", fr: "il fait", cat: "Cours 2 — Le hammam" },
   { ar: "يُوجَدُ", translit: "yūjadu", fr: "il y a / il se trouve", cat: "Cours 2 — Le hammam" },
 
-  // Qualité de l'eau
-  { ar: "سَاخِنٌ ≠ بَارِدٌ", translit: "sākhinun ≠ bāridun", fr: "chaud ≠ froid", cat: "Cours 2 — Le hammam" },
+  // Qualificatifs et contraires — notés à la main sur le scan
+  { ar: "نَظِيفٌ", translit: "naẓīfun", fr: "propre (≠ wasikhun : sale)", cat: "Cours 2 — Le hammam" },
+  { ar: "وَسِخٌ", translit: "wasikhun", fr: "sale", cat: "Cours 2 — Le hammam" },
+  { ar: "مُرَتَّبٌ", translit: "murattabun", fr: "rangé (≠ mubaʿtharun : en désordre)", cat: "Cours 2 — Le hammam" },
+  { ar: "مُبَعْثَرٌ", translit: "mubaʿtharun", fr: "en désordre", cat: "Cours 2 — Le hammam" },
+  { ar: "نَاعِمَةٌ", translit: "nāʿimatun", fr: "douce (≠ khashinatun : rêche)", cat: "Cours 2 — Le hammam" },
+  { ar: "خَشِنَةٌ", translit: "khashinatun", fr: "rêche / rugueuse", cat: "Cours 2 — Le hammam" },
+  { ar: "كَبِيرَةٌ", translit: "kabīratun", fr: "grande (≠ ṣaghīratun : petite)", cat: "Cours 2 — Le hammam" },
+  { ar: "صَغِيرَةٌ", translit: "ṣaghīratun", fr: "petite", cat: "Cours 2 — Le hammam" },
+  { ar: "حَارٌّ", translit: "ḥārrun", fr: "chaud", cat: "Cours 2 — Le hammam" },
+  { ar: "سَاخِنٌ", translit: "sākhinun", fr: "chaud (l'eau, un objet)", cat: "Cours 2 — Le hammam" },
+  { ar: "دَافِئٌ", translit: "dāfiʾun", fr: "tiède", cat: "Cours 2 — Le hammam" },
+  { ar: "بَارِدٌ", translit: "bāridun", fr: "froid", cat: "Cours 2 — Le hammam" },
+  { ar: "عَطِرٌ", translit: "ʿaṭirun", fr: "parfumé", cat: "Cours 2 — Le hammam" },
+  { ar: "بَيْضَاءُ", translit: "bayḍāʾu", fr: "blanche (maghsalatun bayḍāʾu : un lavabo blanc)", cat: "Cours 2 — Le hammam" },
+  { ar: "مُنْتَعِشٌ", translit: "muntaʿishun", fr: "frais, revigoré (qui se sent rafraîchi)", cat: "Cours 2 — Le hammam" },
 
   // Les interrogatifs, tirés des questions de compréhension
   { ar: "مَاذَا", translit: "mādhā", fr: "que ? quoi ?", cat: "Cours 2 — Le hammam" },
   { ar: "بِمَاذَا", translit: "bimādhā", fr: "avec quoi ?", cat: "Cours 2 — Le hammam" },
   { ar: "مَتَى", translit: "matā", fr: "quand ?", cat: "Cours 2 — Le hammam" },
   { ar: "كَيْفَ", translit: "kayfa", fr: "comment ?", cat: "Cours 2 — Le hammam" },
-  { ar: "مِنْ أَيْنَ", translit: "min ayna", fr: "d'où ?", cat: "Cours 2 — Le hammam" },
+  { ar: "مِنْ", translit: "min", fr: "de / depuis (min ayna : d'où ?)", cat: "Cours 2 — Le hammam" },
 
-  // Divers
+  // Les petits mots du texte
+  { ar: "إِلَى", translit: "ilā", fr: "vers / à (anẓuru ilā : je regarde vers)", cat: "Cours 2 — Le hammam" },
+  { ar: "بِجَانِبِ", translit: "bijānibi", fr: "à côté de", cat: "Cours 2 — Le hammam" },
   { ar: "فَقَطْ", translit: "faqaṭ", fr: "seulement", cat: "Cours 2 — Le hammam" },
   { ar: "مُبَاشَرَةً", translit: "mubāsharatan", fr: "directement, tout de suite", cat: "Cours 2 — Le hammam" },
   { ar: "الرَّاوِي", translit: "ar-rāwī", fr: "le narrateur (celui qui raconte le texte)", cat: "Cours 2 — Le hammam" },
-  // --- 2/2 · أسماء الإشارة : le démonstratif, proche ou lointain ----------
+
+  // --- 2/3 · أسماء الإشارة : le démonstratif, proche ou lointain ----------
 
   // Le tableau du cours : proche / lointain × genre × nombre
   { ar: "هَذَا", translit: "hādhā", fr: "celui-ci / ce…-ci — singulier masculin, proche", cat: "Cours 2 — Les démonstratifs" },
@@ -275,31 +260,25 @@ window.DEFAULT_WORDS = [
   { ar: "هَاتَانِ", translit: "hātāni", fr: "ces deux-ci — duel féminin, proche (cas sujet)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "هَاتَيْنِ", translit: "hātayni", fr: "ces deux-ci — duel féminin, cas direct et indirect", cat: "Cours 2 — Les démonstratifs" },
   { ar: "هَؤُلَاءِ", translit: "hāʾulāʾi", fr: "ceux-ci / celles-ci — pluriel, proche", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "ذَلِكَ / ذَاكَ", translit: "dhālika / dhāka", fr: "celui-là — singulier masculin, lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "ذَلِكَ", translit: "dhālika", fr: "celui-là — singulier masculin, lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "ذَاكَ", translit: "dhāka", fr: "celui-là — singulier masculin, lointain (variante de dhālika)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "تِلْكَ", translit: "tilka", fr: "celle-là — singulier féminin, lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "ذَانِكَ", translit: "dhānika", fr: "ces deux-là — duel masculin, lointain (cas sujet)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "تَانِكَ", translit: "tānika", fr: "ces deux-là — duel féminin, lointain (cas sujet)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "أُولَئِكَ", translit: "ulāʾika", fr: "ceux-là / celles-là — pluriel, lointain", cat: "Cours 2 — Les démonstratifs" },
   { ar: "هُنَا", translit: "hunā", fr: "ici — lieu proche", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هُنَاكَ / هُنَالِكَ", translit: "hunāka / hunālika", fr: "là-bas — lieu lointain", cat: "Cours 2 — Les démonstratifs" },
-
-  // Les phrases-modèles, toutes prises dans le hammam
-  { ar: "هَذَا هُوَ الصَّابُونُ الْعَطِرُ", translit: "hādhā huwa ṣ-ṣābūnu l-ʿaṭiru", fr: "voici le savon parfumé", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هَذِهِ هِيَ الْمِرْآةُ", translit: "hādhihi hiya l-mirʾātu", fr: "voici le miroir", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هَذَانِ حَوْضَانِ", translit: "hādhāni ḥawḍāni", fr: "voici deux baignoires (duel masculin)", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هَاتَانِ مِنْشَفَتَانِ", translit: "hātāni minshafatāni", fr: "voici deux serviettes (duel féminin)", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "ذَلِكَ هُوَ حَوْضُ الِاسْتِحْمَامِ", translit: "dhālika huwa ḥawḍu l-istiḥmāmi", fr: "là-bas, c'est la baignoire", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "تِلْكَ هِيَ الْمِنْشَفَةُ عَلَى الْحَائِطِ", translit: "tilka hiya l-minshafatu ʿalā l-ḥāʾiṭi", fr: "là-bas, c'est la serviette au mur", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "هَؤُلَاءِ هُمُ الْأَوْلَادُ", translit: "hāʾulāʾi humu l-awlādu", fr: "ce sont les enfants (proches)", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "أُولَئِكَ هُمُ الْجِيرَانُ", translit: "ulāʾika humu l-jīrānu", fr: "ce sont les voisins (là-bas)", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "الصَّابُونُ هُنَا وَالْمِنْشَفَةُ هُنَاكَ", translit: "aṣ-ṣābūnu hunā wa-l-minshafatu hunāka", fr: "le savon est ici, la serviette là-bas", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هُنَاكَ", translit: "hunāka", fr: "là-bas — lieu lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هُنَالِكَ", translit: "hunālika", fr: "là-bas — lieu lointain (variante de hunāka)", cat: "Cours 2 — Les démonstratifs" },
 
   // Le métalangage de la leçon : ce que dit le tableau du cours
-  { ar: "أَسْمَاءُ الْإِشَارَةِ", translit: "asmāʾu l-ishārati", fr: "les noms de démonstration (les démonstratifs)", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "اسْمُ الْإِشَارَةِ", translit: "ismu l-ishārati", fr: "le démonstratif (un seul)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "الْإِشَارَةُ", translit: "al-ishāratu", fr: "la désignation (asmāʾu l-ishārati : les démonstratifs)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "مُفْرَدٌ", translit: "mufradun", fr: "singulier", cat: "Cours 2 — Les démonstratifs" },
   { ar: "مُثَنَّى", translit: "muthannā", fr: "duel (deux)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "جَمْعٌ", translit: "jamʿun", fr: "pluriel", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "مُذَكَّرٌ ≠ مُؤَنَّثٌ", translit: "mudhakkarun ≠ muʾannathun", fr: "masculin ≠ féminin", cat: "Cours 2 — Les démonstratifs" },
-  { ar: "قَرِيبٌ ≠ بَعِيدٌ", translit: "qarībun ≠ baʿīdun", fr: "proche ≠ lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُذَكَّرٌ", translit: "mudhakkarun", fr: "masculin", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُؤَنَّثٌ", translit: "muʾannathun", fr: "féminin", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "قَرِيبٌ", translit: "qarībun", fr: "proche", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "بَعِيدٌ", translit: "baʿīdun", fr: "lointain", cat: "Cours 2 — Les démonstratifs" },
   { ar: "رَفْعٌ", translit: "rafʿun", fr: "cas sujet (nominatif, -u)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "نَصْبٌ", translit: "naṣbun", fr: "cas direct (accusatif, -a)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "جَرٌّ", translit: "jarrun", fr: "cas indirect (génitif, -i)", cat: "Cours 2 — Les démonstratifs" },
@@ -307,26 +286,183 @@ window.DEFAULT_WORDS = [
   { ar: "الْعَدَدُ", translit: "al-ʿadadu", fr: "le nombre (singulier / duel / pluriel)", cat: "Cours 2 — Les démonstratifs" },
   { ar: "النَّوْعُ", translit: "an-nawʿu", fr: "le genre (masculin / féminin)", cat: "Cours 2 — Les démonstratifs" },
 
-  // --- Bonus · Les consignes des exercices --------------------------------
+  // --- 3/3 · Les consignes des exercices ---------------------------------
   // Ce qui est écrit en haut de chaque exercice. Ce n'est pas le sujet du
   // cours, mais c'est ce qu'il faut savoir lire pour faire la feuille.
   { ar: "تَمْرِينٌ", translit: "tamrīnun", fr: "un exercice", cat: "Cours 2 — Consignes" },
   { ar: "النَّصُّ", translit: "an-naṣṣu", fr: "le texte", cat: "Cours 2 — Consignes" },
-  { ar: "أَسْئِلَةُ الْفَهْمِ", translit: "asʾilatu l-fahmi", fr: "questions de compréhension", cat: "Cours 2 — Consignes" },
-  { ar: "الْإِجَابَةُ الصَّحِيحَةُ", translit: "al-ijābatu ṣ-ṣaḥīḥatu", fr: "la bonne réponse", cat: "Cours 2 — Consignes" },
-  { ar: "صَحِيحٌ أَمْ خَطَأٌ", translit: "ṣaḥīḥun am khaṭaʾun", fr: "vrai ou faux ?", cat: "Cours 2 — Consignes" },
+  { ar: "أَسْئِلَةٌ", translit: "asʾilatun", fr: "des questions (asʾilatu l-fahmi : questions de compréhension)", cat: "Cours 2 — Consignes" },
+  { ar: "الْفَهْمُ", translit: "al-fahmu", fr: "la compréhension", cat: "Cours 2 — Consignes" },
+  { ar: "الْإِجَابَةُ", translit: "al-ijābatu", fr: "la réponse", cat: "Cours 2 — Consignes" },
+  { ar: "صَحِيحٌ", translit: "ṣaḥīḥun", fr: "vrai / correct (al-ijābatu ṣ-ṣaḥīḥatu : la bonne réponse)", cat: "Cours 2 — Consignes" },
+  { ar: "خَطَأٌ", translit: "khaṭaʾun", fr: "faux / une erreur", cat: "Cours 2 — Consignes" },
+  { ar: "أَمْ", translit: "am", fr: "ou, dans une question (ṣaḥīḥun am khaṭaʾun : vrai ou faux ?)", cat: "Cours 2 — Consignes" },
   { ar: "اِخْتَرْ", translit: "ikhtar", fr: "choisis", cat: "Cours 2 — Consignes" },
   { ar: "أَكْمِلْ", translit: "akmil", fr: "complète", cat: "Cours 2 — Consignes" },
   { ar: "الْفَرَاغُ", translit: "al-farāghu", fr: "le blanc (à compléter)", cat: "Cours 2 — Consignes" },
   { ar: "اُكْتُبْ", translit: "uktub", fr: "écris", cat: "Cours 2 — Consignes" },
   { ar: "أَجِبْ", translit: "ajib", fr: "réponds", cat: "Cours 2 — Consignes" },
   { ar: "رَتِّبْ", translit: "rattib", fr: "mets en ordre", cat: "Cours 2 — Consignes" },
-  { ar: "كَوِّنْ جُمْلَةً", translit: "kawwin jumlatan", fr: "forme une phrase", cat: "Cours 2 — Consignes" },
-  { ar: "جُمْلَةٌ كَامِلَةٌ", translit: "jumlatun kāmilatun", fr: "une phrase complète", cat: "Cours 2 — Consignes" },
+  { ar: "كَوِّنْ", translit: "kawwin", fr: "forme / construis (kawwin jumlatan : forme une phrase)", cat: "Cours 2 — Consignes" },
+  { ar: "جُمْلَةٌ", translit: "jumlatun", fr: "une phrase", cat: "Cours 2 — Consignes" },
+  { ar: "كَامِلَةٌ", translit: "kāmilatun", fr: "complète (jumlatun kāmilatun : une phrase complète)", cat: "Cours 2 — Consignes" },
   { ar: "اِسْتَمِعْ", translit: "istamiʿ", fr: "écoute", cat: "Cours 2 — Consignes" },
   { ar: "اِقْرَأْ", translit: "iqraʾ", fr: "lis", cat: "Cours 2 — Consignes" },
-  { ar: "اُنْظُرِ الصُّورَةَ", translit: "unẓuri ṣ-ṣūrata", fr: "regarde l'image", cat: "Cours 2 — Consignes" },
+  { ar: "اُنْظُرْ", translit: "unẓur", fr: "regarde (impératif)", cat: "Cours 2 — Consignes" },
+  { ar: "الصُّورَةُ", translit: "aṣ-ṣūratu", fr: "l'image", cat: "Cours 2 — Consignes" },
   { ar: "الْمُفْرَدَاتُ", translit: "al-mufradātu", fr: "le vocabulaire", cat: "Cours 2 — Consignes" },
+
+  // =====================================================================
+  // 🍳 Cours 3 — « هَذَا مَطْبَخِي » : la cuisine
+  //
+  // Bâti sur le support du cours : le texte « هَذَا مَطْبَخِي », la fiche
+  // d'écoute « المطبخ_تمارين » (A1/A2), les notes du cahier et le tableau
+  // des relatifs.
+  //
+  // Une carte = un mot : aucune phrase, aucune expression, aucune paire.
+  // Quand un mot ne se comprend qu'en contexte, le contexte passe en
+  // translittération dans le français. Les verbes sont à la 3e personne,
+  // comme dans la fiche. Les mots déjà en cartes au cours 2 (ouvrir, laver,
+  // nettoyer, entrer, sortir, ranger, propre, avant / après, il y a…) ne
+  // sont pas repris.
+  // =====================================================================
+
+  // --- 1/3 · La cuisine : objets, aliments, verbes, petits mots -----------
+
+  // Ce qu'il y a dans la pièce (texte et fiche)
+  { ar: "الْمَطْبَخُ", translit: "al-maṭbakhu", fr: "la cuisine (la pièce)", cat: "Cours 3 — La cuisine" },
+  { ar: "ثَلَّاجَةٌ", translit: "thallājatun", fr: "un réfrigérateur", cat: "Cours 3 — La cuisine" },
+  { ar: "فُرْنٌ", translit: "furnun", fr: "un four", cat: "Cours 3 — La cuisine" },
+  { ar: "مَوْقِدٌ", translit: "mawqidun", fr: "une cuisinière / une plaque de cuisson", cat: "Cours 3 — La cuisine" },
+  { ar: "مَغْسَلَةٌ", translit: "maghsalatun", fr: "un évier (à la salle de bain : un lavabo)", cat: "Cours 3 — La cuisine" },
+  { ar: "طَاوِلَةٌ", translit: "ṭāwilatun", fr: "une table", cat: "Cours 3 — La cuisine" },
+  { ar: "غَلَّايَةٌ", translit: "ghallāyatun", fr: "une bouilloire", cat: "Cours 3 — La cuisine" },
+  { ar: "مِقْلَاةٌ", translit: "miqlātun", fr: "une poêle", cat: "Cours 3 — La cuisine" },
+  { ar: "صُحُونٌ", translit: "ṣuḥūnun", fr: "des assiettes", cat: "Cours 3 — La cuisine" },
+  { ar: "كُوبٌ", translit: "kūbun", fr: "un verre / une tasse", cat: "Cours 3 — La cuisine" },
+  { ar: "أَكْوَابٌ", translit: "akwābun", fr: "des verres / des tasses", cat: "Cours 3 — La cuisine" },
+  { ar: "مِلْعَقَةٌ", translit: "milʿaqatun", fr: "une cuillère", cat: "Cours 3 — La cuisine" },
+  { ar: "شَوْكَةٌ", translit: "shawkatun", fr: "une fourchette", cat: "Cours 3 — La cuisine" },
+
+  // À manger et à boire (les options de la fiche comprises)
+  { ar: "الطَّعَامُ", translit: "aṭ-ṭaʿāmu", fr: "la nourriture / le repas", cat: "Cours 3 — La cuisine" },
+  { ar: "الْحَلِيبُ", translit: "al-ḥalību", fr: "le lait", cat: "Cours 3 — La cuisine" },
+  { ar: "الْبَيْضُ", translit: "al-bayḍu", fr: "les œufs", cat: "Cours 3 — La cuisine" },
+  { ar: "الْجُبْنُ", translit: "al-jubnu", fr: "le fromage", cat: "Cours 3 — La cuisine" },
+  { ar: "الْخُبْزُ", translit: "al-khubzu", fr: "le pain", cat: "Cours 3 — La cuisine" },
+  { ar: "الْعَسَلُ", translit: "al-ʿasalu", fr: "le miel", cat: "Cours 3 — La cuisine" },
+  { ar: "السُّكَّرُ", translit: "as-sukkaru", fr: "le sucre", cat: "Cours 3 — La cuisine" },
+  { ar: "الشَّايُ", translit: "ash-shāyu", fr: "le thé", cat: "Cours 3 — La cuisine" },
+  { ar: "الْقَهْوَةُ", translit: "al-qahwatu", fr: "le café", cat: "Cours 3 — La cuisine" },
+  { ar: "السَّلَطَةُ", translit: "as-salaṭatu", fr: "la salade", cat: "Cours 3 — La cuisine" },
+
+  // Qualités et matières : la « matière » notée au cahier
+  { ar: "وَاسِعٌ", translit: "wāsiʿun", fr: "spacieux / vaste", cat: "Cours 3 — La cuisine" },
+  { ar: "الْمَادَّةُ", translit: "al-māddatu", fr: "la matière (bois, verre…)", cat: "Cours 3 — La cuisine" },
+  { ar: "خَشَبٌ", translit: "khashabun", fr: "du bois", cat: "Cours 3 — La cuisine" },
+  { ar: "خَشَبِيَّةٌ", translit: "khashabiyyatun", fr: "en bois (féminin : ṭāwilatun khashabiyyatun)", cat: "Cours 3 — La cuisine" },
+  { ar: "زُجَاجٌ", translit: "zujājun", fr: "du verre (la matière)", cat: "Cours 3 — La cuisine" },
+  { ar: "زُجَاجِيٌّ", translit: "zujājiyyun", fr: "en verre (masculin : kūbun zujājiyyun)", cat: "Cours 3 — La cuisine" },
+
+  // Où sont les choses
+  { ar: "الْجَانِبُ", translit: "al-jānibu", fr: "le côté", cat: "Cours 3 — La cuisine" },
+  { ar: "الْأَيْمَنُ", translit: "al-aymanu", fr: "droit (le côté droit)", cat: "Cours 3 — La cuisine" },
+  { ar: "الْوَسَطُ", translit: "al-wasaṭu", fr: "le milieu (fī l-wasaṭi : au milieu)", cat: "Cours 3 — La cuisine" },
+  { ar: "عَلَى", translit: "ʿalā", fr: "sur", cat: "Cours 3 — La cuisine" },
+  { ar: "أَيْضًا", translit: "ayḍan", fr: "aussi", cat: "Cours 3 — La cuisine" },
+
+  // Les verbes, à la 3e personne comme dans la fiche
+  { ar: "يَضَعُ", translit: "yaḍaʿu", fr: "il pose / il met", cat: "Cours 3 — La cuisine" },
+  { ar: "يَطْبُخُ", translit: "yaṭbukhu", fr: "il cuisine / il fait cuire", cat: "Cours 3 — La cuisine" },
+  { ar: "يَأْكُلُ", translit: "yaʾkulu", fr: "il mange", cat: "Cours 3 — La cuisine" },
+  { ar: "الْأَكْلُ", translit: "al-aklu", fr: "le repas / le fait de manger (baʿda l-akli : après le repas)", cat: "Cours 3 — La cuisine" },
+  { ar: "يَشْرَبُ", translit: "yashrabu", fr: "il boit", cat: "Cours 3 — La cuisine" },
+  { ar: "يُخْرِجُ", translit: "yukhriju", fr: "il sort (quelque chose) — ≠ yakhruju : il sort lui-même", cat: "Cours 3 — La cuisine" },
+  { ar: "يَصْنَعُ", translit: "yaṣnaʿu", fr: "il fait / il prépare (le thé)", cat: "Cours 3 — La cuisine" },
+  { ar: "يُنَادِي", translit: "yunādī", fr: "il appelle", cat: "Cours 3 — La cuisine" },
+  { ar: "يَجْمَعُ", translit: "yajmaʿu", fr: "il ramasse / il rassemble", cat: "Cours 3 — La cuisine" },
+  { ar: "يَسْتَعْمِلُ", translit: "yastaʿmilu", fr: "il utilise", cat: "Cours 3 — La cuisine" },
+  { ar: "يُسَاعِدُ", translit: "yusāʿidu", fr: "il aide", cat: "Cours 3 — La cuisine" },
+  { ar: "يَتَّسِخُ", translit: "yattasikhu", fr: "il se salit", cat: "Cours 3 — La cuisine" },
+  { ar: "يَنَامُ", translit: "yanāmu", fr: "il dort", cat: "Cours 3 — La cuisine" },
+  { ar: "يَقُومُ", translit: "yaqūmu", fr: "il effectue (avec bi- : yaqūmu bihā, il les fait) ; seul : il se lève", cat: "Cours 3 — La cuisine" },
+
+  // Qui, quand, dans quel ordre
+  { ar: "الْعَائِلَةُ", translit: "al-ʿāʾilatu", fr: "la famille", cat: "Cours 3 — La cuisine" },
+  { ar: "كُلَّ", translit: "kulla", fr: "chaque (kulla masāʾin : chaque soir)", cat: "Cours 3 — La cuisine" },
+  { ar: "أَوَّلًا", translit: "awwalan", fr: "d'abord / en premier", cat: "Cours 3 — La cuisine" },
+  { ar: "عِنْدَ", translit: "ʿinda", fr: "au moment de / quand (ʿinda dukhūlihi : quand il entre)", cat: "Cours 3 — La cuisine" },
+  { ar: "دُخُولٌ", translit: "dukhūlun", fr: "l'entrée / le fait d'entrer", cat: "Cours 3 — La cuisine" },
+  { ar: "الْخُرُوجُ", translit: "al-khurūju", fr: "la sortie / le fait de sortir", cat: "Cours 3 — La cuisine" },
+  { ar: "أَنْ", translit: "an", fr: "que (+ verbe) — qabla an : avant de ; baʿda an : après avoir", cat: "Cours 3 — La cuisine" },
+  { ar: "مَرَّةً", translit: "marratan", fr: "une fois (marratan ukhrā : encore une fois)", cat: "Cours 3 — La cuisine" },
+  { ar: "أُخْرَى", translit: "ukhrā", fr: "autre (féminin)", cat: "Cours 3 — La cuisine" },
+  { ar: "خُطُوَاتٌ", translit: "khuṭuwātun", fr: "des étapes", cat: "Cours 3 — La cuisine" },
+  { ar: "آخِرُ", translit: "ākhiru", fr: "le dernier (ākhiru thalāthi khuṭuwātin : les trois dernières étapes)", cat: "Cours 3 — La cuisine" },
+
+  // Les petits mots des questions
+  { ar: "أَيْنَ", translit: "ayna", fr: "où ?", cat: "Cours 3 — La cuisine" },
+  { ar: "لِمَاذَا", translit: "limādhā", fr: "pourquoi ?", cat: "Cours 3 — La cuisine" },
+  { ar: "بِـ", translit: "bi-", fr: "avec / au moyen de (bi-l-māʾi : avec de l'eau)", cat: "Cours 3 — La cuisine" },
+  { ar: "لِـ", translit: "li-", fr: "pour (li-l-akli : pour manger)", cat: "Cours 3 — La cuisine" },
+  { ar: "لَا", translit: "lā", fr: "ne… pas, devant un verbe au présent (lā yunādī : il n'appelle pas)", cat: "Cours 3 — La cuisine" },
+
+  // Noté en marge du cahier
+  { ar: "شَاشَةٌ", translit: "shāshatun", fr: "un écran", cat: "Cours 3 — La cuisine" },
+
+  // --- 2/3 · الأسماء الموصولة : les relatifs, et le duel ------------------
+
+  // Le tableau du cours : genre × nombre. Au duel, -āni au cas sujet et
+  // -ayni aux cas direct et indirect, comme pour les démonstratifs.
+  { ar: "الَّذِي", translit: "alladhī", fr: "qui / que — singulier masculin", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "الَّتِي", translit: "allatī", fr: "qui / que — singulier féminin", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّذَانِ", translit: "alladhāni", fr: "qui / que — duel masculin (cas sujet)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّذَيْنِ", translit: "alladhayni", fr: "qui / que — duel masculin, cas direct et indirect", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّتَانِ", translit: "allatāni", fr: "qui / que — duel féminin (cas sujet)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّتَيْنِ", translit: "allatayni", fr: "qui / que — duel féminin, cas direct et indirect", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "الَّذِينَ", translit: "alladhīna", fr: "qui / que — pluriel masculin (personnes)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّاتِي", translit: "allātī", fr: "qui / que — pluriel féminin (personnes)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّوَاتِي", translit: "allawātī", fr: "qui / que — pluriel féminin (variante de allātī)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "اللَّائِي", translit: "allāʾī", fr: "qui / que — pluriel féminin (variante rare de allātī)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "مَنْ", translit: "man", fr: "celui qui / ceux qui — pour une personne", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "مَا", translit: "mā", fr: "ce que / ce qui — pour une chose", cat: "Cours 3 — Relatifs & duel" },
+
+  // Le métalangage du tableau
+  { ar: "مَوْصُولٌ", translit: "mawṣūlun", fr: "relatif (ismun mawṣūlun : un pronom relatif)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "تَرْبِطُ", translit: "tarbiṭu", fr: "elle relie — le relatif relie deux phrases", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "يُسْتَعْمَلُ", translit: "yustaʿmalu", fr: "il s'emploie / il est utilisé (maʿa : avec)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "غَيْرُ", translit: "ghayru", fr: "non- / autre que (ghayru l-ʿāqili : ce qui n'est pas une personne)", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "شَخْصٌ", translit: "shakhṣun", fr: "une personne", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "شَيْءٌ", translit: "shayʾun", fr: "une chose", cat: "Cours 3 — Relatifs & duel" },
+
+  // Le duel, noté au cahier : on ajoute -āni
+  { ar: "رَجُلٌ", translit: "rajulun", fr: "un homme", cat: "Cours 3 — Relatifs & duel" },
+  { ar: "رَجُلَانِ", translit: "rajulāni", fr: "deux hommes (duel : + -āni)", cat: "Cours 3 — Relatifs & duel" },
+
+  // --- 3/3 · Les consignes de la fiche -----------------------------------
+  // Seulement celles qui n'étaient pas déjà dans les consignes du cours 2.
+  { ar: "ضَعْ", translit: "ḍaʿ", fr: "mets / pose (impératif)", cat: "Cours 3 — Consignes" },
+  { ar: "دَائِرَةٌ", translit: "dāʾiratun", fr: "un cercle (ḍaʿ dāʾiratan ḥawla : entoure)", cat: "Cours 3 — Consignes" },
+  { ar: "حَوْلَ", translit: "ḥawla", fr: "autour de", cat: "Cours 3 — Consignes" },
+  { ar: "الْخِيَارَاتُ", translit: "al-khiyārātu", fr: "les choix proposés (a, b, c)", cat: "Cours 3 — Consignes" },
+  { ar: "بَيْنَ", translit: "bayna", fr: "entre (min bayni : parmi)", cat: "Cours 3 — Consignes" },
+  { ar: "مُسْتَعِينًا", translit: "mustaʿīnan", fr: "en t'aidant (bi-n-naṣṣi : du texte)", cat: "Cours 3 — Consignes" },
+  { ar: "التَّالِيَةُ", translit: "at-tāliyatu", fr: "suivant(e)s", cat: "Cours 3 — Consignes" },
+  { ar: "الرَّقْمُ", translit: "ar-raqmu", fr: "le numéro / le chiffre", cat: "Cours 3 — Consignes" },
+  { ar: "الْمُنَاسِبُ", translit: "al-munāsibu", fr: "qui convient / approprié", cat: "Cours 3 — Consignes" },
+  { ar: "أَمَامَ", translit: "amāma", fr: "devant / en face de", cat: "Cours 3 — Consignes" },
+  { ar: "تَرْتِيبٌ", translit: "tartībun", fr: "l'ordre / le classement", cat: "Cours 3 — Consignes" },
+  { ar: "حُدُوثٌ", translit: "ḥudūthun", fr: "le fait de se produire (ḥasaba tartībi ḥudūthihā : dans l'ordre où ça se passe)", cat: "Cours 3 — Consignes" },
+  { ar: "حَسَبَ", translit: "ḥasaba", fr: "selon / d'après", cat: "Cours 3 — Consignes" },
+  { ar: "الْكَلِمَةُ", translit: "al-kalimatu", fr: "le mot", cat: "Cours 3 — Consignes" },
+  { ar: "تَعَرَّفْ", translit: "taʿarraf", fr: "découvre / apprends à connaître (+ ʿalā)", cat: "Cours 3 — Consignes" },
+  { ar: "اِسْتِعْمَالَاتٌ", translit: "istiʿmālātun", fr: "des emplois / des usages", cat: "Cours 3 — Consignes" },
+  { ar: "أَنْجِزْ", translit: "anjiz", fr: "fais / réalise (impératif)", cat: "Cours 3 — Consignes" },
+  { ar: "مِثَالٌ", translit: "mithālun", fr: "un exemple", cat: "Cours 3 — Consignes" },
+  { ar: "الِاسْمُ", translit: "al-ismu", fr: "le nom (en-tête de la fiche)", cat: "Cours 3 — Consignes" },
+  { ar: "التَّارِيخُ", translit: "at-tārīkhu", fr: "la date (en-tête de la fiche)", cat: "Cours 3 — Consignes" },
+  { ar: "الْمُسْتَوَى", translit: "al-mustawā", fr: "le niveau", cat: "Cours 3 — Consignes" },
+  { ar: "الْمَسْمُوعُ", translit: "al-masmūʿu", fr: "ce qu'on entend (fahmu l-masmūʿi : compréhension orale)", cat: "Cours 3 — Consignes" },
 
   // =====================================================================
   // 🕌 Bloc « Jumu'a » — comprendre la prêche du vendredi (arabe littéraire)
@@ -634,6 +770,94 @@ window.DEFAULT_WORDS = [
   { ar: "الْمَرَضُ", translit: "al-maraḍu", fr: "la maladie", cat: "Jumu'a — Thèmes fréquents" },
   { ar: "الِابْتِلَاءُ", translit: "al-ibtilāʾu", fr: "l'épreuve", cat: "Jumu'a — Thèmes fréquents" },
   { ar: "الْقَضَاءُ وَالْقَدَرُ", translit: "al-qaḍāʾu wa-l-qadaru", fr: "le décret et le destin", cat: "Jumu'a — Thèmes fréquents" }
+];
+
+// Cartes retirées du paquet de départ. migrate() les supprime des paquets déjà
+// enregistrés (localStorage et cloud) : sinon elles y resteraient pour toujours,
+// puisque le paquet enregistré ne se recharge pas depuis ce fichier.
+// On compare le couple exact « ar|fr », et seulement dans la liste d'origine :
+// une carte déplacée à la main dans une autre liste est gardée.
+// Cours 2 (2026-09-21) : phrases, expressions et paires fragmentées en mots.
+window.RETIRED_CARDS = [
+  { ar: "مِرْآةٌ كَبِيرَةٌ", fr: "un grand miroir", cat: "Cours 2 — Le hammam" },
+  { ar: "مَغْسَلَةٌ بَيْضَاءُ", fr: "un lavabo blanc", cat: "Cours 2 — Le hammam" },
+  { ar: "حَوْضُ الِاسْتِحْمَامِ", fr: "la baignoire", cat: "Cours 2 — Le hammam" },
+  { ar: "مِنْشَفَةٌ نَاعِمَةٌ", fr: "une serviette douce", cat: "Cours 2 — Le hammam" },
+  { ar: "الصَّابُونُ الْعَطِرُ", fr: "le savon parfumé", cat: "Cours 2 — Le hammam" },
+  { ar: "فُرْشَاةُ الْأَسْنَانِ", fr: "la brosse à dents", cat: "Cours 2 — Le hammam" },
+  { ar: "الْمَاءُ السَّاخِنُ", fr: "l'eau chaude", cat: "Cours 2 — Le hammam" },
+  { ar: "بَعْدَ الِاسْتِيقَاظِ", fr: "après le réveil", cat: "Cours 2 — Le hammam" },
+  { ar: "يَدْخُلُ الْحَمَّامَ", fr: "il entre dans la salle de bain", cat: "Cours 2 — Le hammam" },
+  { ar: "أَفْتَحُ الْحَنَفِيَّةَ", fr: "j'ouvre le robinet", cat: "Cours 2 — Le hammam" },
+  { ar: "يَغْسِلُ وَجْهَهُ", fr: "il se lave le visage", cat: "Cours 2 — Le hammam" },
+  { ar: "يُنَظِّفُ أَسْنَانَهُ", fr: "il se brosse les dents", cat: "Cours 2 — Le hammam" },
+  { ar: "يَنْظُرُ فِي الْمِرْآةِ", fr: "il se regarde dans le miroir", cat: "Cours 2 — Le hammam" },
+  { ar: "يُمَشِّطُ شَعْرَهُ", fr: "il se peigne les cheveux", cat: "Cours 2 — Le hammam" },
+  { ar: "يَمْلَأُ حَوْضَ الِاسْتِحْمَامِ", fr: "il remplit la baignoire", cat: "Cours 2 — Le hammam" },
+  { ar: "يُنَشِّفُ جِسْمَهُ", fr: "il se sèche le corps", cat: "Cours 2 — Le hammam" },
+  { ar: "يَأْخُذُ الْمِنْشَفَةَ مِنَ الْحَائِطِ", fr: "il prend la serviette au mur", cat: "Cours 2 — Le hammam" },
+  { ar: "يُطْفِئُ الضَّوْءَ وَيَخْرُجُ", fr: "il éteint la lumière et sort", cat: "Cours 2 — Le hammam" },
+  { ar: "يَخْرُجُ مِنَ الْحَمَّامِ", fr: "il sort de la salle de bain", cat: "Cours 2 — Le hammam" },
+  { ar: "نَظِيفٌ ≠ وَسِخٌ", fr: "propre ≠ sale", cat: "Cours 2 — Le hammam" },
+  { ar: "مُرَتَّبٌ ≠ مُبَعْثَرٌ", fr: "rangé ≠ en désordre", cat: "Cours 2 — Le hammam" },
+  { ar: "أُرَتِّبُ ≠ أُبَعْثِرُ", fr: "je range ≠ je mets en désordre", cat: "Cours 2 — Le hammam" },
+  { ar: "نَاعِمَةٌ ≠ خَشِنَةٌ", fr: "douce ≠ rêche", cat: "Cours 2 — Le hammam" },
+  { ar: "أُنَشِّفُ ≠ أُبَلِّلُ", fr: "je sèche ≠ je mouille", cat: "Cours 2 — Le hammam" },
+  { ar: "كَبِيرَةٌ ≠ صَغِيرَةٌ", fr: "grande ≠ petite", cat: "Cours 2 — Le hammam" },
+  { ar: "الْحَارُّ / الدَّافِئُ / الْبَارِدُ", fr: "chaud / tiède / froid", cat: "Cours 2 — Le hammam" },
+  { ar: "يَخْرُجُ مُنْتَعِشًا وَنَظِيفًا", fr: "il sort frais et propre (état, ḥāl à l'accusatif)", cat: "Cours 2 — Le hammam" },
+  { ar: "كُلَّ صَبَاحٍ", fr: "chaque matin", cat: "Cours 2 — Le hammam" },
+  { ar: "هَذَا حَمَّامِي", fr: "voici ma salle de bain", cat: "Cours 2 — Le hammam" },
+  { ar: "الْحَمَّامُ نَظِيفٌ وَمُرَتَّبٌ", fr: "la salle de bain est propre et rangée", cat: "Cours 2 — Le hammam" },
+  { ar: "فِي الْحَمَّامِ مِرْآةٌ كَبِيرَةٌ", fr: "dans la salle de bain, un grand miroir", cat: "Cours 2 — Le hammam" },
+  { ar: "أَنْظُرُ إِلَى وَجْهِي فِي الْمِرْآةِ", fr: "je regarde mon visage dans le miroir", cat: "Cours 2 — Le hammam" },
+  { ar: "بِجَانِبِ الْمِرْآةِ مَغْسَلَةٌ بَيْضَاءُ", fr: "à côté du miroir, un lavabo blanc", cat: "Cours 2 — Le hammam" },
+  { ar: "أَغْسِلُ يَدَيَّ وَوَجْهِي بِالصَّابُونِ", fr: "je me lave les mains et le visage au savon", cat: "Cours 2 — Le hammam" },
+  { ar: "يُوجَدُ أَيْضًا حَوْضُ اسْتِحْمَامٍ", fr: "il y a aussi une baignoire", cat: "Cours 2 — Le hammam" },
+  { ar: "أَمْلَأُ حَوْضَ الِاسْتِحْمَامِ بِالْمَاءِ السَّاخِنِ", fr: "je remplis la baignoire d'eau chaude", cat: "Cours 2 — Le hammam" },
+  { ar: "أَسْتَحِمُّ بِالْمَاءِ الدَّافِئِ", fr: "je me lave à l'eau tiède", cat: "Cours 2 — Le hammam" },
+  { ar: "عَلَى الْحَائِطِ مِنْشَفَةٌ نَاعِمَةٌ", fr: "au mur, une serviette douce", cat: "Cours 2 — Le hammam" },
+  { ar: "أُنَشِّفُ جِسْمِي بِالْمِنْشَفَةِ", fr: "je me sèche le corps avec la serviette", cat: "Cours 2 — Le hammam" },
+  { ar: "أُنَظِّفُ أَسْنَانِي بِالْفُرْشَاةِ وَالْمَعْجُونِ", fr: "je me brosse les dents avec la brosse et le dentifrice", cat: "Cours 2 — Le hammam" },
+  { ar: "الصَّبَاحُ ≠ الْمَسَاءُ", fr: "le matin ≠ le soir", cat: "Cours 2 — Le hammam" },
+  { ar: "قَبْلَ ≠ بَعْدَ", fr: "avant ≠ après", cat: "Cours 2 — Le hammam" },
+  { ar: "غَسَلَ / يَغْسِلُ / الْغَسْلُ", fr: "laver / il lave / le lavage", cat: "Cours 2 — Le hammam" },
+  { ar: "نَظَّفَ / يُنَظِّفُ / التَّنْظِيفُ", fr: "nettoyer / il nettoie / le nettoyage", cat: "Cours 2 — Le hammam" },
+  { ar: "نَظَرَ / يَنْظُرُ / النَّظَرُ", fr: "regarder / il regarde / le regard", cat: "Cours 2 — Le hammam" },
+  { ar: "مَشَّطَ / يُمَشِّطُ", fr: "peigner / il peigne", cat: "Cours 2 — Le hammam" },
+  { ar: "مَلَأَ / يَمْلَأُ", fr: "remplir / il remplit", cat: "Cours 2 — Le hammam" },
+  { ar: "اسْتَحَمَّ / يَسْتَحِمُّ", fr: "se laver / il se lave", cat: "Cours 2 — Le hammam" },
+  { ar: "نَشَّفَ / يُنَشِّفُ", fr: "sécher / il sèche", cat: "Cours 2 — Le hammam" },
+  { ar: "أَخَذَ / يَأْخُذُ", fr: "prendre / il prend", cat: "Cours 2 — Le hammam" },
+  { ar: "فَتَحَ / يَفْتَحُ", fr: "ouvrir / il ouvre", cat: "Cours 2 — Le hammam" },
+  { ar: "دَخَلَ / يَدْخُلُ", fr: "entrer / il entre", cat: "Cours 2 — Le hammam" },
+  { ar: "خَرَجَ / يَخْرُجُ", fr: "sortir / il sort", cat: "Cours 2 — Le hammam" },
+  { ar: "لَبِسَ / يَلْبَسُ", fr: "s'habiller / il met (un vêtement)", cat: "Cours 2 — Le hammam" },
+  { ar: "اسْتَيْقَظَ / يَسْتَيْقِظُ", fr: "se réveiller / il se réveille", cat: "Cours 2 — Le hammam" },
+  { ar: "فَعَلَ / يَفْعَلُ", fr: "faire / il fait", cat: "Cours 2 — Le hammam" },
+  { ar: "سَاخِنٌ ≠ بَارِدٌ", fr: "chaud ≠ froid", cat: "Cours 2 — Le hammam" },
+  { ar: "مِنْ أَيْنَ", fr: "d'où ?", cat: "Cours 2 — Le hammam" },
+  { ar: "ذَلِكَ / ذَاكَ", fr: "celui-là — singulier masculin, lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هُنَاكَ / هُنَالِكَ", fr: "là-bas — lieu lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَذَا هُوَ الصَّابُونُ الْعَطِرُ", fr: "voici le savon parfumé", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَذِهِ هِيَ الْمِرْآةُ", fr: "voici le miroir", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَذَانِ حَوْضَانِ", fr: "voici deux baignoires (duel masculin)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَاتَانِ مِنْشَفَتَانِ", fr: "voici deux serviettes (duel féminin)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "ذَلِكَ هُوَ حَوْضُ الِاسْتِحْمَامِ", fr: "là-bas, c'est la baignoire", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "تِلْكَ هِيَ الْمِنْشَفَةُ عَلَى الْحَائِطِ", fr: "là-bas, c'est la serviette au mur", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "هَؤُلَاءِ هُمُ الْأَوْلَادُ", fr: "ce sont les enfants (proches)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "أُولَئِكَ هُمُ الْجِيرَانُ", fr: "ce sont les voisins (là-bas)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "الصَّابُونُ هُنَا وَالْمِنْشَفَةُ هُنَاكَ", fr: "le savon est ici, la serviette là-bas", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "أَسْمَاءُ الْإِشَارَةِ", fr: "les noms de démonstration (les démonstratifs)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "اسْمُ الْإِشَارَةِ", fr: "le démonstratif (un seul)", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "مُذَكَّرٌ ≠ مُؤَنَّثٌ", fr: "masculin ≠ féminin", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "قَرِيبٌ ≠ بَعِيدٌ", fr: "proche ≠ lointain", cat: "Cours 2 — Les démonstratifs" },
+  { ar: "أَسْئِلَةُ الْفَهْمِ", fr: "questions de compréhension", cat: "Cours 2 — Consignes" },
+  { ar: "الْإِجَابَةُ الصَّحِيحَةُ", fr: "la bonne réponse", cat: "Cours 2 — Consignes" },
+  { ar: "صَحِيحٌ أَمْ خَطَأٌ", fr: "vrai ou faux ?", cat: "Cours 2 — Consignes" },
+  { ar: "كَوِّنْ جُمْلَةً", fr: "forme une phrase", cat: "Cours 2 — Consignes" },
+  { ar: "جُمْلَةٌ كَامِلَةٌ", fr: "une phrase complète", cat: "Cours 2 — Consignes" },
+  { ar: "اُنْظُرِ الصُّورَةَ", fr: "regarde l'image", cat: "Cours 2 — Consignes" },
 ];
 
 // =====================================================================

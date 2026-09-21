@@ -1741,6 +1741,9 @@
     "Cours 2": "Cours — Maison & jardin", // cours de 2025-26 ; le n° 2 resservait cette année
   };
 
+  // Clés « ar|fr|cat » des cartes retirées du paquet de départ.
+  const RETIRED = new Set((window.RETIRED_CARDS || []).map((w) => w.ar + "|" + w.fr + "|" + w.cat));
+
   function migrate() {
     const catByAr = {};
     (window.DEFAULT_WORDS || []).forEach((w) => { if (w.cat) catByAr[w.ar] = w.cat; });
@@ -1755,6 +1758,12 @@
       }
       delete c.known; delete c.score;
     });
+    // Cartes retirées du paquet de départ (RETIRED_CARDS, words.js). Retrait
+    // en place : `cards` est le tableau même de la langue active.
+    for (let i = cards.length - 1; i >= 0; i--) {
+      const c = cards[i];
+      if (RETIRED.has(c.ar + "|" + c.fr + "|" + c.cat)) cards.splice(i, 1);
+    }
     // Le catalogue et le filtre actif portent aussi l'ancien nom.
     if (Array.isArray(lists)) {
       lists = lists.map((n) => CAT_RENAMES[n] || n)
