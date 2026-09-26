@@ -468,7 +468,8 @@ window.DEFAULT_WORDS = [
   // 🛋️ Cours 4 — « غُرْفَةُ الْمَعِيشَةِ » : le salon
   //
   // Bâti sur la fiche d'écoute « غرفة_المعيشة_تمارين » (A1/A2) : les
-  // questions de compréhension, le texte à trous et le tableau des pronoms.
+  // questions de compréhension, le texte à trous et le tableau des pronoms ;
+  // complété par les notes du cahier.
   //
   // Même règle qu'au cours 3 : une carte = un mot, le contexte en
   // translittération dans le français, les verbes à la 3e personne. Les mots
@@ -486,6 +487,7 @@ window.DEFAULT_WORDS = [
   { ar: "التِّلْفَازُ", translit: "at-tilfāzu", fr: "la télévision", cat: "Cours 4 — Le salon" },
   { ar: "بَرْنَامَجٌ", translit: "barnāmajun", fr: "un programme / une émission", cat: "Cours 4 — Le salon" },
   { ar: "مُمْتِعٌ", translit: "mumtiʿun", fr: "intéressant / agréable (barnāmajun mumtiʿun)", cat: "Cours 4 — Le salon" },
+  { ar: "مُمِلٌّ", translit: "mumillun", fr: "ennuyeux (≠ mumtiʿun : amusant) — noté au cahier", cat: "Cours 4 — Le salon" },
   { ar: "الْمَكْتَبَةُ", translit: "al-maktabatu", fr: "la bibliothèque (le meuble à livres) — ≠ al-maktabu : le bureau", cat: "Cours 4 — Le salon" },
   { ar: "كِتَابٌ", translit: "kitābun", fr: "un livre", cat: "Cours 4 — Le salon" },
   { ar: "كُرْسِيٌّ", translit: "kursiyyun", fr: "une chaise", cat: "Cours 4 — Le salon" },
@@ -511,6 +513,11 @@ window.DEFAULT_WORDS = [
   { ar: "يَتَحَدَّثُ", translit: "yataḥaddathu", fr: "il parle / il discute", cat: "Cours 4 — Le salon" },
   { ar: "يَسْتَمْتِعُ", translit: "yastamtiʿu", fr: "il profite / il apprécie (+ bi- : yastamtiʿu bi-waqtihi)", cat: "Cours 4 — Le salon" },
   { ar: "يَذْهَبُ", translit: "yadhhabu", fr: "il va (+ ilā : yadhhabu ilā ghurfatihi)", cat: "Cours 4 — Le salon" },
+
+  // Notés au cahier
+  { ar: "يَسْتَفِيدُ", translit: "yastafīdu", fr: "il profite / il tire profit (+ min ; astafīdu : je profite)", cat: "Cours 4 — Le salon" },
+  { ar: "يَشْعُرُ", translit: "yashʿuru", fr: "il ressent / il se sent (+ bi-)", cat: "Cours 4 — Le salon" },
+  { ar: "رُفْقَةٌ", translit: "rufqatun", fr: "la compagnie (bi-rufqati ummihi : en compagnie de sa mère)", cat: "Cours 4 — Le salon" },
 
   // Le duel, comme au cours 3 : -āni au cas sujet, -ayni après bi-, min…
   { ar: "كُوبَيْنِ", translit: "kūbayni", fr: "deux tasses (duel de kūbun, cas indirect : bi-kūbayni)", cat: "Cours 4 — Le salon" },

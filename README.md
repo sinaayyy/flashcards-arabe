@@ -21,8 +21,8 @@ Petit site pour réviser du vocabulaire arabe avec des flashcards. 100 % statiqu
 - 🍳 Cours 3 « هَذَا مَطْبَخِي » : 107 cartes, une carte par mot, en 3 listes —
   le lexique de la cuisine avec les petits mots du texte (65), les أسماء
   الموصولة / relatifs et le duel (20), et les consignes de la fiche (22).
-- 🛋️ Cours 4 « غُرْفَةُ الْمَعِيشَةِ » : 76 cartes, une carte par mot, en 3 listes —
-  le lexique du salon et de la soirée en famille (38), les الضمائر / pronoms
+- 🛋️ Cours 4 « غُرْفَةُ الْمَعِيشَةِ » : 80 cartes, une carte par mot, en 3 listes —
+  le lexique du salon et de la soirée en famille (42), les الضمائر / pronoms
   isolés et suffixes (29), et les consignes de la fiche (9).
 - 🕌 Bloc « Jumu'a » : 275 cartes pour suivre la prêche du vendredi en arabe
   littéraire, en 4 listes à charger à la demande (rituel & ouverture, vocabulaire
