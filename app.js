@@ -82,9 +82,8 @@
   let weightedOrder = true; // mots peu réussis plus fréquents (défaut activé)
   let learnMode = false;   // mode apprentissage : petit groupe de mots jusqu'à maîtrise
   let learnSet = [];       // ids des mots du groupe en cours (mode apprentissage)
-  let learnReview = false; // la carte affichée est une révision d'un mot déjà maîtrisé
   let lists = [];          // catalogue des listes de la langue active
-  let cat = "all";         // liste active ("all" = toutes)
+  let selCats = [];        // listes sélectionnées pour l'étude ([] = toutes)
   let languages = [];      // [{ id, name, rtl, nonLatin, cards:[...], lists:[...] }]
   let activeLang = "ar";   // id de la langue active
   let editingId = null;    // id du mot en cours d'édition (null = ajout)
@@ -310,7 +309,7 @@
     if (lang.lists.indexOf(catName) === -1) lang.lists.push(catName);
     loadActiveIntoWorking();
     ensureLists();
-    cat = catName;
+    setCat(catName);
     rebuildOrder();
     save();
     renderLangModal();
@@ -399,12 +398,18 @@
   }
 
   // --- Ordre / filtre ---
-  // Indices des cartes retenues par les filtres (liste active, « masquer les maîtrisés »).
+  // Sélection de listes : [] = toutes. curCat() = la liste unique sélectionnée,
+  // ou "all" (aucune ou plusieurs) — pour ce qui ne vise qu'une liste (ajout, Gérer).
+  function setCat(v) { selCats = v === "all" ? [] : [v]; }
+  function curCat() { return selCats.length === 1 ? selCats[0] : "all"; }
+  function inSelection(c) { return !selCats.length || selCats.indexOf(c.cat) !== -1; }
+
+  // Indices des cartes retenues par les filtres (listes choisies, « masquer les maîtrisés »).
   function poolIndices() {
-    // Si la catégorie active n'existe plus, revenir à "Tous".
-    if (cat !== "all" && !cards.some((c) => c.cat === cat)) cat = "all";
+    // Oublier les listes sélectionnées qui n'ont plus de cartes.
+    selCats = selCats.filter((n) => cards.some((c) => c.cat === n));
     let indices = cards.map((_, i) => i);
-    if (cat !== "all") indices = indices.filter((i) => cards[i].cat === cat);
+    if (selCats.length) indices = indices.filter((i) => inSelection(cards[i]));
     if (reviewOnly) indices = indices.filter((i) => !isMastered(cards[i]));
     return indices;
   }
@@ -416,11 +421,10 @@
       refillLearnSet(indices);
       const set = learnIndices();
       const keep = set.findIndex((i) => cards[i].id === currentId);
-      if (keep >= 0) { order = set; pos = keep; learnReview = false; }
+      if (keep >= 0) { order = set; pos = keep; }
       else pickLearn(null);
       return;
     }
-    learnReview = false;
     order = weightedOrder ? buildWeightedOrder(indices) : indices;
     // Replacer sur la même carte si possible
     const newPos = order.findIndex((i) => cards[i].id === currentId);
@@ -454,16 +458,16 @@
   }
 
   // --- Mode apprentissage ---
-  // Un petit groupe de mots non maîtrisés tourne en boucle. Plus un mot est
-  // réussi, plus il revient souvent, jusqu'à sa maîtrise : il sort alors du
-  // groupe et un nouveau mot tiré au hasard prend sa place. De temps en temps,
-  // un mot déjà maîtrisé est réinjecté pour révision.
+  // Un petit groupe de mots des listes choisies tourne en boucle. Plus un mot
+  // est réussi, plus il revient souvent, jusqu'à sa maîtrise : il sort alors
+  // du groupe pour de bon et le mot le moins appris de la sélection prend sa
+  // place (au hasard entre mots à égalité).
   const LEARN_SIZE = 5;       // mots en cours en même temps
-  const LEARN_REVIEW = 0.15;  // probabilité de réinjecter un mot maîtrisé
 
   function cardById(id) { return cards.find((c) => c.id === id); }
 
-  // Retire du groupe les mots maîtrisés ou hors filtre, puis complète au hasard.
+  // Retire du groupe les mots maîtrisés ou hors sélection, puis complète avec
+  // les mots les moins appris.
   function refillLearnSet(indices) {
     const inPool = new Set(indices.map((i) => cards[i].id));
     learnSet = learnSet.filter((id) => {
@@ -471,36 +475,29 @@
       return c && inPool.has(id) && !isMastered(c);
     });
     const fresh = indices.filter((i) => !isMastered(cards[i]) && learnSet.indexOf(cards[i].id) === -1);
-    while (learnSet.length < LEARN_SIZE && fresh.length) {
-      const k = Math.floor(Math.random() * fresh.length);
-      learnSet.push(cards[fresh.splice(k, 1)[0]].id);
+    // Mélange puis tri stable par points : à égalité, l'ordre reste aléatoire.
+    for (let k = fresh.length - 1; k > 0; k--) {
+      const j = Math.floor(Math.random() * (k + 1));
+      [fresh[k], fresh[j]] = [fresh[j], fresh[k]];
     }
+    fresh.sort((a, b) => points(cards[a]) - points(cards[b]));
+    while (learnSet.length < LEARN_SIZE && fresh.length) learnSet.push(cards[fresh.shift()].id);
   }
 
   function learnIndices() {
     return learnSet.map((id) => cards.findIndex((c) => c.id === id)).filter((i) => i >= 0);
   }
 
-  // Tire la carte suivante du mode apprentissage (jamais deux fois la même d'affilée).
+  // Tire la carte suivante du mode apprentissage (jamais deux fois la même
+  // d'affilée, sauf s'il ne reste qu'un mot).
   function pickLearn(avoidId) {
-    const indices = poolIndices();
-    refillLearnSet(indices);
+    refillLearnSet(poolIndices());
     const set = learnIndices();
-    const mastered = reviewOnly ? [] : indices.filter((i) => isMastered(cards[i]) && cards[i].id !== avoidId);
-    let choices = set.filter((i) => cards[i].id !== avoidId);
-    // Seule la carte qu'on vient de voir reste : une révision s'intercale si possible.
-    if (!choices.length && !mastered.length) choices = set;
-
-    if (mastered.length && (!choices.length || Math.random() < LEARN_REVIEW)) {
-      const m = mastered[Math.floor(Math.random() * mastered.length)];
-      order = set.concat([m]);
-      pos = order.length - 1;
-      learnReview = true;
-      return;
-    }
-    learnReview = false;
     order = set;
-    if (!choices.length) { pos = 0; return; }
+    pos = 0;
+    if (!set.length) return;
+    let choices = set.filter((i) => cards[i].id !== avoidId);
+    if (!choices.length) choices = set;
     // Pondération : 1 + points, les mots les plus réussis reviennent le plus souvent.
     const total = choices.reduce((s, i) => s + 1 + points(cards[i]), 0);
     let r = Math.random() * total;
@@ -566,10 +563,12 @@
     if (!c) {
       const empty = !cards.length;
       const cta = empty && !reviewOnly;
-      el.frontHint.textContent = reviewOnly
+      // Tout maîtrisé : filtre « à revoir », ou mode apprentissage sur une sélection non vide.
+      const allDone = reviewOnly || (learnMode && cards.some(inSelection));
+      el.frontHint.textContent = allDone
         ? "🎉 tout est maîtrisé"
         : cta ? "Clique pour ajouter ton premier mot" : "aucune carte dans ce filtre";
-      el.frontMain.textContent = reviewOnly ? "Bravo !" : cta ? "＋" : "Aucune carte";
+      el.frontMain.textContent = allDone ? "Bravo !" : cta ? "＋" : "Aucune carte";
       el.frontMain.className = "card-main";
       el.frontPhon.hidden = true;
       resetCardShade();
@@ -591,7 +590,11 @@
     // Sens affiché : fixe (af/fa) ou aléatoire figé tant qu'on reste sur la carte.
     if (sensMode === "af") curAr = true;
     else if (sensMode === "fa") curAr = false;
-    else if (c.id !== curId) curAr = Math.random() < 0.5;
+    else if (c.id !== curId) {
+      // Un sens déjà acquis (5 réussites) : on pose l'autre ; sinon au hasard.
+      const afDone = af(c) >= DIR_TARGET, faDone = fa(c) >= DIR_TARGET;
+      curAr = afDone !== faDone ? faDone : Math.random() < 0.5;
+    }
     curId = c.id;
 
     // Face avant et arrière selon le sens. Côté « cible » = la langue apprise.
@@ -604,7 +607,6 @@
       setFace("front", "Français", questionFr(c), "", null);
       setFace("back", lang.name, c.ar, phon, lang);
     }
-    if (learnReview) el.frontHint.textContent += " · révision";
 
     const lvl = levelOf(points(c));
     el.card.classList.toggle("master", lvl.key === "master");
@@ -829,12 +831,15 @@
   function renderCats() {
     const list = categories();
 
-    // Boutons de filtre : « Tous » + une puce par thème.
+    // Boutons de filtre : « Tous » + une puce par thème. Les puces se cumulent :
+    // un toucher ajoute ou retire la liste de la sélection, « Tous » la vide.
     el.cats.innerHTML = "";
     const make = (label, value, count) => {
+      const on = value === "all" ? !selCats.length : selCats.indexOf(value) !== -1;
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "cat" + (cat === value ? " active" : "");
+      btn.className = "cat" + (on ? " active" : "");
+      btn.setAttribute("aria-pressed", String(on));
       btn.innerHTML = "";
       btn.append(label);
       const c = document.createElement("span");
@@ -842,7 +847,10 @@
       c.textContent = count;
       btn.append(c);
       btn.addEventListener("click", () => {
-        cat = value;
+        if (value === "all") selCats = [];
+        else if (on) selCats = selCats.filter((n) => n !== value);
+        else selCats = selCats.concat([value]);
+        learnSet = []; // nouvelle sélection : le groupe d'apprentissage repart d'elle
         rebuildOrder();
         render();
       });
@@ -863,10 +871,10 @@
   function renderWordList() {
     const lang = activeLangObj();
     const q = wordQuery.trim().toLowerCase();
-    const inCat = cat !== "all";
+    const inCat = selCats.length > 0;
 
-    // Filtre : liste active (cohérent avec « Mes listes ») puis recherche.
-    let list = inCat ? cards.filter((c) => c.cat === cat) : cards.slice();
+    // Filtre : listes choisies (cohérent avec « Mes listes ») puis recherche.
+    let list = inCat ? cards.filter(inSelection) : cards.slice();
     if (q) list = list.filter((c) =>
       (c.ar && c.ar.toLowerCase().indexOf(q) !== -1) ||
       (c.fr && c.fr.toLowerCase().indexOf(q) !== -1) ||
@@ -876,7 +884,7 @@
     // Compteur : global, ou « affichés / total » si un filtre est actif.
     if (inCat || q) {
       el.countInfo.textContent = list.length + " / " + cards.length + " mots"
-        + (inCat ? " · liste « " + cat + " »" : "");
+        + (inCat ? (selCats.length === 1 ? " · liste « " + selCats[0] + " »" : " · " + selCats.length + " listes") : "");
     } else {
       el.countInfo.textContent = cards.length + " mots · " + cards.filter(isMastered).length + " maîtrisés";
     }
@@ -998,6 +1006,8 @@
   }
 
   function advanceAfterAnswer() {
+    curId = null; // nouveau tirage du sens, même si la carte revient
+
     if (learnMode) { pickLearn(currentCardId()); render(); return; }
     if (order.length <= 1) { render(); return; }
     pos = (pos + 1) % order.length;
@@ -1018,7 +1028,7 @@
     const fr = el.inFr.value.trim();
     if (!ar || !fr) return;
     const translit = el.inTranslit.value.trim();
-    const newCat = el.inCat.value.trim() || (cat !== "all" ? cat : "Autres");
+    const newCat = el.inCat.value.trim() || (curCat() !== "all" ? curCat() : "Autres");
     if (!listExists(newCat)) lists.push(newCat);
 
     if (editingId) {
@@ -1095,7 +1105,7 @@
         loadActiveIntoWorking();
         ensureLists();
         cancelEdit();
-        cat = "all";
+        setCat("all");
         updateDirectionLabel();
         save();
         rebuildOrder();
@@ -1120,7 +1130,7 @@
     reviewOnly = false;
     sensMode = "mix";
     curId = null;
-    cat = "all";
+    setCat("all");
     el.reviewBtn.classList.remove("active");
     el.shuffleBtn.classList.remove("active");
     updateDirectionLabel();
@@ -1133,7 +1143,7 @@
     const name = (el.newListName.value || "").trim();
     if (!name) return;
     if (!listExists(name)) lists.push(name);
-    cat = name;            // active la nouvelle liste (les ajouts iront dedans)
+    setCat(name);            // active la nouvelle liste (les ajouts iront dedans)
     el.newListName.value = "";
     save();
     rebuildOrder();
@@ -1149,7 +1159,7 @@
     const i = lists.indexOf(name);
     if (i >= 0) lists[i] = nn;
     cards.forEach((c) => { if (c.cat === name) c.cat = nn; });
-    if (cat === name) cat = nn;
+    selCats = selCats.map((n) => (n === name ? nn : n));
     save();
     rebuildOrder();
     render();
@@ -1163,7 +1173,7 @@
     if (!confirm(msg)) return;
     lists = lists.filter((l) => l !== name);
     cards = cards.filter((c) => c.cat !== name);
-    if (cat === name) cat = "all";
+    selCats = selCats.filter((n) => n !== name);
     if (editingId) cancelEdit();
     save();
     rebuildOrder();
@@ -1182,7 +1192,7 @@
     lists.forEach((name) => {
       const count = cards.filter((c) => c.cat === name).length;
       const li = document.createElement("li");
-      li.className = "lm-item" + (cat === name ? " active" : "");
+      li.className = "lm-item" + (selCats.indexOf(name) !== -1 ? " active" : "");
 
       const nm = document.createElement("button");
       nm.type = "button";
@@ -1194,7 +1204,7 @@
       nm.append(cc);
       nm.title = "Réviser cette liste";
       nm.addEventListener("click", () => {
-        cat = cat === name ? "all" : name;
+        setCat(curCat() === name ? "all" : name);
         rebuildOrder();
         render();
       });
@@ -1320,7 +1330,7 @@
     loadActiveIntoWorking();
     migrate();
     ensureLists();
-    cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
+    setCat("all"); cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
     el.reviewBtn.classList.remove("active");
     el.reviewBtn.setAttribute("aria-pressed", "false");
     updateDirectionLabel();
@@ -1358,7 +1368,7 @@
       activeLang = languages[0].id;
       loadActiveIntoWorking();
       migrate(); ensureLists();
-      cat = "all"; updateDirectionLabel();
+      setCat("all"); updateDirectionLabel();
     }
     save();
     renderLangModal();
@@ -1443,8 +1453,8 @@
     el.inTranslit.hidden = !lang.nonLatin;
     if (!lang.nonLatin) el.inTranslit.value = "";
     // Indique dans quelle liste le mot sera ajouté par défaut.
-    if (el.inCat) el.inCat.placeholder = cat !== "all"
-      ? "Liste (défaut : " + cat + ")"
+    if (el.inCat) el.inCat.placeholder = curCat() !== "all"
+      ? "Liste (défaut : " + curCat() + ")"
       : "Liste (ex. Cuisine)";
   }
 
@@ -1567,7 +1577,7 @@
     });
     // Revenir à toutes les listes (annule le filtre par liste active).
     if (el.wordsClear) el.wordsClear.addEventListener("click", () => {
-      cat = "all";
+      setCat("all");
       rebuildOrder();
       render();
     });
@@ -1885,7 +1895,7 @@
         ensureLists();
         save();              // met aussi le cache local à jour
         cancelEdit();
-        cat = "all";
+        setCat("all");
         updateDirectionLabel();
         rebuildOrder();
         render();
@@ -1980,7 +1990,7 @@
       lists = lists.map((n) => CAT_RENAMES[n] || n)
                    .filter((n, i, a) => a.indexOf(n) === i);
     }
-    if (CAT_RENAMES[cat]) cat = CAT_RENAMES[cat];
+    selCats = selCats.map((n) => CAT_RENAMES[n] || n);
   }
 
   // --- Onboarding (premier lancement) ---
@@ -2015,7 +2025,7 @@
       activeLang = existing.id;
       loadActiveIntoWorking();
       migrate(); ensureLists();
-      cat = "all"; cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
+      setCat("all"); cancelEdit(); reviewOnly = false; sensMode = "mix"; curId = null;
       el.reviewBtn.classList.remove("active");
       updateDirectionLabel();
       if (existing.id === "ar" && !existing.cards.length) { showStep2(); save(); return; }
@@ -2053,7 +2063,7 @@
 
   function finishWelcome(isEmpty) {
     el.welcomeModal.hidden = true;
-    cat = "all";
+    setCat("all");
     save();           // crée l'entrée localStorage → la bienvenue ne réapparaît plus
     rebuildOrder();
     render();
