@@ -15,12 +15,13 @@
         const p = JSON.parse(raw);
         if (p.sensMode === "af" || p.sensMode === "fa" || p.sensMode === "mix") sensMode = p.sensMode;
         if (typeof p.weightedOrder === "boolean") weightedOrder = p.weightedOrder;
+        if (typeof p.learnMode === "boolean") learnMode = p.learnMode;
       }
     } catch (e) { /* ignore */ }
   }
   function savePrefs() {
     try {
-      localStorage.setItem(PREFS_KEY, JSON.stringify({ sensMode: sensMode, weightedOrder: weightedOrder }));
+      localStorage.setItem(PREFS_KEY, JSON.stringify({ sensMode: sensMode, weightedOrder: weightedOrder, learnMode: learnMode }));
     } catch (e) { /* ignore */ }
   }
 
@@ -79,6 +80,9 @@
   let curId = null;        // id de la carte en cours (pour figer le sens en mode mix)
   let reviewOnly = false;  // n'afficher que les mots "à revoir"
   let weightedOrder = true; // mots peu réussis plus fréquents (défaut activé)
+  let learnMode = false;   // mode apprentissage : petit groupe de mots jusqu'à maîtrise
+  let learnSet = [];       // ids des mots du groupe en cours (mode apprentissage)
+  let learnReview = false; // la carte affichée est une révision d'un mot déjà maîtrisé
   let lists = [];          // catalogue des listes de la langue active
   let cat = "all";         // liste active ("all" = toutes)
   let languages = [];      // [{ id, name, rtl, nonLatin, cards:[...], lists:[...] }]
@@ -119,6 +123,8 @@
     directionLabel: document.getElementById("directionLabel"),
     reviewBtn: document.getElementById("reviewBtn"),
     weightBtn: document.getElementById("weightBtn"),
+    learnBtn: document.getElementById("learnBtn"),
+    swipeStamp: document.getElementById("swipeStamp"),
     cats: document.getElementById("cats"),
     addForm: document.getElementById("addForm"),
     inAr: document.getElementById("inAr"),
@@ -393,13 +399,28 @@
   }
 
   // --- Ordre / filtre ---
-  function rebuildOrder(keepCurrentId) {
-    const currentId = keepCurrentId != null ? keepCurrentId : currentCardId();
+  // Indices des cartes retenues par les filtres (liste active, « masquer les maîtrisés »).
+  function poolIndices() {
     // Si la catégorie active n'existe plus, revenir à "Tous".
     if (cat !== "all" && !cards.some((c) => c.cat === cat)) cat = "all";
     let indices = cards.map((_, i) => i);
     if (cat !== "all") indices = indices.filter((i) => cards[i].cat === cat);
     if (reviewOnly) indices = indices.filter((i) => !isMastered(cards[i]));
+    return indices;
+  }
+
+  function rebuildOrder(keepCurrentId) {
+    const currentId = keepCurrentId != null ? keepCurrentId : currentCardId();
+    const indices = poolIndices();
+    if (learnMode) {
+      refillLearnSet(indices);
+      const set = learnIndices();
+      const keep = set.findIndex((i) => cards[i].id === currentId);
+      if (keep >= 0) { order = set; pos = keep; learnReview = false; }
+      else pickLearn(null);
+      return;
+    }
+    learnReview = false;
     order = weightedOrder ? buildWeightedOrder(indices) : indices;
     // Replacer sur la même carte si possible
     const newPos = order.findIndex((i) => cards[i].id === currentId);
@@ -430,6 +451,65 @@
       }
     }
     return bag;
+  }
+
+  // --- Mode apprentissage ---
+  // Un petit groupe de mots non maîtrisés tourne en boucle. Plus un mot est
+  // réussi, plus il revient souvent, jusqu'à sa maîtrise : il sort alors du
+  // groupe et un nouveau mot tiré au hasard prend sa place. De temps en temps,
+  // un mot déjà maîtrisé est réinjecté pour révision.
+  const LEARN_SIZE = 5;       // mots en cours en même temps
+  const LEARN_REVIEW = 0.15;  // probabilité de réinjecter un mot maîtrisé
+
+  function cardById(id) { return cards.find((c) => c.id === id); }
+
+  // Retire du groupe les mots maîtrisés ou hors filtre, puis complète au hasard.
+  function refillLearnSet(indices) {
+    const inPool = new Set(indices.map((i) => cards[i].id));
+    learnSet = learnSet.filter((id) => {
+      const c = cardById(id);
+      return c && inPool.has(id) && !isMastered(c);
+    });
+    const fresh = indices.filter((i) => !isMastered(cards[i]) && learnSet.indexOf(cards[i].id) === -1);
+    while (learnSet.length < LEARN_SIZE && fresh.length) {
+      const k = Math.floor(Math.random() * fresh.length);
+      learnSet.push(cards[fresh.splice(k, 1)[0]].id);
+    }
+  }
+
+  function learnIndices() {
+    return learnSet.map((id) => cards.findIndex((c) => c.id === id)).filter((i) => i >= 0);
+  }
+
+  // Tire la carte suivante du mode apprentissage (jamais deux fois la même d'affilée).
+  function pickLearn(avoidId) {
+    const indices = poolIndices();
+    refillLearnSet(indices);
+    const set = learnIndices();
+    const mastered = reviewOnly ? [] : indices.filter((i) => isMastered(cards[i]) && cards[i].id !== avoidId);
+    let choices = set.filter((i) => cards[i].id !== avoidId);
+    // Seule la carte qu'on vient de voir reste : une révision s'intercale si possible.
+    if (!choices.length && !mastered.length) choices = set;
+
+    if (mastered.length && (!choices.length || Math.random() < LEARN_REVIEW)) {
+      const m = mastered[Math.floor(Math.random() * mastered.length)];
+      order = set.concat([m]);
+      pos = order.length - 1;
+      learnReview = true;
+      return;
+    }
+    learnReview = false;
+    order = set;
+    if (!choices.length) { pos = 0; return; }
+    // Pondération : 1 + points, les mots les plus réussis reviennent le plus souvent.
+    const total = choices.reduce((s, i) => s + 1 + points(cards[i]), 0);
+    let r = Math.random() * total;
+    let chosen = choices[choices.length - 1];
+    for (const i of choices) {
+      r -= 1 + points(cards[i]);
+      if (r < 0) { chosen = i; break; }
+    }
+    pos = order.indexOf(chosen);
   }
 
   function shuffleOrder() {
@@ -466,7 +546,14 @@
   function render() {
     const c = currentCard();
     flipped = false;
-    el.card.classList.remove("flipped");
+    // Retour au recto sans animation : sinon le verso de la carte suivante
+    // (déjà rempli) défile pendant la rotation et montre la réponse.
+    if (el.card.classList.contains("flipped")) {
+      el.card.classList.add("no-anim");
+      el.card.classList.remove("flipped");
+      void el.card.offsetWidth;
+      el.card.classList.remove("no-anim");
+    }
     updateFaceA11y();
 
     renderLangBtn();
@@ -514,9 +601,10 @@
       setFace("front", lang.name, c.ar, phon, lang);
       setFace("back", "Français", c.fr, "", null);
     } else {
-      setFace("front", "Français", c.fr, "", null);
+      setFace("front", "Français", questionFr(c), "", null);
       setFace("back", lang.name, c.ar, phon, lang);
     }
+    if (learnReview) el.frontHint.textContent += " · révision";
 
     const lvl = levelOf(points(c));
     el.card.classList.toggle("master", lvl.key === "master");
@@ -528,7 +616,37 @@
     order.forEach((i) => { const id = cards[i].id; if (uniqIds.indexOf(id) === -1) uniqIds.push(id); });
     const uniPos = uniqIds.indexOf(c.id);
     el.progress.textContent = (uniPos + 1) + " / " + uniqIds.length;
+    if (learnMode) {
+      const pool = poolIndices();
+      const done = pool.filter((i) => isMastered(cards[i])).length;
+      el.progress.textContent = "Apprentissage · " + learnSet.length + " en cours · " +
+        done + " / " + pool.length + " maîtrisés";
+    }
     renderWordList();
+  }
+
+  // --- Recto en français : ne pas souffler la réponse ---
+  // Les notes entre parenthèses donnent souvent un exemple en phonétique qui
+  // contient le mot à trouver (« chaque (kulla masāʾin : chaque soir) »).
+  // Au recto, on retire les parenthèses qui contiennent la phonétique de la
+  // réponse ; le verso (sens cible → français) les garde.
+  function latinFold(s) {
+    return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[ʿʾ'’]/g, "");
+  }
+  function leaksAnswer(part, translit) {
+    const p = latinFold(part);
+    const full = latinFold(translit.split(/[ /]/)[0] || "").trim();
+    if (!full) return false;
+    // Radical : sans article ni désinence (al-kalimatu → kalimat).
+    const stem = full.replace(/^(al|a[tdrzsnl]h?)-/, "").replace(/(un|in|an|u|i|a)$/, "");
+    if (stem.length >= 3) return p.indexOf(stem) !== -1;
+    const esc = full.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp("(^|[^a-z])" + esc + (full.endsWith("-") ? "" : "($|[^a-z])")).test(p);
+  }
+  function questionFr(c) {
+    if (!c.translit) return c.fr;
+    const q = c.fr.replace(/\s*\([^()]*\)/g, (m) => (leaksAnswer(m, c.translit) ? "" : m)).trim();
+    return q || c.fr;
   }
 
   // Teinte de la carte selon la maîtrise : claire (peu su) → encre (maîtrisé).
@@ -827,7 +945,12 @@
   }
 
   // --- Actions ---
-  function next() { if (!order.length) return; pos = (pos + 1) % order.length; render(); }
+  function next() {
+    if (!order.length) return;
+    if (learnMode) pickLearn(currentCardId());
+    else pos = (pos + 1) % order.length;
+    render();
+  }
   function prev() { if (!order.length) return; pos = (pos - 1 + order.length) % order.length; render(); }
   function flip() {
     if (el.card.classList.contains("empty-cta")) { guideToFirstCard(); return; }
@@ -855,7 +978,9 @@
     c[k] = (c[k] || 0) + 1;
     save();
     if (!wasMastered && isMastered(c)) celebrate();
-    if (reviewOnly && isMastered(c)) {
+    if (learnMode) {
+      advanceAfterAnswer();
+    } else if (reviewOnly && isMastered(c)) {
       rebuildOrder();   // la carte maîtrisée sort du filtre « à revoir »
       render();
     } else {
@@ -873,6 +998,7 @@
   }
 
   function advanceAfterAnswer() {
+    if (learnMode) { pickLearn(currentCardId()); render(); return; }
     if (order.length <= 1) { render(); return; }
     pos = (pos + 1) % order.length;
     render();
@@ -1098,7 +1224,81 @@
   function updateWeightBtn() {
     if (!el.weightBtn) return;
     el.weightBtn.setAttribute("aria-pressed", String(weightedOrder));
-    el.weightBtn.classList.toggle("active", weightedOrder);
+    el.weightBtn.classList.toggle("active", weightedOrder && !learnMode);
+    el.weightBtn.disabled = learnMode; // sans effet en mode apprentissage
+    if (el.learnBtn) {
+      el.learnBtn.setAttribute("aria-pressed", String(learnMode));
+      el.learnBtn.classList.toggle("active", learnMode);
+    }
+  }
+
+  // --- Balayage de la carte : droite = réussi, gauche = à revoir ---
+  const SWIPE_MIN = 90; // px à parcourir pour valider
+  function bindSwipe() {
+    let startX = 0, startY = 0, dx = 0, dragging = false, tracking = false, swiped = false;
+    const card = el.card;
+    const setStamp = (dir) => {
+      card.dataset.swipe = dir || "";
+      if (el.swipeStamp) el.swipeStamp.textContent = dir === "pass" ? "Réussi ✓" : dir === "fail" ? "À revoir" : "";
+    };
+    const reset = () => {
+      card.classList.remove("dragging");
+      card.style.transform = "";
+      setStamp(null);
+    };
+
+    card.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (card.classList.contains("empty-cta") || e.target.closest("button")) return;
+      startX = e.clientX; startY = e.clientY; dx = 0;
+      tracking = true; dragging = false;
+    });
+    card.addEventListener("pointermove", (e) => {
+      if (!tracking) return;
+      dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!dragging) {
+        if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy)) {
+          if (Math.abs(dy) > 12) tracking = false; // défilement vertical : on laisse faire
+          return;
+        }
+        dragging = true;
+        card.classList.add("dragging");
+        try { card.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      }
+      card.style.transform = "translateX(" + dx + "px) rotate(" + (dx / 22) + "deg)";
+      setStamp(dx > SWIPE_MIN / 2 ? "pass" : dx < -SWIPE_MIN / 2 ? "fail" : null);
+    });
+    const end = () => {
+      if (!tracking) return;
+      tracking = false;
+      if (!dragging) return;
+      dragging = false;
+      swiped = true; // le clic qui suit le geste ne doit pas retourner la carte
+      setTimeout(() => { swiped = false; }, 50);
+      if (Math.abs(dx) < SWIPE_MIN || !currentCard()) {
+        card.classList.remove("dragging");
+        card.classList.add("swipe-back");
+        card.style.transform = "";
+        setStamp(null);
+        setTimeout(() => card.classList.remove("swipe-back"), 220);
+        return;
+      }
+      const ok = dx > 0;
+      card.classList.add("swipe-out");
+      card.style.transform = "translateX(" + (ok ? 1 : -1) * window.innerWidth + "px) rotate(" + (ok ? 18 : -18) + "deg)";
+      setTimeout(() => {
+        card.classList.remove("swipe-out");
+        reset();
+        if (ok) pass(); else fail();
+      }, 200);
+    };
+    card.addEventListener("pointerup", end);
+    card.addEventListener("pointercancel", () => { tracking = false; dragging = false; reset(); });
+    // Capture : bloque le clic de fin de geste avant le gestionnaire de retournement.
+    card.addEventListener("click", (e) => {
+      if (swiped) { e.stopImmediatePropagation(); e.preventDefault(); }
+    }, true);
   }
 
   // Petit éclat quand une carte vient d'être maîtrisée.
@@ -1331,6 +1531,17 @@
       rebuildOrder();
       render();
     });
+
+    if (el.learnBtn) el.learnBtn.addEventListener("click", () => {
+      learnMode = !learnMode;
+      learnSet = [];
+      updateWeightBtn();
+      savePrefs();
+      rebuildOrder();
+      render();
+    });
+
+    bindSwipe();
 
     el.exportBtn.addEventListener("click", exportDeck);
     el.importBtn.addEventListener("click", () => el.importFile.click());

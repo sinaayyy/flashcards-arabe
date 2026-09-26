@@ -105,6 +105,7 @@
       <!-- Carte -->
       <section class="card-area" id="cardArea">
         <div class="card" id="card" role="button" tabindex="0" aria-label="Retourner la carte">
+          <span class="swipe-stamp" id="swipeStamp" aria-hidden="true"></span>
           <div class="card-face card-front">
             <span class="card-corner" aria-hidden="true"></span>
             <p class="card-hint" id="frontHint"></p>
@@ -125,7 +126,7 @@
           </div>
         </div>
         <div class="mastery" id="mastery" aria-live="polite"></div>
-        <p class="flip-tip">Touche la carte pour la retourner<span class="kb-hint"> · <kbd>Espace</kbd> · <kbd>←</kbd> <kbd>→</kbd></span></p>
+        <p class="flip-tip">Touche la carte pour la retourner · glisse → réussi, ← à revoir<span class="kb-hint"> · <kbd>Espace</kbd> · <kbd>←</kbd> <kbd>→</kbd></span></p>
       </section>
 
       <!-- Réponse (action principale) -->
@@ -155,6 +156,10 @@
             <button id="weightBtn" class="opt-row" type="button" role="menuitem" aria-pressed="true">
               <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
               <span>Prioriser les mots difficiles</span>
+            </button>
+            <button id="learnBtn" class="opt-row" type="button" role="menuitem" aria-pressed="false">
+              <svg class="opt-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6Z"/><path d="M12 14c0-3-2.5-5-6-5 0 3 2.5 5 6 5Z"/></svg>
+              <span>Mode apprentissage</span>
             </button>
           </div>
         </div>

@@ -6,6 +6,13 @@ Petit site pour réviser du vocabulaire arabe avec des flashcards. 100 % statiqu
 ## Fonctionnalités
 - Cartes recto/verso : arabe + translittération + français.
 - Retourner la carte (clic ou barre Espace), naviguer (boutons ou flèches ← →).
+- 👆 Balayer la carte : vers la droite = réussi, vers la gauche = à revoir.
+- 🌱 Mode apprentissage : 5 mots en cours à la fois, les plus réussis reviennent
+  le plus souvent jusqu'à leur maîtrise ; un mot maîtrisé laisse sa place à un
+  nouveau mot tiré au hasard, et les mots déjà appris reviennent parfois en
+  révision.
+- Au recto en français, les exemples entre parenthèses qui contiennent la
+  réponse sont masqués (ils restent visibles au verso).
 - 🔀 Mélanger le paquet (ordre aléatoire).
 - ↔︎ Inverser le sens (AR → FR ou FR → AR).
 - 🎯 Réviser seulement les mots « à revoir ».

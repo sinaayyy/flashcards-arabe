@@ -487,7 +487,7 @@ window.DEFAULT_WORDS = [
   { ar: "التِّلْفَازُ", translit: "at-tilfāzu", fr: "la télévision", cat: "Cours 4 — Le salon" },
   { ar: "بَرْنَامَجٌ", translit: "barnāmajun", fr: "un programme / une émission", cat: "Cours 4 — Le salon" },
   { ar: "مُمْتِعٌ", translit: "mumtiʿun", fr: "intéressant / agréable (barnāmajun mumtiʿun)", cat: "Cours 4 — Le salon" },
-  { ar: "مُمِلٌّ", translit: "mumillun", fr: "ennuyeux (≠ mumtiʿun : amusant) — noté au cahier", cat: "Cours 4 — Le salon" },
+  { ar: "مُمِلٌّ", translit: "mumillun", fr: "ennuyeux (≠ mumtiʿun : amusant)", cat: "Cours 4 — Le salon" },
   { ar: "الْمَكْتَبَةُ", translit: "al-maktabatu", fr: "la bibliothèque (le meuble à livres) — ≠ al-maktabu : le bureau", cat: "Cours 4 — Le salon" },
   { ar: "كِتَابٌ", translit: "kitābun", fr: "un livre", cat: "Cours 4 — Le salon" },
   { ar: "كُرْسِيٌّ", translit: "kursiyyun", fr: "une chaise", cat: "Cours 4 — Le salon" },

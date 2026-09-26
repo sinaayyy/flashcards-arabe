@@ -696,6 +696,36 @@ html, body {
 }
 .card.flipped .card-front { transform: rotateY(-180deg); }
 .card.flipped .card-back { transform: rotateY(0deg); }
+/* Retour au recto instantané quand on passe à la carte suivante */
+.card.no-anim .card-face { transition: none !important; }
+
+/* Balayage : la carte suit le doigt, droite = réussi, gauche = à revoir */
+.card { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.card.dragging, .card.swipe-out, .card.swipe-back { animation: none; }
+.card.swipe-out { transition: transform 0.2s ease-in; }
+.card.swipe-back { transition: transform 0.2s ease-out; }
+.swipe-stamp {
+  position: absolute;
+  top: 1.1rem;
+  z-index: 3;
+  padding: 0.3rem 0.75rem;
+  border: 2px solid currentColor;
+  border-radius: 9px;
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  background: var(--paper-2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+.card[data-swipe="pass"] .swipe-stamp { opacity: 1; left: 1.1rem; right: auto; color: var(--saffron-deep); transform: rotate(-8deg); }
+.card[data-swipe="fail"] .swipe-stamp { opacity: 1; right: 1.1rem; left: auto; color: var(--ink); transform: rotate(8deg); }
+.card[data-swipe="pass"] .card-face { box-shadow: 0 0 0 3px var(--saffron), var(--shadow); }
+.card[data-swipe="fail"] .card-face { box-shadow: 0 0 0 3px var(--muted), var(--shadow); }
+.opt-row:disabled { opacity: 0.45; cursor: default; }
+.opt-row:disabled:hover { background: transparent; }
 
 /* Filet géométrique en coin (signature manuscrit) */
 .card-corner {
@@ -1312,4 +1342,5 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .card-face { transition: none; }
   .card, .card.just-mastered .card-face { animation: none; }
+  .card.swipe-out, .card.swipe-back { transition: none; }
 }
