@@ -465,6 +465,119 @@ window.DEFAULT_WORDS = [
   { ar: "الْمَسْمُوعُ", translit: "al-masmūʿu", fr: "ce qu'on entend (fahmu l-masmūʿi : compréhension orale)", cat: "Cours 3 — Consignes" },
 
   // =====================================================================
+  // 🛋️ Cours 4 — « غُرْفَةُ الْمَعِيشَةِ » : le salon
+  //
+  // Bâti sur la fiche d'écoute « غرفة_المعيشة_تمارين » (A1/A2) : les
+  // questions de compréhension, le texte à trous et le tableau des pronoms.
+  //
+  // Même règle qu'au cours 3 : une carte = un mot, le contexte en
+  // translittération dans le français, les verbes à la 3e personne. Les mots
+  // déjà en cartes (thé, tasse, lampe, éteindre, entrer, prendre, dîner,
+  // sommeil, soir, avant / après, où, quand…) ne sont pas repris.
+  // =====================================================================
+
+  // --- 1/3 · Le salon : objets, famille, verbes, petits mots --------------
+
+  // La pièce et ce qu'il y a dedans
+  { ar: "غُرْفَةٌ", translit: "ghurfatun", fr: "une pièce / une chambre", cat: "Cours 4 — Le salon" },
+  { ar: "الْمَعِيشَةُ", translit: "al-maʿīshatu", fr: "la vie quotidienne (ghurfatu l-maʿīshati : le salon)", cat: "Cours 4 — Le salon" },
+  { ar: "أَرِيكَةٌ", translit: "arīkatun", fr: "un canapé", cat: "Cours 4 — Le salon" },
+  { ar: "مُرِيحَةٌ", translit: "murīḥatun", fr: "confortable (féminin : al-arīkatu l-murīḥatu)", cat: "Cours 4 — Le salon" },
+  { ar: "التِّلْفَازُ", translit: "at-tilfāzu", fr: "la télévision", cat: "Cours 4 — Le salon" },
+  { ar: "بَرْنَامَجٌ", translit: "barnāmajun", fr: "un programme / une émission", cat: "Cours 4 — Le salon" },
+  { ar: "مُمْتِعٌ", translit: "mumtiʿun", fr: "intéressant / agréable (barnāmajun mumtiʿun)", cat: "Cours 4 — Le salon" },
+  { ar: "الْمَكْتَبَةُ", translit: "al-maktabatu", fr: "la bibliothèque (le meuble à livres) — ≠ al-maktabu : le bureau", cat: "Cours 4 — Le salon" },
+  { ar: "كِتَابٌ", translit: "kitābun", fr: "un livre", cat: "Cours 4 — Le salon" },
+  { ar: "كُرْسِيٌّ", translit: "kursiyyun", fr: "une chaise", cat: "Cours 4 — Le salon" },
+  { ar: "طَبَقٌ", translit: "ṭabaqun", fr: "un plat / une assiette (de nourriture)", cat: "Cours 4 — Le salon" },
+  { ar: "بَيْتٌ", translit: "baytun", fr: "une maison / un foyer", cat: "Cours 4 — Le salon" },
+  { ar: "هُدُوءٌ", translit: "hudūʾun", fr: "le calme (fī hudūʾin : au calme)", cat: "Cours 4 — Le salon" },
+
+  // La famille et la soirée
+  { ar: "الْأُمُّ", translit: "al-ummu", fr: "la mère (ummuhu : sa mère ; ummī : ma mère)", cat: "Cours 4 — Le salon" },
+  { ar: "الْأَخُ", translit: "al-akhu", fr: "le frère", cat: "Cours 4 — Le salon" },
+  { ar: "أُمْسِيَةٌ", translit: "umsiyatun", fr: "une soirée (umsiyatuka : ta soirée)", cat: "Cours 4 — Le salon" },
+  { ar: "الذَّهَابُ", translit: "adh-dhahābu", fr: "le fait d'aller (qabla dh-dhahābi : avant d'aller)", cat: "Cours 4 — Le salon" },
+
+  // Les verbes de la fiche, à la 3e personne
+  { ar: "يَجْلِسُ", translit: "yajlisu", fr: "il s'assoit / il est assis", cat: "Cours 4 — Le salon" },
+  { ar: "يَسْتَرِيحُ", translit: "yastarīḥu", fr: "il se repose", cat: "Cours 4 — Le salon" },
+  { ar: "يُشَاهِدُ", translit: "yushāhidu", fr: "il regarde (la télévision)", cat: "Cours 4 — Le salon" },
+  { ar: "يَبْحَثُ", translit: "yabḥathu", fr: "il cherche (+ ʿan : yabḥathu ʿan barnāmajin)", cat: "Cours 4 — Le salon" },
+  { ar: "عَنْ", translit: "ʿan", fr: "de / au sujet de (après yabḥathu : chercher quelque chose)", cat: "Cours 4 — Le salon" },
+  { ar: "يَقْرَأُ", translit: "yaqraʾu", fr: "il lit", cat: "Cours 4 — Le salon" },
+  { ar: "يَأْتِي", translit: "yaʾtī", fr: "il vient (yaʾtī bi- : il apporte ; taʾtī : elle vient)", cat: "Cours 4 — Le salon" },
+  { ar: "يُحْضِرُ", translit: "yuḥḍiru", fr: "il apporte (tuḥḍiru : elle apporte)", cat: "Cours 4 — Le salon" },
+  { ar: "يَتَحَدَّثُ", translit: "yataḥaddathu", fr: "il parle / il discute", cat: "Cours 4 — Le salon" },
+  { ar: "يَسْتَمْتِعُ", translit: "yastamtiʿu", fr: "il profite / il apprécie (+ bi- : yastamtiʿu bi-waqtihi)", cat: "Cours 4 — Le salon" },
+  { ar: "يَذْهَبُ", translit: "yadhhabu", fr: "il va (+ ilā : yadhhabu ilā ghurfatihi)", cat: "Cours 4 — Le salon" },
+
+  // Le duel, comme au cours 3 : -āni au cas sujet, -ayni après bi-, min…
+  { ar: "كُوبَيْنِ", translit: "kūbayni", fr: "deux tasses (duel de kūbun, cas indirect : bi-kūbayni)", cat: "Cours 4 — Le salon" },
+  { ar: "يَتَحَدَّثَانِ", translit: "yataḥaddathāni", fr: "ils parlent tous les deux (verbe au duel : + -āni)", cat: "Cours 4 — Le salon" },
+
+  // Les petits mots du texte
+  { ar: "أَحْيَانًا", translit: "aḥyānan", fr: "parfois", cat: "Cours 4 — Le salon" },
+  { ar: "أَبَدًا", translit: "abadan", fr: "jamais (lā yushāhidu abadan : il ne regarde jamais)", cat: "Cours 4 — Le salon" },
+  { ar: "مَعًا", translit: "maʿan", fr: "ensemble", cat: "Cours 4 — Le salon" },
+  { ar: "مَعَ", translit: "maʿa", fr: "avec (maʿa ummihi : avec sa mère)", cat: "Cours 4 — Le salon" },
+  { ar: "كَثِيرًا", translit: "kathīran", fr: "beaucoup", cat: "Cours 4 — Le salon" },
+  { ar: "جِدًّا", translit: "jiddan", fr: "très / énormément", cat: "Cours 4 — Le salon" },
+  { ar: "جَدِيدٌ", translit: "jadīdun", fr: "nouveau (kitāban jadīdan : un nouveau livre)", cat: "Cours 4 — Le salon" },
+  { ar: "يَا", translit: "yā", fr: "particule pour interpeller (yā sāmī : Sami !)", cat: "Cours 4 — Le salon" },
+
+  // --- 2/3 · الضمائر : les pronoms isolés et suffixes ---------------------
+
+  // أ) Les pronoms isolés (sujets), tableau de la fiche
+  { ar: "أَنَا", translit: "anā", fr: "je / moi", cat: "Cours 4 — Les pronoms" },
+  { ar: "أَنْتَ", translit: "anta", fr: "tu / toi — masculin", cat: "Cours 4 — Les pronoms" },
+  { ar: "أَنْتِ", translit: "anti", fr: "tu / toi — féminin", cat: "Cours 4 — Les pronoms" },
+  { ar: "هُوَ", translit: "huwa", fr: "il / lui", cat: "Cours 4 — Les pronoms" },
+  { ar: "هِيَ", translit: "hiya", fr: "elle", cat: "Cours 4 — Les pronoms" },
+  { ar: "نَحْنُ", translit: "naḥnu", fr: "nous", cat: "Cours 4 — Les pronoms" },
+
+  // ب) Les pronoms suffixes, attachés au nom ou au verbe
+  { ar: "ـِي", translit: "-ī", fr: "mon / ma — suffixe (ghurfatī : ma chambre)", cat: "Cours 4 — Les pronoms" },
+  { ar: "ـكَ", translit: "-ka", fr: "ton / ta — suffixe masculin (ghurfatuka : ta chambre)", cat: "Cours 4 — Les pronoms" },
+  { ar: "ـكِ", translit: "-ki", fr: "ton / ta — suffixe féminin (kūbuki : ta tasse)", cat: "Cours 4 — Les pronoms" },
+  { ar: "ـهُ", translit: "-hu", fr: "son / sa, le — suffixe masculin (aftaḥuhu : je l'ouvre)", cat: "Cours 4 — Les pronoms" },
+  { ar: "ـهَا", translit: "-hā", fr: "son / sa, la — suffixe féminin (fīhā : dedans)", cat: "Cours 4 — Les pronoms" },
+  { ar: "ـنَا", translit: "-nā", fr: "notre / nos — suffixe (waqtunā : notre temps)", cat: "Cours 4 — Les pronoms" },
+
+  // Le sens donné par la fiche : li- + suffixe = « à … »
+  { ar: "لِي", translit: "lī", fr: "à moi", cat: "Cours 4 — Les pronoms" },
+  { ar: "لَكَ", translit: "laka", fr: "à toi — masculin", cat: "Cours 4 — Les pronoms" },
+  { ar: "لَكِ", translit: "laki", fr: "à toi — féminin", cat: "Cours 4 — Les pronoms" },
+  { ar: "لَهُ", translit: "lahu", fr: "à lui", cat: "Cours 4 — Les pronoms" },
+  { ar: "لَهَا", translit: "lahā", fr: "à elle", cat: "Cours 4 — Les pronoms" },
+  { ar: "لَنَا", translit: "lanā", fr: "à nous", cat: "Cours 4 — Les pronoms" },
+  { ar: "خَاصَّتِي", translit: "khāṣṣatī", fr: "le mien / ce qui est à moi", cat: "Cours 4 — Les pronoms" },
+
+  // Le métalangage du tableau
+  { ar: "الضَّمِيرُ", translit: "aḍ-ḍamīru", fr: "le pronom (aḍ-ḍamāʾiru : les pronoms)", cat: "Cours 4 — Les pronoms" },
+  { ar: "مُنْفَصِلٌ", translit: "munfaṣilun", fr: "séparé (ḍamīrun munfaṣilun : un pronom isolé)", cat: "Cours 4 — Les pronoms" },
+  { ar: "مُتَّصِلٌ", translit: "muttaṣilun", fr: "attaché (ḍamīrun muttaṣilun : un pronom suffixe)", cat: "Cours 4 — Les pronoms" },
+  { ar: "الْفَاعِلُ", translit: "al-fāʿilu", fr: "le sujet (celui qui fait l'action)", cat: "Cours 4 — Les pronoms" },
+  { ar: "الْمُتَكَلِّمُ", translit: "al-mutakallimu", fr: "celui qui parle — 1re personne (pluriel : al-mutakallimūna)", cat: "Cours 4 — Les pronoms" },
+  { ar: "الْمُخَاطَبُ", translit: "al-mukhāṭabu", fr: "celui à qui l'on parle — 2e personne (féminin : al-mukhāṭabatu)", cat: "Cours 4 — Les pronoms" },
+  { ar: "الْغَائِبُ", translit: "al-ghāʾibu", fr: "l'absent — 3e personne (féminin : al-ghāʾibatu)", cat: "Cours 4 — Les pronoms" },
+  { ar: "يُشِيرُ", translit: "yushīru", fr: "il désigne / il renvoie (+ ilā)", cat: "Cours 4 — Les pronoms" },
+  { ar: "تُلْحَقُ", translit: "tulḥaqu", fr: "elle s'attache (+ bi- : au nom ou au verbe)", cat: "Cours 4 — Les pronoms" },
+  { ar: "مَعْنًى", translit: "maʿnan", fr: "un sens / une signification (maʿnāhu : son sens)", cat: "Cours 4 — Les pronoms" },
+
+  // --- 3/3 · Les consignes de la fiche -----------------------------------
+  // Seulement celles qui n'étaient pas déjà dans les cours 2 et 3.
+  { ar: "نَشَاطٌ", translit: "nashāṭun", fr: "une activité (nashāṭu fahmi l-masmūʿi : activité d'écoute)", cat: "Cours 4 — Consignes" },
+  { ar: "الْأَحْدَاثُ", translit: "al-aḥdāthu", fr: "les événements", cat: "Cours 4 — Consignes" },
+  { ar: "اِمْلَأْ", translit: "imlaʾ", fr: "remplis (imlaʾ l-farāgha : complète le blanc)", cat: "Cours 4 — Consignes" },
+  { ar: "أَضِفْ", translit: "aḍif", fr: "ajoute", cat: "Cours 4 — Consignes" },
+  { ar: "قَوْسٌ", translit: "qawsun", fr: "une parenthèse (bayna qawsayni : entre parenthèses)", cat: "Cours 4 — Consignes" },
+  { ar: "تَحَدَّثْ", translit: "taḥaddath", fr: "parle (impératif, + ʿan : parle de)", cat: "Cours 4 — Consignes" },
+  { ar: "حُرٌّ", translit: "ḥurrun", fr: "libre (tamrīnun ḥurrun : exercice libre)", cat: "Cours 4 — Consignes" },
+  { ar: "مُسْتَعْمِلًا", translit: "mustaʿmilan", fr: "en utilisant", cat: "Cours 4 — Consignes" },
+  { ar: "الْأَقَلُّ", translit: "al-aqallu", fr: "le moins (ʿalā l-aqalli : au moins)", cat: "Cours 4 — Consignes" },
+
+  // =====================================================================
   // 🕌 Bloc « Jumu'a » — comprendre la prêche du vendredi (arabe littéraire)
   //
   // Listes construites à partir d'un corpus de 200 khutbas complètes
